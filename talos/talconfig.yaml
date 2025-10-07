@@ -38,6 +38,17 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.42.10"
+    patches:
+    - |-
+      machine:
+        kernel:
+          modules:
+            - name: nvidia
+            - name: nvidia_uvm
+            - name: nvidia_drm
+            - name: nvidia_modeset
+        sysctls:
+          net.core.bpf_jit_harden: 1
 
 # Global patches
 patches:
