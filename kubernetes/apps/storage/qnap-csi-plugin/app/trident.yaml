@@ -1,0 +1,11 @@
+    apiVersion: kustomize.toolkit.fluxcd.io/v1
+    kind: Kustomization
+    metadata:
+      name: triden
+    spec:
+      interval: 5m
+      path: "./Deploy/Trident"
+      prune: true
+      sourceRef:
+        kind: GitRepository
+        name: qnap-csi-plugin
