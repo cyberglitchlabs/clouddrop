@@ -2,7 +2,6 @@
     kind: GitRepository
     metadata:
       name: qnap-csi-plugin
-      namespace: flux-system
     spec:
       interval: 1m
       url: https://github.com/qnap-dev/QNAP-CSI-PlugIn.git
