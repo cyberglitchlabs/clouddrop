@@ -29,7 +29,7 @@ spec:
               repository: ghcr.io/advplyr/audiobookshelf
               tag: latest
             env:
-              TZ: UTC
+              TZ: America/Chicago
             probes:
               liveness:
                 enabled: true

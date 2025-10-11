@@ -29,10 +29,11 @@ spec:
               repository: ghcr.io/home-operations/sonarr
               tag: 4.0.15.2940
             env:
-              TZ: UTC
-              sonarr__AUTH__METHOD: External
-              sonarr__AUTH__REQUIRED: DisabledForLocalAddresses
-              sonarr__LOG__LEVEL: info
+              TZ: America/Chicago
+              SONARR__AUTH__METHOD: Forms
+              SONARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              SONARR__LOG__LEVEL: info
+              SONARR__APP__THEME: dark
             probes:
               liveness:
                 enabled: true
@@ -106,7 +107,7 @@ spec:
       app:
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
         parentRefs:
-          - name: internal
+          - name: external
             namespace: kube-system
             sectionName: https
         rules:
