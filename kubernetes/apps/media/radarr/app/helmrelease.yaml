@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: audiobookshelf
+  name: radarr
 spec:
   interval: 1h
   chartRef:
@@ -21,23 +21,26 @@ spec:
       namespace: network
   values:
     controllers:
-      audiobookshelf:
+      radarr:
         strategy: RollingUpdate
         containers:
           app:
             image:
-              repository: ghcr.io/advplyr/audiobookshelf
-              tag: latest
+              repository: ghcr.io/onedr0p/radarr
+              tag: 5.18.0.9693
             env:
               TZ: UTC
+              RADARR__AUTH__METHOD: External
+              RADARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              RADARR__LOG__LEVEL: info
             probes:
               liveness:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /
-                    port: 80
+                    path: /ping
+                    port: 7878
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 2
@@ -47,8 +50,8 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /
-                    port: 80
+                    path: /ping
+                    port: 7878
                   initialDelaySeconds: 5
                   periodSeconds: 10
                   timeoutSeconds: 2
@@ -59,8 +62,8 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 50m
-                memory: 128Mi
+                cpu: 100m
+                memory: 256Mi
               limits:
                 memory: 1024Mi
     defaultPodOptions:
@@ -70,16 +73,18 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
+        supplementalGroups: [65539]
     service:
       app:
-        controller: audiobookshelf
+        controller: radarr
         ports:
           http:
-            port: 80
-            targetPort: 80
+            port: 7878
+            targetPort: 7878
             protocol: TCP
     serviceMonitor:
       app:
+        enabled: true
         endpoints:
           - port: http
     persistence:
@@ -91,36 +96,9 @@ spec:
         storageClass: qnap-iscsi-xfs
         globalMounts:
           - path: /config
-      metadata:
+      media:
         enabled: true
         type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 10Gi
-        storageClass: qnap-iscsi-xfs
+        existingClaim: media-smb
         globalMounts:
-          - path: /metadata
-      audiobooks:
-        enabled: true
-        type: persistentVolumeClaim
-        existingClaim: audiobookshelf-audiobooks-smb
-        globalMounts:
-          - path: /audiobooks
-      podcasts:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: qnap-iscsi-xfs
-        globalMounts:
-          - path: /podcasts
-    route:
-      app:
-        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
-        parentRefs:
-          - name: external
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: 80
+          - path: /media
