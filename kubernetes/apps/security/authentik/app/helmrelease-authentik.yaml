@@ -1,0 +1,103 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: authentik
+  namespace: security
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: authentik
+      version: 2025.1.2
+      sourceRef:
+        kind: HelmRepository
+        name: authentik
+        namespace: security
+      interval: 1h
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  dependsOn:
+    - name: authentik-postgresql
+      namespace: security
+    - name: authentik-redis
+      namespace: security
+    - name: cloudflare-tunnel
+      namespace: network
+  values:
+    global:
+      env:
+        - name: AUTHENTIK_SECRET_KEY
+          value: "CHANGEME-REPLACE-WITH-SECRET"  # Generate with: openssl rand -base64 32
+        - name: AUTHENTIK_POSTGRESQL__HOST
+          value: authentik-postgresql
+        - name: AUTHENTIK_POSTGRESQL__NAME
+          value: authentik
+        - name: AUTHENTIK_POSTGRESQL__USER
+          value: authentik
+        - name: AUTHENTIK_POSTGRESQL__PASSWORD
+          value: "CHANGEME"
+        - name: AUTHENTIK_REDIS__HOST
+          value: authentik-redis-master
+        - name: AUTHENTIK_ERROR_REPORTING__ENABLED
+          value: "false"
+        - name: AUTHENTIK_LOG_LEVEL
+          value: info
+        - name: AUTHENTIK_EMAIL__HOST
+          value: smtp.gmail.com
+        - name: AUTHENTIK_EMAIL__PORT
+          value: "587"
+        - name: AUTHENTIK_EMAIL__USE_TLS
+          value: "true"
+        - name: AUTHENTIK_EMAIL__FROM
+          value: "authentik@${SECRET_DOMAIN}"
+
+    authentik:
+      log_level: info
+      email:
+        port: 587
+        use_tls: true
+      error_reporting:
+        enabled: false
+
+    server:
+      replicas: 1
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+        limits:
+          memory: 1Gi
+      ingress:
+        enabled: false  # We'll use Gateway API instead
+      metrics:
+        serviceMonitor:
+          enabled: true
+
+    worker:
+      replicas: 1
+      resources:
+        requests:
+          cpu: 50m
+          memory: 512Mi
+        limits:
+          memory: 1Gi
+
+    redis:
+      enabled: false  # We're using external Redis
+
+    postgresql:
+      enabled: false  # We're using external PostgreSQL
+
+    serviceAccount:
+      create: true
+
+    prometheus:
+      rules:
+        enabled: true
