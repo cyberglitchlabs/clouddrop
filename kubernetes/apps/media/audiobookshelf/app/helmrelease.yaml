@@ -85,34 +85,50 @@ spec:
     persistence:
       config:
         enabled: true
-        type: pvc
-        storageClass: qnap-iscsi-xfs
-        accessMode: ReadWriteOnce
-        size: 5Gi
+        type: custom
+        volumeSpec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 5Gi
+          storageClassName: qnap-iscsi-xfs
         globalMounts:
           - path: /config
       metadata:
         enabled: true
-        type: pvc
-        storageClass: qnap-iscsi-xfs
-        accessMode: ReadWriteOnce
-        size: 10Gi
+        type: custom
+        volumeSpec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10Gi
+          storageClassName: qnap-iscsi-xfs
         globalMounts:
           - path: /metadata
       audiobooks:
         enabled: true
-        type: pvc
-        storageClass: qnap-iscsi-xfs
-        accessMode: ReadWriteOnce
-        size: 50Gi
+        type: custom
+        volumeSpec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 50Gi
+          storageClassName: qnap-iscsi-xfs
         globalMounts:
           - path: /audiobooks
       podcasts:
         enabled: true
-        type: pvc
-        storageClass: qnap-iscsi-xfs
-        accessMode: ReadWriteOnce
-        size: 20Gi
+        type: custom
+        volumeSpec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 20Gi
+          storageClassName: qnap-iscsi-xfs
         globalMounts:
           - path: /podcasts
     route:
