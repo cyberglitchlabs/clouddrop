@@ -85,7 +85,7 @@ spec:
     persistence:
       config:
         enabled: true
-        type: custom
+        type: persistentVolumeClaim
         volumeSpec:
           accessModes:
             - ReadWriteOnce
@@ -97,7 +97,7 @@ spec:
           - path: /config
       metadata:
         enabled: true
-        type: custom
+        type: persistentVolumeClaim
         volumeSpec:
           accessModes:
             - ReadWriteOnce
@@ -109,7 +109,7 @@ spec:
           - path: /metadata
       audiobooks:
         enabled: true
-        type: custom
+        type: persistentVolumeClaim
         volumeSpec:
           accessModes:
             - ReadWriteOnce
@@ -121,7 +121,7 @@ spec:
           - path: /audiobooks
       podcasts:
         enabled: true
-        type: custom
+        type: persistentVolumeClaim
         volumeSpec:
           accessModes:
             - ReadWriteOnce
