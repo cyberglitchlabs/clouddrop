@@ -30,7 +30,6 @@ spec:
               tag: 2.1.3.5208
             env:
               TZ: America/Chicago
-              PROWLARR__AUTH__REQUIRED: DisabledForLocalAddresses
               PROWLARR__AUTH__METHOD: Forms
               PROWLARR__LOG__LEVEL: info
               PROWLARR__APP__THEME: dark
