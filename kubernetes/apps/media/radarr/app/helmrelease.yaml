@@ -102,3 +102,14 @@ spec:
         existingClaim: media-smb
         globalMounts:
           - path: /media
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 7878
