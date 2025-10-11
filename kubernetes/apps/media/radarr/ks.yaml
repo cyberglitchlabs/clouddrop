@@ -16,6 +16,10 @@ spec:
     - name: csi-driver-smb
       namespace: trident
   path: ./kubernetes/apps/media/radarr/app
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository
