@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cloudnative-pg-operator
-      namespace: flux-system
+      namespace: security
   path: ./kubernetes/apps/security/authentik/app
   prune: true
   sourceRef:
