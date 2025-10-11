@@ -32,7 +32,10 @@ spec:
     global:
       env:
         - name: AUTHENTIK_SECRET_KEY
-          value: "CHANGEME-REPLACE-WITH-SECRET"  # Generate with: openssl rand -base64 32
+          valueFrom:
+            secretKeyRef:
+              name: authentik-secret
+              key: AUTHENTIK_SECRET_KEY
         - name: AUTHENTIK_POSTGRESQL__HOST
           value: authentik-postgres-rw
         - name: AUTHENTIK_POSTGRESQL__NAME
