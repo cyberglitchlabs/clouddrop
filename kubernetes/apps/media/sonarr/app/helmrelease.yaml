@@ -40,7 +40,7 @@ spec:
                 spec:
                   httpGet:
                     path: /ping
-                    port: 7878
+                    port: 8989
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 2
@@ -51,7 +51,7 @@ spec:
                 spec:
                   httpGet:
                     path: /ping
-                    port: 7878
+                    port: 8989
                   initialDelaySeconds: 5
                   periodSeconds: 10
                   timeoutSeconds: 2
@@ -79,8 +79,8 @@ spec:
         controller: sonarr
         ports:
           http:
-            port: 7878
-            targetPort: 7878
+            port: 8989
+            targetPort: 8989
             protocol: TCP
     serviceMonitor:
       app:
@@ -112,4 +112,4 @@ spec:
         rules:
           - backendRefs:
               - identifier: app
-                port: 7878
+                port: 8989
