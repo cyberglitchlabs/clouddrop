@@ -13,18 +13,39 @@ spec:
   interval: 1h
   retryInterval: 2m
   timeout: 5m
-  wait: true
+  wait: false  # Disable wait to prevent removal on health check failure
   prune: true
   path: "./"  # Root of the OCI repository
   sourceRef:
     kind: OCIRepository
     name: capacitor
-  healthChecks:
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: capacitor
-      namespace: flux-system
   patches:
+    # Add startup probe to give the application more time to start
+    - patch: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: capacitor
+        spec:
+          template:
+            spec:
+              containers:
+                - name: capacitor
+                  startupProbe:
+                    httpGet:
+                      path: /
+                      port: 9000
+                    initialDelaySeconds: 10
+                    periodSeconds: 5
+                    failureThreshold: 30
+                  readinessProbe:
+                    httpGet:
+                      path: /
+                      port: 9000
+                    initialDelaySeconds: 5
+                    periodSeconds: 10
+                    timeoutSeconds: 3
+    # Original resource patches follow
     - patch: |
         apiVersion: apps/v1
         kind: Deployment
