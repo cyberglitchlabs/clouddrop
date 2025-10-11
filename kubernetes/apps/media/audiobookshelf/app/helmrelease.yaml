@@ -86,24 +86,32 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 5Gi
         storageClass: qnap-iscsi-xfs
         globalMounts:
           - path: /config
       metadata:
         enabled: true
         type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 10Gi
         storageClass: qnap-iscsi-xfs
         globalMounts:
           - path: /metadata
       audiobooks:
         enabled: true
         type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 5Gi
         storageClass: qnap-iscsi-xfs
         globalMounts:
           - path: /audiobooks
       podcasts:
         enabled: true
         type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 5Gi
         storageClass: qnap-iscsi-xfs
         globalMounts:
           - path: /podcasts
