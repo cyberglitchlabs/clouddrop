@@ -6,3 +6,5 @@ resources:
   - ./repo.yaml
   - ./crd.yaml
   - ./trident.yaml
+  - ./backend.yaml
+  - ./secret.sops.yaml
