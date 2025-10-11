@@ -4,14 +4,36 @@ kind: Kustomization
 metadata:
   name: capacitor
   namespace: flux-system
+  labels:
+    app.kubernetes.io/name: capacitor
 spec:
+  dependsOn:
+    - name: flux-system
   targetNamespace: flux-system
   interval: 1h
   retryInterval: 2m
   timeout: 5m
   wait: true
   prune: true
-  path: "./"
+  path: "./manifests"  # Path to the manifests in the capacitor OCI repository
   sourceRef:
     kind: OCIRepository
     name: capacitor
+  patches:
+    - patch: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: capacitor
+        spec:
+          template:
+            spec:
+              containers:
+                - name: capacitor
+                  resources:
+                    limits:
+                      memory: 256Mi
+                      cpu: 500m
+                    requests:
+                      memory: 128Mi
+                      cpu: 100m
