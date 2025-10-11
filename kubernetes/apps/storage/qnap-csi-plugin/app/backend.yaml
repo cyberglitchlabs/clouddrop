@@ -8,7 +8,8 @@ spec:
   version: 1
   storageDriverName: qnap-nas # Required. Support 'qnap-nas'(latest) or 'qnap-iscsi'
   backendName: qts # Required. Name your backend in QNAP CSI.
-  storageAddress: 192.168.100.180 # Required. Your NAS IP address.
+  managementLIF: 192.168.100.180 # Required. Your NAS IP address.
+  dataLIF: 192.168.100.180 # Required. Your NAS IP address.
   credentials:
     name: backend-qts-secret # Required. Enter the secret name set in metadata.name.
   debugTraceFlags:
