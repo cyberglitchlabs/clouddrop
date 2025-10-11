@@ -26,8 +26,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/radarr
-              tag: 5.18.0.9693
+              repository: ghcr.io/home-operations/radarr
+              tag: 6.0.2.10271
             env:
               TZ: UTC
               RADARR__AUTH__METHOD: External
