@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./helmrepository.yaml
+  - ./helmrelease-postgres.yaml
+  - ./helmrelease-redis.yaml
+  - ./helmrelease-authentik.yaml
+  - ./pvc-postgres.yaml
+  - ./httproute.yaml
