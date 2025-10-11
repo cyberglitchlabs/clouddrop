@@ -7,22 +7,20 @@ metadata:
   namespace: security
 spec:
   instances: 1
-
+  
   postgresql:
     parameters:
       max_connections: "100"
       shared_buffers: 256MB
-
+  
   storage:
     size: 10Gi
     storageClass: qnap-iscsi-xfs
-
+  
   bootstrap:
     initdb:
       database: authentik
       owner: authentik
-      secret:
-        name: authentik-postgres-app
-
+  
   monitoring:
     enablePodMonitor: true
