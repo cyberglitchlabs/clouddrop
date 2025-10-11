@@ -102,9 +102,7 @@ spec:
       audiobooks:
         enabled: true
         type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: qnap-iscsi-xfs
+        existingClaim: audiobookshelf-audiobooks-smb
         globalMounts:
           - path: /audiobooks
       podcasts:
