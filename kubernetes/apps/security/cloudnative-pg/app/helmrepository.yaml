@@ -3,17 +3,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: authentik
+  name: cloudnative-pg
   namespace: security
 spec:
   interval: 1h
-  url: https://charts.goauthentik.io
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: bitnami
-  namespace: security
-spec:
-  interval: 1h
-  url: oci://registry-1.docker.io/bitnamicharts
+  url: https://cloudnative-pg.github.io/charts
