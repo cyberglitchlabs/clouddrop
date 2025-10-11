@@ -15,10 +15,15 @@ spec:
   timeout: 5m
   wait: true
   prune: true
-  path: "./manifests"  # Path to the manifests in the capacitor OCI repository
+  path: "./"  # Root of the OCI repository
   sourceRef:
     kind: OCIRepository
     name: capacitor
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: capacitor
+      namespace: flux-system
   patches:
     - patch: |
         apiVersion: apps/v1
