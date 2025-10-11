@@ -8,3 +8,4 @@ resources:
   - ./trident.yaml
   - ./backend.yaml
   - ./secret.sops.yaml
+  - ./storageclass-iscsi-xfs.yaml
