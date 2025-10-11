@@ -86,49 +86,25 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        volumeSpec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 5Gi
-          storageClassName: qnap-iscsi-xfs
+        storageClass: qnap-iscsi-xfs
         globalMounts:
           - path: /config
       metadata:
         enabled: true
         type: persistentVolumeClaim
-        volumeSpec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 10Gi
-          storageClassName: qnap-iscsi-xfs
+        storageClass: qnap-iscsi-xfs
         globalMounts:
           - path: /metadata
       audiobooks:
         enabled: true
         type: persistentVolumeClaim
-        volumeSpec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 50Gi
-          storageClassName: qnap-iscsi-xfs
+        storageClass: qnap-iscsi-xfs
         globalMounts:
           - path: /audiobooks
       podcasts:
         enabled: true
         type: persistentVolumeClaim
-        volumeSpec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 20Gi
-          storageClassName: qnap-iscsi-xfs
+        storageClass: qnap-iscsi-xfs
         globalMounts:
           - path: /podcasts
     route:
