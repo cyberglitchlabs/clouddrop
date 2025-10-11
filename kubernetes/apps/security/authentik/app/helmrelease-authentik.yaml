@@ -24,9 +24,7 @@ spec:
     remediation:
       retries: 3
   dependsOn:
-    - name: authentik-postgresql
-      namespace: security
-    - name: authentik-redis
+    - name: cloudnative-pg
       namespace: security
     - name: cloudflare-tunnel
       namespace: network
@@ -36,15 +34,18 @@ spec:
         - name: AUTHENTIK_SECRET_KEY
           value: "CHANGEME-REPLACE-WITH-SECRET"  # Generate with: openssl rand -base64 32
         - name: AUTHENTIK_POSTGRESQL__HOST
-          value: authentik-postgresql
+          value: authentik-postgres-rw
         - name: AUTHENTIK_POSTGRESQL__NAME
           value: authentik
         - name: AUTHENTIK_POSTGRESQL__USER
           value: authentik
         - name: AUTHENTIK_POSTGRESQL__PASSWORD
-          value: "CHANGEME"
+          valueFrom:
+            secretKeyRef:
+              name: authentik-postgres-app
+              key: password
         - name: AUTHENTIK_REDIS__HOST
-          value: authentik-redis-master
+          value: authentik-redis
         - name: AUTHENTIK_ERROR_REPORTING__ENABLED
           value: "false"
         - name: AUTHENTIK_LOG_LEVEL
