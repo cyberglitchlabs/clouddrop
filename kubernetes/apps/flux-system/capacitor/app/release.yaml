@@ -71,9 +71,6 @@ spec:
       containers:
         - name: capacitor
           image: ghcr.io/gimlet-io/capacitor:v0.4.8
-          command: ["/capacitor"]
-          args:
-            - serve
           ports:
             - containerPort: 9000
               name: http
