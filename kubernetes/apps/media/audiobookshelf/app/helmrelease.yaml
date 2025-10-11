@@ -133,7 +133,7 @@ spec:
           - path: /podcasts
     route:
       app:
-        hostnames: ["audiobookshelf.${SECRET_DOMAIN}"]
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
         parentRefs:
           - name: external
             namespace: kube-system
