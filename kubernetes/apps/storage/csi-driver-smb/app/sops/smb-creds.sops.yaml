@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: smb-creds
+  namespace: kube-system
+type: Opaque
+stringData:
+  username: ENC[AES256_GCM,data:K/GeeII=,iv:CcxtnjdICbLBeILkiP04XmPnWXM1vl5zBklUjRcIcrI=,tag:LWbxObqJ0Z6BefO5QkiK1g==,type:str]
+  password: ENC[AES256_GCM,data:rm582T4nKrjWoif0VtiywYst5q5zTCSBYi4eUA==,iv:EyYNVgUyD6uEXy9X1cprvLM+SPZieqSiMmYLLw2RNxQ=,tag:mDnumTa+vXbtvOZARZfxJA==,type:str]
+sops:
+  age:
+    - recipient: age1pg85tdugypykuyaqtjzgmql4s9x9050emrgflhx0avx8ecut0pjssc24tl
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB6NFVsVjdVZlFyeFpSR0xy
+        UllqTDlVUGVFQXFKeWpSRi9YTHU3KzlVZ0NRCjJMczJHYllnQVhQRHFBNk01VDVS
+        NkJNOEVpeEc1SVF0MFplTGVLcmxvaXcKLS0tIEM5RDBvMTRoVWV6ZmJRYXZQa2ZE
+        UWh3ck5yZUNpT1c0a3E0dXNMRXZ2dEEKPx8aZNM664TLj2pwAZHSBJ8XkQen/jvY
+        5yPPSsh2T8hWDbyR5jPNHrhIwJ0pvJbXimAfzRLlNy6kIE/HiYsQ5w==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-10-11T13:52:24Z"
+  mac: ENC[AES256_GCM,data:CyTQKRQom6YhVsj/T5C3IN4DgXvQX8Nxa12k6ggzQCj58xedFuyA/KZ0oRS1HLTDeiF6xasF8nObQK+ESJzZYEgoLOxYpKVF2X6eXytc/M9ubSKUU143XysfMQjQeJW6ll3c8f0DYjcull6cU/sDIxjFFqI79Sy+o/Ff6m0+BUc=,iv:Vl5R8MfxBJaPeckT2zcy73r5qw5vqLX3g7R+n69mASY=,tag:MFaC01eAVFiRCs8t/TCnow==,type:str]
+  encrypted_regex: ^(data|stringData)$
+  mac_only_encrypted: true
+  version: 3.11.0

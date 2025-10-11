@@ -28,7 +28,7 @@ spec:
         repository: registry.k8s.io/sig-storage/smbplugin
         tag: v1.19.0
         pullPolicy: IfNotPresent
-    
+
     # Controller configuration
     controller:
       name: csi-smb-controller
@@ -54,7 +54,7 @@ spec:
           requests:
             cpu: 10m
             memory: 20Mi
-    
+
     # Linux node configuration
     linux:
       enabled: true
@@ -79,15 +79,15 @@ spec:
           requests:
             cpu: 10m
             memory: 20Mi
-    
+
     # Disable Windows support (adjust if needed)
     windows:
       enabled: false
-    
+
     # Security context
     securityContext:
       seccompProfile:
         type: RuntimeDefault
-    
+
     # Priority class for system-critical pods
     priorityClassName: system-cluster-critical
