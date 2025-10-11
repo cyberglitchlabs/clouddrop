@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/sonarr
-              tag: 6.0.2.10271
+              tag: 4.0.15.2940
             env:
               TZ: UTC
               sonarr__AUTH__METHOD: External
