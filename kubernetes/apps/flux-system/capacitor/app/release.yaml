@@ -19,6 +19,11 @@ spec:
   sourceRef:
     kind: OCIRepository
     name: capacitor
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: capacitor
+      namespace: flux-system
   patches:
     # Add startup probe to give the application more time to start
     - patch: |
