@@ -1,70 +1,99 @@
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
+apiVersion: v1
+kind: ServiceAccount
 metadata:
   name: capacitor
   namespace: flux-system
-  labels:
-    app.kubernetes.io/name: capacitor
-spec:
-  dependsOn:
-    - name: flux-system
-  targetNamespace: flux-system
-  interval: 1h
-  retryInterval: 2m
-  timeout: 5m
-  wait: false  # Disable wait to prevent removal on health check failure
-  prune: true
-  path: "./"  # Root of the OCI repository
-  sourceRef:
-    kind: OCIRepository
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: capacitor
+rules:
+  - apiGroups: ["source.toolkit.fluxcd.io"]
+    resources: ["gitrepositories"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["source.toolkit.fluxcd.io"]
+    resources: ["ocirepositories"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["kustomize.toolkit.fluxcd.io"]
+    resources: ["kustomizations"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["helm.toolkit.fluxcd.io"]
+    resources: ["helmreleases"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["notification.toolkit.fluxcd.io"]
+    resources: ["receivers"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: capacitor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: capacitor
+subjects:
+  - kind: ServiceAccount
     name: capacitor
-  healthChecks:
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: capacitor
-      namespace: flux-system
-  patches:
-    # Add startup probe to give the application more time to start
-    - patch: |
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-          name: capacitor
-        spec:
-          template:
-            spec:
-              containers:
-                - name: capacitor
-                  startupProbe:
-                    httpGet:
-                      path: /
-                      port: 9000
-                    initialDelaySeconds: 10
-                    periodSeconds: 5
-                    failureThreshold: 30
-                  readinessProbe:
-                    httpGet:
-                      path: /
-                      port: 9000
-                    initialDelaySeconds: 5
-                    periodSeconds: 10
-                    timeoutSeconds: 3
-    # Original resource patches follow
-    - patch: |
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-          name: capacitor
-        spec:
-          template:
-            spec:
-              containers:
-                - name: capacitor
-                  resources:
-                    limits:
-                      memory: 256Mi
-                      cpu: 500m
-                    requests:
-                      memory: 128Mi
-                      cpu: 100m
+    namespace: flux-system
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: capacitor
+  namespace: flux-system
+spec:
+  ports:
+    - name: http
+      port: 9000
+      targetPort: 9000
+  selector:
+    app: capacitor
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: capacitor
+  namespace: flux-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: capacitor
+  template:
+    metadata:
+      labels:
+        app: capacitor
+    spec:
+      serviceAccountName: capacitor
+      containers:
+        - name: capacitor
+          image: ghcr.io/gimlet-io/capacitor:v0.4.8
+          args:
+            - serve
+          ports:
+            - containerPort: 9000
+              name: http
+          startupProbe:
+            httpGet:
+              path: /
+              port: 9000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 500m
+            requests:
+              memory: 128Mi
+              cpu: 100m
