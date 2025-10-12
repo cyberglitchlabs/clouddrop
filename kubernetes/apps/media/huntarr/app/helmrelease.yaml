@@ -36,7 +36,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /ping
+                    path: /health
                     port: 9705
                   initialDelaySeconds: 10
                   periodSeconds: 10
@@ -47,7 +47,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /ping
+                    path: /health
                     port: 9705
                   initialDelaySeconds: 5
                   periodSeconds: 10
