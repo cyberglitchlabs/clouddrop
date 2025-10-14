@@ -14,3 +14,4 @@ resources:
   - ./profilarr/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./huntarr/ks.yaml
+  - ./bazarr/ks.yaml
