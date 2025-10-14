@@ -36,7 +36,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /ping
+                    path: /healthz
                     port: 8080
                   initialDelaySeconds: 10
                   periodSeconds: 10
@@ -47,7 +47,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /ping
+                    path: /healthz
                     port: 8080
                   initialDelaySeconds: 5
                   periodSeconds: 10
