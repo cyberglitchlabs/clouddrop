@@ -38,7 +38,7 @@ jobs:
       - name: Run flux-local test
         uses: docker://ghcr.io/allenporter/flux-local:v7.10.1
         with:
-          args: test --enable-helm --all-namespaces --skip-invalid-kustomization-paths --path /github/workspace/kubernetes/flux/cluster -v
+          args: test --enable-helm --all-namespaces --path /github/workspace/kubernetes/flux/cluster --skip-crds --skip-secrets -v
 
   diff:
     name: Flux Local Diff
