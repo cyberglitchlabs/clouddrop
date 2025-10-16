@@ -2,7 +2,6 @@
     kind: Kustomization
     metadata:
       name: crd
-      namespace: trident
     spec:
       interval: 5m
       path: "./Deploy/crds"

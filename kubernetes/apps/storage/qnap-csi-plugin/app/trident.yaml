@@ -2,7 +2,6 @@
     kind: Kustomization
     metadata:
       name: trident
-      namespace: trident
     spec:
       interval: 5m
       path: "./Deploy/Trident"
