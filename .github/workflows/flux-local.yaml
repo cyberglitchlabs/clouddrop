@@ -25,6 +25,8 @@ jobs:
         uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47.0.0
         with:
           files: kubernetes/**
+          files_ignore: |
+            kubernetes/apps/storage/qnap-csi-plugin/**
 
   test:
     name: Flux Local Test
@@ -38,7 +40,7 @@ jobs:
       - name: Run flux-local test
         uses: docker://ghcr.io/allenporter/flux-local:v7.10.1
         with:
-          args: test --enable-helm --all-namespaces --path /github/workspace/kubernetes/flux/cluster --skip-crds --skip-secrets -v
+          args: test --enable-helm --all-namespaces --path /github/workspace/kubernetes/flux/cluster -v
 
   diff:
     name: Flux Local Diff
