@@ -96,7 +96,7 @@ spec:
       media:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: media-smb
+        existingClaim: sabnzbd-media-smb
         globalMounts:
           - path: /media
     route:
