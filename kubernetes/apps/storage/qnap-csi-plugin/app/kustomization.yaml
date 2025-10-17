@@ -9,3 +9,6 @@ resources:
   - ./backend.yaml
   - ./secret.sops.yaml
   - ./storageclass-iscsi-xfs.yaml
+patches:
+  - path: ./patches/api-rate-limits.yaml
+  - path: ./patches/resource-limits.yaml

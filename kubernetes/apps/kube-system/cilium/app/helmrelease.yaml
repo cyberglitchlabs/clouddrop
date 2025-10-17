@@ -22,6 +22,12 @@ spec:
       masquerade: true
       # Ref: https://github.com/siderolabs/talos/issues/10002
       hostLegacyRouting: true
+      # Tune conntrack settings for NAS-heavy workload
+      # Faster cleanup of stale connections to QNAP NAS (SMB/iSCSI)
+      ctTcpTimeout: 21600  # 6 hours (default: 21600)
+      ctAnyTimeout: 60     # 1 minute (default: 60)
+      ctTcpTimeoutFin: 10  # 10 seconds (default: 10)
+      ctTcpTimeoutClose: 10  # 10 seconds (default: 10)
     cni:
       # Required for pairing with Multus CNI
       exclusive: false
