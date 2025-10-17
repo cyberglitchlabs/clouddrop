@@ -50,7 +50,7 @@ bpf:
   ctTcpTimeoutClose: 10  # 10 seconds (default: 10)
 ```
 
-**Status:** ✅ Applied and Running  
+**Status:** ✅ Applied and Running
 **Effect:** Faster cleanup of stale NAS connections, reducing conntrack table buildup
 
 ### ✅ 2. Backend Volume Size Limit (Applied via Git)
@@ -64,7 +64,7 @@ spec:
   limitVolumeSize: "10Ti"
 ```
 
-**Status:** ✅ Applied via TridentBackendConfig  
+**Status:** ✅ Applied via TridentBackendConfig
 **Effect:** Prevents oversized volume operations that exhaust QNAP API
 
 ### ❌ 3. Kubernetes API Rate Limits (MANUAL REQUIRED)
@@ -98,7 +98,7 @@ kubectl patch deployment trident-controller -n trident --type='json' -p='[
 ]'
 ```
 
-**Status:** ⏳ PENDING MANUAL APPLICATION  
+**Status:** ⏳ PENDING MANUAL APPLICATION
 **Effect:** Increases Kubernetes API client rate limits from 5 QPS to 50 QPS, reducing throttling
 
 ### ❌ 4. Resource Limits (MANUAL REQUIRED)
@@ -115,7 +115,7 @@ kubectl patch deployment trident-controller -n trident --type='json' -p='[
 ]'
 ```
 
-**Status:** ⏳ PENDING MANUAL APPLICATION  
+**Status:** ⏳ PENDING MANUAL APPLICATION
 **Effect:** Prevents unbounded memory growth, ensures proper resource allocation
 
 ## Current Status

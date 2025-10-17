@@ -17,7 +17,9 @@ spec:
     - gid=568
     - noperm
     - mfsymlinks
-    - cache=strict
+    - cache=loose      # Better performance than strict
+    - actimeo=60       # Cache file attributes for 60 seconds
+    - noatime          # Don't update access timestamps
     - noserverino
   csi:
     driver: smb.csi.k8s.io
