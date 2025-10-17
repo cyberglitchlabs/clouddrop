@@ -28,6 +28,12 @@ spec:
       ctAnyTimeout: 60     # 1 minute (default: 60)
       ctTcpTimeoutFin: 10  # 10 seconds (default: 10)
       ctTcpTimeoutClose: 10  # 10 seconds (default: 10)
+      # Increase eBPF map sizes for high connection counts
+      mapMax:
+        ct:
+          tcp: 524288  # 512k TCP entries (default: 256k)
+          any: 262144  # 256k non-TCP entries (default: 128k)
+        nat: 262144    # 256k NAT entries (default: 128k)
     cni:
       # Required for pairing with Multus CNI
       exclusive: false
