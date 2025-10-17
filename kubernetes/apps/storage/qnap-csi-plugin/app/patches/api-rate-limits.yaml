@@ -1,0 +1,28 @@
+---
+# Patch to add Kubernetes API rate limits to CSI sidecar containers
+# Default client-go limits are QPS=5, Burst=10 which is too low for managing multiple volumes
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trident-controller
+  namespace: trident
+spec:
+  template:
+    spec:
+      containers:
+        - name: csi-provisioner
+          args:
+            - --kube-api-qps=50
+            - --kube-api-burst=100
+        - name: csi-attacher
+          args:
+            - --kube-api-qps=50
+            - --kube-api-burst=100
+        - name: csi-resizer
+          args:
+            - --kube-api-qps=50
+            - --kube-api-burst=100
+        - name: csi-snapshotter
+          args:
+            - --kube-api-qps=50
+            - --kube-api-burst=100
