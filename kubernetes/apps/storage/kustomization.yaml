@@ -8,4 +8,5 @@ components:
   - ../../components/common
 resources:
   - ./csi-driver-smb/ks.yaml
+  - ./democratic-csi/ks.yaml
   - ./qnap-csi-plugin/ks.yaml
