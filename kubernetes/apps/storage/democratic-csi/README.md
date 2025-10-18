@@ -1,68 +1,87 @@
-# Democratic CSI Setup for QNAP NAS
+# Democratic CSI Setup for QNAP NAS (NFS)
 
 ## Overview
 
-Democratic-csi is a more robust and community-supported CSI driver for NAS storage. It supports QNAP, TrueNAS, and other NAS systems.
+Democratic-csi configured for **NFS v4.1** with QNAP NAS. QNAP does not support the FreeNAS/TrueNAS API required for iSCSI auto-provisioning, so we use the generic NFS client driver instead.
+
+## Why NFS Instead of iSCSI?
+
+- **QNAP Limitation**: QNAP doesn't expose ZFS/API for democratic-csi iSCSI driver
+- **NFS Benefits**:
+  - Works with any NFS server (no special API needed)
+  - NFSv4.1 provides good performance and features
+  - ReadWriteMany support (multiple pods can share same volume)
+  - Simpler setup and more reliable
 
 ## Prerequisites
 
-### 1. Generate QNAP API Key
+### 1. Create NFS Share on QNAP
 
-**Option A: Via Web Interface (if available)**
-1. Log into QNAP web interface at http://192.168.100.180:8080
-2. Go to Control Panel > Applications > API Keys
-3. Generate a new API key with admin privileges
-4. Save the API key securely
+**Via QNAP Web UI:**
+1. Log into QNAP: http://192.168.100.180:8080
+2. Go to Control Panel > Shared Folders
+3. Create folder: `/kubernetes/volumes`
+4. Go to Control Panel > Network & File Services > NFS
+5. Enable NFS v4.1
+6. Add NFS rule for `/kubernetes/volumes`:
+   - Access: Read/Write
+   - Clients: 192.168.42.0/24 (your Kubernetes node subnet)
+   - Squash: No root squash
+   - Security: sys
 
-**Option B: Via SSH (if web interface doesn't have API key option)**
-1. SSH into QNAP NAS: `ssh talos@192.168.100.180`
-2. Generate API token using QNAP CLI or check existing credentials
-
-### 2. Configure ZFS Dataset
-
-Democratic-csi expects a ZFS dataset structure:
+**Via SSH (Alternative):**
 ```bash
-# On QNAP NAS, create dataset for Kubernetes volumes
-# Path: qts/kubernetes/volumes
-# This should match the datasetParentName in helmrelease.yaml
+ssh talos@192.168.100.180
+
+# Create directory
+mkdir -p /share/kubernetes/volumes
+
+# Configure NFS export (check QNAP docs for exact path)
+# Usually in /etc/exports or via QNAP CLI
 ```
 
-### 3. Encrypt and Store API Key
+### 2. Verify NFS Connectivity
 
+From your Kubernetes node:
 ```bash
-# Edit the secret file with SOPS
-sops kubernetes/apps/storage/democratic-csi/app/secret.sops.yaml
+# Test NFS mount
+talosctl --talosconfig talos/clusterconfig/talosconfig \
+  --nodes 192.168.42.254 \
+  read /proc/mounts | grep nfs
 
-# Replace PLACEHOLDER_ENCRYPTED_API_KEY with your actual API key
-# SOPS will encrypt it automatically
+# Or test manually
+showmount -e 192.168.100.180
 ```
+
+### 3. No Secrets Needed!
+
+Unlike iSCSI setup, NFS client driver doesn't need credentials. The secret file can be removed or left empty.
 
 ## Configuration Files
 
 - **ks.yaml**: Flux Kustomization for democratic-csi
 - **helmrepository.yaml**: Helm chart repository
-- **helmrelease.yaml**: Helm release configuration
-- **secret.sops.yaml**: Encrypted API credentials
+- **helmrelease.yaml**: Helm release configuration (NFS driver)
+- **secret.sops.yaml**: Not needed for NFS (can delete)
 
 ## Current Settings
 
-- **QNAP NAS**: 192.168.100.180:8080 (HTTP), :3260 (iSCSI)
-- **Storage Pool**: qts
-- **Dataset Path**: qts/kubernetes/volumes
-- **Storage Class**: qnap-iscsi-xfs-democratic
-- **Username**: talos (for reference only - API key is used)
+- **QNAP NAS**: 192.168.100.180 (NFS Server)
+- **NFS Version**: 4.1
+- **Share Path**: /kubernetes/volumes
+- **Storage Class**: qnap-nfs-democratic
+- **NFS Path**: /kubernetes/volumes
+- **Storage Class**: qnap-nfs-democratic
+- **Mount Options**: nfsvers=4.1, nolock, hard, rsize/wsize=1M
 
 ## Deployment Steps
 
-1. **Generate QNAP API key** (see above)
-2. **Update secret.sops.yaml** with API key:
-   ```bash
-   sops kubernetes/apps/storage/democratic-csi/app/secret.sops.yaml
-   ```
+1. **Create NFS share on QNAP** (see Prerequisites above)
+2. **Verify NFS export** is accessible from Kubernetes node
 3. **Update helmrelease.yaml** if needed:
-   - Adjust `datasetParentName` to match your QNAP dataset
-   - Verify `targetPortal` IP address
-   - Adjust `namePrefix` and `nameSuffix` if desired
+   - Adjust `shareBasePath` if using different path
+   - Verify `shareHost` IP address (192.168.100.180)
+   - Modify mount options if needed
 4. **Add to storage kustomization**:
    ```bash
    # Edit kubernetes/apps/storage/kustomization.yaml
@@ -80,9 +99,14 @@ sops kubernetes/apps/storage/democratic-csi/app/secret.sops.yaml
    flux reconcile kustomization democratic-csi -n kube-system
    ```
 
-## Migration from QNAP CSI Plugin
+## Migration from QNAP CSI Plugin (iSCSI)
 
-### 1. Create New PVs with Democratic-CSI
+### Important: NFS vs iSCSI
+
+- **Old**: QNAP CSI Plugin with iSCSI (ReadWriteOnce only)
+- **New**: Democratic-CSI with NFS v4.1 (ReadWriteMany supported!)
+
+### 1. Create New PVCs with Democratic-CSI
 
 Update your PVC definitions to use the new storage class:
 ```yaml
@@ -91,9 +115,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: my-app-config
 spec:
-  storageClassName: qnap-iscsi-xfs-democratic  # New storage class
+  storageClassName: qnap-nfs-democratic  # New NFS storage class
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteOnce  # Or ReadWriteMany if needed
   resources:
     requests:
       storage: 5Gi
@@ -150,7 +174,14 @@ kubectl exec -n kube-system deployment/democratic-csi-controller -- \
 
 ### Check Storage Class
 ```bash
-kubectl get sc qnap-iscsi-xfs-democratic -o yaml
+kubectl get sc qnap-nfs-democratic -o yaml
+```
+
+### Check NFS Mount on Node
+```bash
+talosctl --talosconfig talos/clusterconfig/talosconfig \
+  --nodes 192.168.42.254 \
+  read /proc/mounts | grep nfs
 ```
 
 ### Check PV Provisioning

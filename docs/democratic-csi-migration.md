@@ -34,38 +34,41 @@
 - `/kubernetes/apps/storage/democratic-csi/app/secret.sops.yaml` (needs API key)
 - `/kubernetes/apps/storage/democratic-csi/README.md`
 
-### Phase 2: Obtain QNAP API Key
+### Phase 2: Create NFS Share on QNAP
 **Required before deployment:**
 
-**Option A: QNAP Web UI**
+**Via QNAP Web UI:**
 1. Navigate to http://192.168.100.180:8080
-2. Log in with admin credentials
-3. Go to Control Panel > Applications > API Keys (if available)
-4. Generate new API key with admin privileges
+2. Go to Control Panel > Shared Folders
+3. Create folder: `/kubernetes/volumes` (or use existing share)
+4. Go to Control Panel > Network & File Services > NFS
+5. Enable NFS v4 (and v4.1 if available)
+6. Add NFS rule for `/kubernetes/volumes`:
+   - Access: Read/Write
+   - Clients: 192.168.42.0/24 (your Kubernetes node subnet)
+   - Squash: No root squash
+   - Security: sys
 
-**Option B: QNAP CLI/SSH**
-1. SSH to QNAP: `ssh talos@192.168.100.180`
-2. Use QNAP CLI to generate API credentials
-3. Or check if REST API credentials can be used
-
-**Option C: Use Username/Password (Fallback)**
-If API keys aren't supported, democratic-csi can use basic auth.
-Update helmrelease.yaml:
-```yaml
-driver:
-  config:
-    httpConnection:
-      username: talos
-      password: ${QNAP_PASSWORD}  # From cluster-secrets
-```
-
-### Phase 3: Encrypt Secrets
+**Via SSH (Alternative):**
 ```bash
-# Edit secret file
-sops kubernetes/apps/storage/democratic-csi/app/secret.sops.yaml
+ssh talos@192.168.100.180
 
-# Add your API key, then save (SOPS will encrypt)
+# Create directory (adjust path for your QNAP)
+mkdir -p /share/kubernetes/volumes
+
+# NFS export should be configured via QNAP web UI or CLI
 ```
+
+**Verify NFS is accessible:**
+```bash
+# From any machine
+showmount -e 192.168.100.180
+
+# Should show: /kubernetes/volumes  192.168.42.0/24
+```
+
+### Phase 3: No Secrets Needed!
+**NFS client driver doesn't require authentication.** The secret.sops.yaml file has been removed.
 
 ### Phase 4: Test Deployment
 ```bash
@@ -181,29 +184,49 @@ If democratic-csi doesn't work:
 ## Decision Point
 
 **Do NOT proceed with deployment until:**
-1. ✅ QNAP API key obtained
-2. ✅ Secret file encrypted with SOPS
-3. ✅ Current media pods stabilized (or accepted they won't without fix)
+1. ✅ QNAP NFS share created (`/kubernetes/volumes`)
+2. ✅ NFS v4.1 enabled on QNAP
+3. ✅ NFS export configured for 192.168.42.0/24 subnet
+4. ✅ Verified with `showmount -e 192.168.100.180`
 
 **Next Steps:**
-1. Obtain QNAP API key (see Phase 2 options)
-2. Update `secret.sops.yaml` with API key
-3. Optionally update `helmrelease.yaml` if using username/password instead
-4. Test deploy on non-production app first
+1. Create NFS share on QNAP (see Phase 2 options)
+2. Verify NFS export is accessible
+3. Optionally test manual NFS mount from Kubernetes node
+4. Enable deployment in kustomization.yaml
+5. Test with non-production app first
 
 ## Files Created
 
 All files are ready but not yet added to kustomization.yaml:
-- Configuration files: Complete ✅
-- Secret template: Needs API key ⏳
-- Documentation: Complete ✅
+- Configuration files: Complete ✅ (NFS driver, not iSCSI)
+- Secret file: Removed (not needed for NFS) ✅
+- Documentation: Updated for NFS ✅
 - Kustomization entry: Not added yet (intentional)
+
+## Important Notes
+
+### Why NFS Instead of iSCSI?
+
+**QNAP Limitation**: QNAP does not support the FreeNAS/TrueNAS REST API that democratic-csi requires for iSCSI auto-provisioning. The `freenas-iscsi` driver needs ZFS API access which QNAP doesn't expose.
+
+**NFS Benefits**:
+- ✅ Works with any NFS server (no special API)
+- ✅ NFSv4.1 provides good performance
+- ✅ **ReadWriteMany support** (multiple pods can share volumes)
+- ✅ Simpler setup, more reliable
+- ✅ No authentication/secrets needed
+
+**Trade-offs**:
+- NFS vs iSCSI performance is comparable for most workloads
+- NFS is network filesystem (already using SMB for media)
+- Can coexist with existing iSCSI volumes during migration
 
 ## Current Media Pod Status
 
 Working (3/8):
 - ✅ sabnzbd
-- ✅ sonarr  
+- ✅ sonarr
 - ✅ profilarr
 
 Stuck on QNAP backend (5/8):

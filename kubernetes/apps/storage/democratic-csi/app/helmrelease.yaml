@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: democratic-csi-iscsi
+  name: democratic-csi-nfs
 spec:
   interval: 1h
   chart:
@@ -23,71 +23,53 @@ spec:
       retries: 3
   values:
     csiDriver:
-      name: "org.democratic-csi.iscsi"
-    
-    # Storage class configuration
+      name: "org.democratic-csi.nfs"
+
+    # Storage class configuration for NFS
     storageClasses:
-      - name: qnap-iscsi-xfs-democratic
+      - name: qnap-nfs-democratic
         defaultClass: false
         reclaimPolicy: Delete
         volumeBindingMode: Immediate
         allowVolumeExpansion: true
         parameters:
-          fsType: xfs
-        mountOptions: []
+          fsType: nfs
+        mountOptions:
+          - nfsvers=4.1
+          - nolock
+          - hard
+          - retrans=3
+          - timeo=600
+          - rsize=1048576
+          - wsize=1048576
         secrets:
           provisioner-secret:
           controller-publish-secret:
           node-stage-secret:
           node-publish-secret:
           controller-expand-secret:
-    
+
     # Snapshot classes
     volumeSnapshotClasses:
-      - name: qnap-iscsi-xfs-democratic
+      - name: qnap-nfs-democratic
         deletionPolicy: Delete
         parameters: {}
-    
-    # Driver configuration for QNAP NAS
+
+    # Driver configuration for QNAP NAS with NFS
     driver:
       config:
-        driver: freenas-iscsi
+        driver: nfs-client
         instance_id:
-        httpConnection:
-          protocol: http
-          host: 192.168.100.180
-          port: 8080
-          # Enable this for HTTPS
-          # allowInsecure: true
-          apiKey: YOUR_QNAP_API_KEY_HERE
-          apiVersion: 2
-        zfs:
-          # Dataset path on QNAP
-          datasetParentName: qts/kubernetes/volumes
-          detachedSnapshotsDatasetParentName: qts/kubernetes/snapshots
-          datasetEnableQuotas: true
-          datasetEnableReservation: false
-          datasetPermissionsMode: "0777"
-          datasetPermissionsUser: 0
-          datasetPermissionsGroup: 0
-        iscsi:
-          targetPortal: "192.168.100.180:3260"
-          targetPortals: []
-          interface:
-          namePrefix: csi-
-          nameSuffix: "-clustera"
-          targetGroups:
-            - targetGroupPortalGroup: 1
-              targetGroupInitiatorGroup: 1
-              targetGroupAuthType: None
-              targetGroupAuthGroup:
-          extentInsecureTpc: true
-          extentXenCompat: false
-          extentDisablePhysicalBlocksize: true
-          extentBlocksize: 512
-          extentRpm: "SSD"
-          extentAvailThreshold: 0
-    
+        nfs:
+          # NFS server connection - using existing /talos export
+          shareHost: 192.168.100.180
+          shareBasePath: "/talos"
+          # NFS v4.1 specific options
+          controllerBasePath: "/talos"
+          dirPermissionsMode: "0777"
+          dirPermissionsUser: 0
+          dirPermissionsGroup: 0
+
     # Controller configuration
     controller:
       enabled: true
@@ -136,7 +118,7 @@ spec:
             memory: 64Mi
           limits:
             memory: 256Mi
-    
+
     # Node configuration
     node:
       enabled: true
