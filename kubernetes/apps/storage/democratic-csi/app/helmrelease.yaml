@@ -31,7 +31,7 @@ spec:
         defaultClass: false
         reclaimPolicy: Delete
         volumeBindingMode: Immediate
-        allowVolumeExpansion: true
+        allowVolumeExpansion: false  # Disabled - resizer not enabled
         parameters:
           fsType: nfs
         mountOptions:
@@ -98,12 +98,10 @@ spec:
           limits:
             memory: 200Mi
       externalResizer:
-        enabled: true
+        enabled: false  # Disabled - NFS doesn't support online resize and v1.9.0 requires NodeGetCapabilities
         image:
           registry: registry.k8s.io/sig-storage/csi-resizer
           tag: v1.9.0
-        extraArgs:
-          - --handle-volume-inuse-error=false
         resources:
           requests:
             cpu: 10m
