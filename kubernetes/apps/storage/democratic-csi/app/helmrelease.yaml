@@ -101,7 +101,7 @@ spec:
         enabled: true
         image:
           registry: registry.k8s.io/sig-storage/csi-resizer
-          tag: v1.13.0
+          tag: v1.9.0
         resources:
           requests:
             cpu: 10m
