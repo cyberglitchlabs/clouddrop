@@ -6,3 +6,4 @@ namespace: kube-system
 resources:
   - ./helmrepository.yaml
   - ./helmrelease.yaml
+  # No secret needed for NFS client driver
