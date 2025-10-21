@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: authentik-postgres-1-nfs
+  namespace: security
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: qnap-nfs
+  resources:
+    requests:
+      storage: 10Gi
