@@ -11,7 +11,7 @@ parameters:
   # Subdirectory pattern for PVCs - each PVC gets its own directory
   # ${pvc.metadata.namespace}-${pvc.metadata.name} creates: /talos/<namespace>-<pvcname>
   subDir: "${pvc.metadata.namespace}-${pvc.metadata.name}"
-# Mount options for NFSv4.1
+# Mount options for NFSv4.1 optimized for SQLite databases
 mountOptions:
   - nfsvers=4.1
   - hard
@@ -19,6 +19,16 @@ mountOptions:
   - retrans=3
   - rsize=1048576
   - wsize=1048576
+  # File locking for SQLite WAL mode
+  - local_lock=all
+  # Performance optimizations
+  - async
+  - noatime
+  - nodiratime
+  - actimeo=30
+  # Reduce close-to-open consistency checks
+  - nocto
+  - lookupcache=positive
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
 allowVolumeExpansion: false
