@@ -22,8 +22,10 @@ spec:
       masquerade: true
       # Ref: https://github.com/siderolabs/talos/issues/10002
       hostLegacyRouting: true
+      # Enable host routing for better performance
+      hostRouting: true
       # Tune conntrack settings for NAS-heavy workload
-      # Faster cleanup of stale connections to QNAP NAS (SMB/iSCSI)
+      # Faster cleanup of stale connections to QNAP NAS (SMB/iSCSI/NFS)
       ctTcpTimeout: 21600  # 6 hours (default: 21600)
       ctAnyTimeout: 60     # 1 minute (default: 60)
       ctTcpTimeoutFin: 10  # 10 seconds (default: 10)
@@ -34,6 +36,10 @@ spec:
           tcp: 524288  # 512k TCP entries (default: 256k)
           any: 262144  # 256k non-TCP entries (default: 128k)
         nat: 262144    # 256k NAT entries (default: 128k)
+    # Bandwidth manager for better NFS traffic handling
+    bandwidthManager:
+      enabled: true
+      bbr: true  # Enable BBR congestion control for better TCP performance
     cni:
       # Required for pairing with Multus CNI
       exclusive: false
@@ -63,6 +69,10 @@ spec:
     k8sServicePort: 7445
     kubeProxyReplacement: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+    # Enable connection tracking for external services (NFS)
+    enableExternalIPs: true
+    # Optimize for long-lived connections (NFS mounts)
+    installNoConntrackIptablesRules: false
     l2announcements:
       enabled: true
     loadBalancer:
@@ -106,4 +116,6 @@ spec:
           - SYS_ADMIN
           - SYS_RESOURCE
     socketLB:
-      hostNamespaceOnly: true
+      # Enable for all pods to accelerate TCP connections (including NFS)
+      enabled: true
+      hostNamespaceOnly: false
