@@ -86,17 +86,13 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: qnap-iscsi-xfs
+        existingClaim: audiobookshelf-config-nfs
         globalMounts:
           - path: /config
       metadata:
         enabled: true
         type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 10Gi
-        storageClass: qnap-iscsi-xfs
+        existingClaim: audiobookshelf-metadata-nfs
         globalMounts:
           - path: /metadata
       audiobooks:
@@ -108,9 +104,7 @@ spec:
       podcasts:
         enabled: true
         type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: qnap-iscsi-xfs
+        existingClaim: audiobookshelf-podcasts-nfs
         globalMounts:
           - path: /podcasts
     route:
