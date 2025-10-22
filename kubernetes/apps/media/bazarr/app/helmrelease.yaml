@@ -91,9 +91,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: qnap-iscsi-xfs
+        existingClaim: bazarr-nfs
         globalMounts:
           - path: /config
       media:
