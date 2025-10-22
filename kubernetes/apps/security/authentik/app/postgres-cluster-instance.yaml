@@ -17,10 +17,5 @@ spec:
     size: 10Gi
     storageClass: qnap-nfs
   
-  bootstrap:
-    initdb:
-      database: authentik
-      owner: authentik
-  
   monitoring:
     enablePodMonitor: true
