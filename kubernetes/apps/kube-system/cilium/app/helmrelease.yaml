@@ -21,9 +21,8 @@ spec:
     bpf:
       masquerade: true
       # Ref: https://github.com/siderolabs/talos/issues/10002
+      # Note: hostLegacyRouting is for Talos compatibility, conflicts with hostRouting
       hostLegacyRouting: true
-      # Enable host routing for better performance
-      hostRouting: true
       # Tune conntrack settings for NAS-heavy workload
       # Faster cleanup of stale connections to QNAP NAS (SMB/iSCSI/NFS)
       ctTcpTimeout: 21600  # 6 hours (default: 21600)
@@ -36,10 +35,9 @@ spec:
           tcp: 524288  # 512k TCP entries (default: 256k)
           any: 262144  # 256k non-TCP entries (default: 128k)
         nat: 262144    # 256k NAT entries (default: 128k)
-    # Bandwidth manager for better NFS traffic handling
+    # Bandwidth manager without BBR (requires hostRouting which conflicts with Talos)
     bandwidthManager:
       enabled: true
-      bbr: true  # Enable BBR congestion control for better TCP performance
     cni:
       # Required for pairing with Multus CNI
       exclusive: false
