@@ -43,8 +43,8 @@ spec:
                     port: 7878
                   initialDelaySeconds: 10
                   periodSeconds: 10
-                  timeoutSeconds: 2
-                  failureThreshold: 3
+                  timeoutSeconds: 5
+                  failureThreshold: 5
               readiness:
                 enabled: true
                 custom: true
@@ -54,7 +54,7 @@ spec:
                     port: 7878
                   initialDelaySeconds: 5
                   periodSeconds: 10
-                  timeoutSeconds: 2
+                  timeoutSeconds: 5
                   failureThreshold: 3
             securityContext:
               allowPrivilegeEscalation: false
