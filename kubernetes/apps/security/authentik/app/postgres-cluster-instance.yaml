@@ -15,7 +15,7 @@ spec:
   
   storage:
     size: 10Gi
-    storageClass: qnap-iscsi-xfs
+    storageClass: qnap-nfs
   
   bootstrap:
     initdb:
