@@ -4,6 +4,10 @@ kind: PersistentVolumeClaim
 metadata:
   name: authentik-postgres-1
   namespace: security
+  labels:
+    cnpg.io/cluster: authentik-postgres
+    cnpg.io/instanceName: authentik-postgres-1
+    cnpg.io/pvcRole: PG_DATA
 spec:
   accessModes:
     - ReadWriteMany

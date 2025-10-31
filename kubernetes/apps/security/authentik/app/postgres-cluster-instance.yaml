@@ -7,15 +7,15 @@ metadata:
   namespace: security
 spec:
   instances: 1
-  
+
   postgresql:
     parameters:
       max_connections: "100"
       shared_buffers: 256MB
-  
+
   storage:
     size: 10Gi
     storageClass: qnap-nfs
-  
+
   monitoring:
     enablePodMonitor: true
