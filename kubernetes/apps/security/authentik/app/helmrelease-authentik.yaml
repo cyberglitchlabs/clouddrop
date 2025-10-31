@@ -39,9 +39,9 @@ spec:
         - name: AUTHENTIK_POSTGRESQL__HOST
           value: authentik-postgres-rw
         - name: AUTHENTIK_POSTGRESQL__NAME
-          value: authentik
+          value: app
         - name: AUTHENTIK_POSTGRESQL__USER
-          value: authentik
+          value: app
         - name: AUTHENTIK_POSTGRESQL__PASSWORD
           valueFrom:
             secretKeyRef:
