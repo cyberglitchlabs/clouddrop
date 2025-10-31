@@ -8,6 +8,9 @@ metadata:
 spec:
   instances: 1
 
+  # Use PostgreSQL 18 to match the existing data
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.1
+
   postgresql:
     parameters:
       max_connections: "100"

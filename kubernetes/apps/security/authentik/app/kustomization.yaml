@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./helmrepository.yaml
   - ./secret.sops.yaml
-  - ./pvc-postgres-nfs.yaml
   - ./postgres-cluster-instance.yaml
   - ./redis-deployment.yaml
   - ./helmrelease-authentik.yaml
