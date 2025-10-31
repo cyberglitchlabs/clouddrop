@@ -8,8 +8,8 @@ metadata:
 spec:
   instances: 1
 
-  # Use PostgreSQL 18 to match the existing data
-  imageName: ghcr.io/cloudnative-pg/postgresql:18.1
+  # Use PostgreSQL 17 (18 not yet available in CloudNativePG images)
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.2
 
   postgresql:
     parameters:
