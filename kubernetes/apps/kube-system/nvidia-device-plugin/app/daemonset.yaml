@@ -52,5 +52,4 @@ spec:
         - name: dev
           hostPath:
             path: /dev
-      nodeSelector:
-        feature.node.kubernetes.io/pci-0300_10de.present: "true" # NVIDIA GPU
+      # nodeSelector not needed - NVIDIA available on all nodes
