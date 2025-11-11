@@ -1,0 +1,88 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: kube-prometheus-stack
+  install:
+    remediation:
+      retries: 3
+    crds: Skip
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+      strategy: rollback
+    crds: Skip
+  values:
+    cleanPrometheusOperatorObjectNames: true
+
+    alertmanager:
+      alertmanagerSpec:
+        externalUrl: https://alertmanager.${SECRET_DOMAIN}
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: qnap-nfs
+              resources:
+                requests:
+                  storage: 1Gi
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            memory: 128Mi
+
+    kubeEtcd:
+      service:
+        selector:
+          component: kube-apiserver  # etcd runs on control plane nodes in Talos
+
+    kubeProxy:
+      enabled: false  # Cilium replaces kube-proxy
+
+    prometheus:
+      prometheusSpec:
+        externalUrl: https://prometheus.${SECRET_DOMAIN}
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        ruleSelectorNilUsesHelmValues: false
+        scrapeConfigSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
+        retention: 14d
+        retentionSize: 20GB
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            memory: 2Gi
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: qnap-nfs
+              resources:
+                requests:
+                  storage: 20Gi
+
+    prometheus-node-exporter:
+      fullnameOverride: node-exporter
+      prometheus:
+        monitor:
+          enabled: true
+
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      prometheus:
+        monitor:
+          enabled: true
+
+    grafana:
+      enabled: false
+      forceDeployDashboards: true
