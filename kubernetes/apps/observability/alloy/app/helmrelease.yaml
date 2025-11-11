@@ -33,7 +33,13 @@ spec:
             forward_to = [prometheus.relabel.filter.receiver]
             scrape_interval = "60s"
             metrics_path = "/federate"
-            params = { "match[]" = ["{__name__=\"up\"}"] }
+            params = {
+              "match[]" = [
+                "{job=\"node-exporter\"}",
+                "{job=\"kube-state-metrics\"}",
+                "{__name__=\"up\"}"
+              ]
+            }
           }
 
           // Filter metrics to stay within free tier limits
