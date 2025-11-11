@@ -55,4 +55,5 @@ spec:
         - name: dev
           hostPath:
             path: /dev
-      # nodeSelector not needed - NVIDIA available on all nodes
+      nodeSelector:
+        extensions.talos.dev/nonfree-kmod-nvidia-production: ""
