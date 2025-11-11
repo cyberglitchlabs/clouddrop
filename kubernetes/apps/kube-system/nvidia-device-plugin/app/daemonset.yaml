@@ -29,7 +29,9 @@ spec:
       containers:
         - image: nvcr.io/nvidia/k8s-device-plugin:v0.18.0
           name: nvidia-device-plugin-ctr
-          args: ["--fail-on-init-error=false"]
+          args:
+            - "--fail-on-init-error=false"
+            - "--device-discovery-strategy=nvml"
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
