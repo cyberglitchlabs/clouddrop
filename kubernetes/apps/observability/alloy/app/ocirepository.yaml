@@ -7,6 +7,6 @@ metadata:
   namespace: observability
 spec:
   interval: 12h
-  url: oci://ghcr.io/grafana/helm-charts
+  url: oci://ghcr.io/grafana/helm-charts/alloy
   ref:
-    tag: alloy-0.12.1
+    tag: 0.12.1
