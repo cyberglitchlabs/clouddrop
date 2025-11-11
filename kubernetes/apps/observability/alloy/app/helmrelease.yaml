@@ -33,7 +33,7 @@ spec:
             forward_to = [prometheus.remote_write.grafana_cloud.receiver]
             scrape_interval = "60s"
             metrics_path = "/federate"
-            params = { "match[]" = ["{job=node-exporter}"] }
+            params = { "match[]" = ["{__name__=\"node_cpu_seconds_total\"}"] }
           }
 
           // Remote write to Grafana Cloud
