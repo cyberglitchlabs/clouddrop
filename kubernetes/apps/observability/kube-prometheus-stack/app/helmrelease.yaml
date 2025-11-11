@@ -50,6 +50,8 @@ spec:
     prometheus:
       prometheusSpec:
         externalUrl: https://prometheus.${SECRET_DOMAIN}
+        externalLabels:
+          cluster: clouddrop
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         ruleSelectorNilUsesHelmValues: false
