@@ -37,7 +37,7 @@ spec:
               "match[]" = [
                 "{__name__=~\"node_cpu_seconds_total\"}",
                 "{__name__=~\"node_memory_MemAvailable_bytes\"}",
-                "{__name__=~\"kube_pod_status_phase\"}",
+                "{__name__=~\"kube_pod_status_phase\"}"
               ]
             }
           }
