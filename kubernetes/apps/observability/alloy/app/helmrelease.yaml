@@ -30,10 +30,20 @@ spec:
             targets = [{
               __address__ = "kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090",
             }]
-            forward_to = [prometheus.remote_write.grafana_cloud.receiver]
+            forward_to = [prometheus.relabel.add_cluster_label.receiver]
             scrape_interval = "60s"
             metrics_path = "/federate"
             params = { "match[]" = ["{job=\"node-exporter\"}", "{job=\"kube-state-metrics\"}", "{job=\"kubelet\"}", "{__name__=~\"kube_node_.*\"}", "{__name__=~\"kube_pod_.*\"}", "{__name__=~\"kube_deployment_.*\"}", "{__name__=~\"kube_statefulset_.*\"}", "{__name__=~\"kube_daemonset_.*\"}", "{__name__=~\"container_.*\"}", "{__name__=~\"node_.*\"}"] }
+          }
+
+          // Add cluster label to all metrics
+          prometheus.relabel "add_cluster_label" {
+            forward_to = [prometheus.remote_write.grafana_cloud.receiver]
+            
+            rule {
+              target_label = "cluster"
+              replacement  = "clouddrop"
+            }
           }
 
           // Remote write to Grafana Cloud
@@ -44,12 +54,6 @@ spec:
                 username = env("GRAFANA_CLOUD_USERNAME")
                 password = env("GRAFANA_CLOUD_API_KEY")
               }
-              queue_config {
-                max_samples_per_send = 1000
-              }
-            }
-            external_labels = {
-              "cluster" = "clouddrop"
             }
           }
 
