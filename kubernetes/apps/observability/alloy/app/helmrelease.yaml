@@ -29,11 +29,21 @@ spec:
           prometheus.scrape "local_prometheus" {
             targets = [{
               __address__ = "kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090",
+              cluster = "clouddrop",
             }]
-            forward_to = [prometheus.remote_write.grafana_cloud.receiver]
+            forward_to = [prometheus.relabel.add_cluster.receiver]
             scrape_interval = "60s"
             metrics_path = "/federate"
             params = { "match[]" = ["{job=\"node-exporter\"}", "{job=\"kube-state-metrics\"}", "{job=\"kubelet\"}", "{__name__=~\"kube_node_.*\"}", "{__name__=~\"kube_pod_.*\"}", "{__name__=~\"kube_deployment_.*\"}", "{__name__=~\"kube_statefulset_.*\"}", "{__name__=~\"kube_daemonset_.*\"}", "{__name__=~\"container_.*\"}", "{__name__=~\"node_.*\"}"] }
+          }
+
+          // Add cluster label from target labels
+          prometheus.relabel "add_cluster" {
+            forward_to = [prometheus.remote_write.grafana_cloud.receiver]
+            rule {
+              source_labels = ["cluster"]
+              target_label = "cluster"
+            }
           }
 
           // Remote write to Grafana Cloud
