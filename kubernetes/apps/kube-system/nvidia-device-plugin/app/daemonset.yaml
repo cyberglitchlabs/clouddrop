@@ -55,5 +55,10 @@ spec:
         - name: dev
           hostPath:
             path: /dev
-      nodeSelector:
-        extensions.talos.dev/nonfree-kmod-nvidia-production: ""
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: extensions.talos.dev/nonfree-kmod-nvidia-production
+                    operator: Exists
