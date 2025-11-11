@@ -20,7 +20,7 @@ spec:
   wait: false
   dependsOn:
     - name: kube-prometheus-stack
-      namespace: flux-system
+      namespace: observability
   postBuild:
     substituteFrom:
       - kind: Secret
