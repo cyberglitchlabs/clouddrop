@@ -44,9 +44,12 @@ spec:
                 username = env("GRAFANA_CLOUD_USERNAME")
                 password = env("GRAFANA_CLOUD_API_KEY")
               }
+              queue_config {
+                max_samples_per_send = 1000
+              }
             }
             external_labels = {
-              cluster = "clouddrop",
+              "cluster" = "clouddrop"
             }
           }
 
