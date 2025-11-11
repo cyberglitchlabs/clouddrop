@@ -33,18 +33,7 @@ spec:
             forward_to = [prometheus.remote_write.grafana_cloud.receiver]
             scrape_interval = "60s"
             metrics_path = "/federate"
-            params = { "match[]" = [
-              "{job=\"node-exporter\"}",
-              "{job=\"kube-state-metrics\"}",
-              "{job=\"kubelet\"}",
-              "{__name__=~\"kube_node_.*\"}",
-              "{__name__=~\"kube_pod_.*\"}",
-              "{__name__=~\"kube_deployment_.*\"}",
-              "{__name__=~\"kube_statefulset_.*\"}",
-              "{__name__=~\"kube_daemonset_.*\"}",
-              "{__name__=~\"container_.*\"}",
-              "{__name__=~\"node_.*\"}"
-            ] }
+            params = { "match[]" = ["{job=\"node-exporter\"}", "{job=\"kube-state-metrics\"}", "{job=\"kubelet\"}", "{__name__=~\"kube_node_.*\"}", "{__name__=~\"kube_pod_.*\"}", "{__name__=~\"kube_deployment_.*\"}", "{__name__=~\"kube_statefulset_.*\"}", "{__name__=~\"kube_daemonset_.*\"}", "{__name__=~\"container_.*\"}", "{__name__=~\"node_.*\"}"] }
           }
 
           // Remote write to Grafana Cloud
