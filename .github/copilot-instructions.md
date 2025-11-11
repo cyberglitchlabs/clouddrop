@@ -33,12 +33,23 @@ This is a **Talos Linux Kubernetes cluster** managed with **GitOps using Flux**.
 │   │   │       └── app/
 │   │   │           ├── helmrelease.yaml
 │   │   │           ├── kustomization.yaml
-│   │   │           └── helm/       # Helm values (if needed)
+│   │   │           ├── ocirepository.yaml  # Optional: app-specific OCI chart source
+│   │   │           └── {other-resources}.yaml
 │   ├── components/common/    # Shared resources (repos, sops secrets)
+│   │   ├── repos/            # Shared HelmRepository/OCIRepository definitions
+│   │   └── sops/             # cluster-secrets.sops.yaml
 │   └── flux/                 # Flux bootstrap configs
+│       ├── cluster/ks.yaml   # Entry point (cluster-meta, cluster-apps)
+│       └── meta/             # Flux system metadata
 ├── bootstrap/                # Initial cluster bootstrap resources
-│   └── helmfile.yaml         # Initial Helm charts (cilium, coredns, etc.)
+│   ├── sops-age.sops.yaml    # SOPS decryption secret
+│   ├── github-deploy-key.sops.yaml
+│   └── helmfile.d/           # Initial Helm charts (cilium, coredns, etc.)
+│       ├── 00-crds.yaml
+│       ├── 01-apps.yaml
+│       └── templates/values.yaml.gotmpl
 └── scripts/                  # Bootstrap and helper scripts
+    └── bootstrap-apps.sh     # Orchestrates initial cluster setup
 ```
 
 ## Critical Workflows
@@ -73,16 +84,22 @@ task talos:upgrade-k8s
 1. **Namespace-level** `kustomization.yaml` lists `ks.yaml` files
 2. **App-level** `ks.yaml` is the Flux Kustomization (targets `./app/`)
 3. **App directory** contains:
-   - `helmrelease.yaml` - Helm chart deployment
-   - `kustomization.yaml` - Lists resources
-   - `helm/values.yaml` - Helm values (optional, for bootstrap helmfile)
+   - `helmrelease.yaml` - Helm chart deployment with `chartRef`
+   - `kustomization.yaml` - Lists all resources in this directory
+   - `ocirepository.yaml` - Optional: app-specific OCI chart source (name matches `chartRef.name`)
+   - Other resources as needed (secrets, configmaps, routes, etc.)
 
 **Example app creation:**
 ```bash
 mkdir -p kubernetes/apps/{namespace}/{app-name}/app
 # Create ks.yaml, helmrelease.yaml, kustomization.yaml
+# Add ocirepository.yaml if not using shared OCI repo
 # Add reference to namespace kustomization.yaml
 ```
+
+**Shared vs. per-app OCIRepository:**
+- Shared: `kubernetes/apps/{namespace}/shared/ocirepository-{name}.yaml` (used by multiple apps in same namespace)
+- Per-app: `kubernetes/apps/{namespace}/{app}/app/ocirepository.yaml` (app-specific, often just a name alias)
 
 ### 3. Secrets Management (SOPS)
 
@@ -144,14 +161,16 @@ task bootstrap:apps    # Apply CRDs, secrets, helmfile charts, start Flux
 
 ### HelmRelease Patterns
 
-**OCIRepository with chartRef** (newer pattern):
+**OCIRepository with chartRef** (standard pattern for most apps):
 ```yaml
 chartRef:
   kind: OCIRepository
-  name: app-template  # References OCIRepository in flux/meta/repos
+  name: bjw-s-app-template  # References OCIRepository in same namespace
 ```
 
-**Traditional chart spec** (still used for some charts):
+**Each app defines its own OCIRepository** resource in the `app/` directory (e.g., `app/ocirepository.yaml`) or shares one from a common directory (e.g., `media/shared/ocirepository-bjw-s.yaml`). The `chartRef.name` must match the OCIRepository's `metadata.name`.
+
+**Traditional chart spec** (legacy, used for bootstrap helmfile only):
 ```yaml
 chart:
   spec:
@@ -206,8 +225,18 @@ Always set `requests.cpu` and `limits.memory` for workloads (not optional in thi
 - Runs in virtualenv at `.venv/`
 - Sets `KUBECONFIG`, `SOPS_AGE_KEY_FILE`, `TALOSCONFIG` automatically
 - All tools (kubectl, flux, talosctl, etc.) installed via aqua/pipx
+- Includes Python 3.14, Go Task, Helm, Helmfile, Kustomize, and more
 
 **Run `mise trust && mise install`** after cloning or when `.mise.toml` changes.
+
+**Common task commands** (see `Taskfile.yaml` for all):
+- `task` - List all available tasks
+- `task reconcile` - Force Flux to sync from Git
+- `task init` - Generate config files from samples
+- `task configure` - Template out Kubernetes and Talos configs
+- `task bootstrap:talos` - Install Talos
+- `task bootstrap:apps` - Bootstrap cluster apps
+- `task talos:*` - Various Talos operations
 
 ## Debugging Common Issues
 
@@ -242,8 +271,9 @@ kubectl -n {namespace} get events --sort-by='.metadata.creationTimestamp'
 - `talenv.yaml` - Version declarations (auto-updated by Renovate)
 - `.sops.yaml` - Encryption rules (order matters!)
 - `Taskfile.yaml` - Main task runner (includes `.taskfiles/`)
-- `bootstrap/helmfile.yaml` - Initial Helm releases (must match app versions)
+- `bootstrap/helmfile.d/01-apps.yaml` - Initial Helm releases (must match app versions)
 - `kubernetes/flux/cluster/ks.yaml` - Entry point for Flux GitOps
+- `kubernetes/components/common/repos/` - Shared OCIRepository/HelmRepository definitions
 
 ## Renovate Integration
 
