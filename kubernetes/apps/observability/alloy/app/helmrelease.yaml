@@ -34,10 +34,10 @@ spec:
             scrape_interval = "60s"
             metrics_path = "/federate"
             params = {
-              match[] = [
-                {__name__=~"node_cpu_seconds_total"},
-                {__name__=~"node_memory_MemAvailable_bytes"},
-                {__name__=~"kube_pod_status_phase"},
+              "match[]" = [
+                "{__name__=~\"node_cpu_seconds_total\"}",
+                "{__name__=~\"node_memory_MemAvailable_bytes\"}",
+                "{__name__=~\"kube_pod_status_phase\"}",
               ]
             }
           }
