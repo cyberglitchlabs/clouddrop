@@ -26,6 +26,7 @@ spec:
       # be rescheduled after a failure.
       # See https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/
       priorityClassName: "system-node-critical"
+      runtimeClassName: nvidia
       containers:
         - image: nvcr.io/nvidia/k8s-device-plugin:v0.18.0
           name: nvidia-device-plugin-ctr
