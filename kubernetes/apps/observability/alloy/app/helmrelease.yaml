@@ -33,9 +33,7 @@ spec:
             forward_to = [prometheus.relabel.filter.receiver]
             scrape_interval = "60s"
             metrics_path = "/federate"
-            params = {
-              "match[]" = ["{__name__=~\"node_cpu_seconds_total\"}", "{__name__=~\"node_memory_MemAvailable_bytes\"}", "{__name__=~\"kube_pod_status_phase\"}"]
-            }
+            params = { "match[]" = ["{__name__=\"up\"}"] }
           }
 
           // Filter metrics to stay within free tier limits
