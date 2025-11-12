@@ -1,0 +1,148 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: grafana
+      version: 8.8.3
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+      strategy: rollback
+  values:
+    replicas: 1
+
+    # Admin credentials
+    adminUser: admin
+    adminPassword: admin # Change this in production!
+
+    # Service configuration
+    service:
+      enabled: true
+      type: ClusterIP
+      port: 80
+
+    # Ingress configuration
+    ingress:
+      enabled: true
+      ingressClassName: cilium
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+      hosts:
+        - grafana.${SECRET_DOMAIN}
+      tls:
+        - secretName: grafana-tls
+          hosts:
+            - grafana.${SECRET_DOMAIN}
+
+    # Persistence
+    persistence:
+      enabled: true
+      type: pvc
+      storageClassName: csi-smb-mw-homemedia
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
+
+    # Datasources
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            access: proxy
+            url: http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
+            isDefault: true
+            editable: true
+            jsonData:
+              timeInterval: 30s
+
+    # Dashboard providers
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: 'grafana-dashboards-kubernetes'
+            orgId: 1
+            folder: 'Kubernetes'
+            type: file
+            disableDeletion: true
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/grafana-dashboards-kubernetes
+
+    # Import dashboards from dotdc/grafana-dashboards-kubernetes via URLs
+    dashboards:
+      grafana-dashboards-kubernetes:
+        k8s-system-api-server:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-api-server.json
+          token: ''
+        k8s-system-coredns:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-coredns.json
+          token: ''
+        k8s-views-global:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-global.json
+          token: ''
+        k8s-views-namespaces:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-namespaces.json
+          token: ''
+        k8s-views-nodes:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-nodes.json
+          token: ''
+        k8s-views-pods:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-pods.json
+          token: ''
+        k8s-addons-prometheus:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-addons-prometheus.json
+          token: ''
+        k8s-addons-trivy-operator:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-addons-trivy-operator.json
+          token: ''
+
+    # Grafana configuration
+    grafana.ini:
+      server:
+        root_url: https://grafana.${SECRET_DOMAIN}
+      analytics:
+        check_for_updates: false
+        reporting_enabled: false
+      security:
+        allow_embedding: true
+      auth.anonymous:
+        enabled: false
+
+    # Resources
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
+
+    # Sidecar for dashboard auto-loading
+    sidecar:
+      dashboards:
+        enabled: true
+        label: grafana_dashboard
+        labelValue: "1"
+        folder: /tmp/dashboards
+        defaultFolderName: General
+        searchNamespace: ALL
+        provider:
+          allowUiUpdates: true
+          foldersFromFilesStructure: true
+      datasources:
+        enabled: false
