@@ -34,18 +34,9 @@ spec:
       type: ClusterIP
       port: 80
 
-    # Ingress configuration
+    # Ingress configuration - disabled, using HTTPRoute instead
     ingress:
-      enabled: true
-      ingressClassName: cilium
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-      hosts:
-        - grafana.${SECRET_DOMAIN}
-      tls:
-        - secretName: grafana-tls
-          hosts:
-            - grafana.${SECRET_DOMAIN}
+      enabled: false
 
     # Persistence
     persistence:
