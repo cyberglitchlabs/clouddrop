@@ -20,3 +20,8 @@ spec:
   wait: false
   dependsOn:
     - name: kube-prometheus-stack
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+        optional: false
