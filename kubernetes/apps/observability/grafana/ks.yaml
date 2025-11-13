@@ -15,7 +15,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: clouddrop
+    name: flux-system
   wait: false
   dependsOn:
     - name: kube-prometheus-stack
