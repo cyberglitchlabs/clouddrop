@@ -51,7 +51,7 @@ spec:
     persistence:
       enabled: true
       type: pvc
-      storageClassName: csi-smb-mw-homemedia
+      storageClassName: qnap-nfs
       accessModes:
         - ReadWriteOnce
       size: 1Gi
