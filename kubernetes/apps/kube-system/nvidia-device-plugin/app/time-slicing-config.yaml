@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nvidia-device-plugin-config
+  namespace: kube-system
+data:
+  # Time-slicing configuration allows multiple pods to share a GPU
+  # Each replica gets access to the GPU on a time-sharing basis
+  # Recommended for workloads that don't use GPU 100% of the time
+  config.yaml: |
+    version: v1
+    sharing:
+      timeSlicing:
+        resources:
+          - name: nvidia.com/gpu
+            replicas: 4  # Allow up to 4 pods to share each GPU
