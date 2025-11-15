@@ -55,6 +55,11 @@ spec:
                   secretKeyRef:
                     name: jellystat-secret
                     key: JF_API_KEY
+              JWT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: jellystat-secret
+                    key: JWT_SECRET
             probes:
               liveness:
                 enabled: true
