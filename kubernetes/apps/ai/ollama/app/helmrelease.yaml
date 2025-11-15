@@ -1,0 +1,103 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ollama
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bjw-s-app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  dependsOn:
+    - name: cloudflare-tunnel
+      namespace: network
+  values:
+    controllers:
+      ollama:
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: ollama/ollama
+              tag: latest
+            env:
+              TZ: America/Chicago
+              OLLAMA_HOST: "0.0.0.0:11434"
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/tags
+                    port: 11434
+                  initialDelaySeconds: 60
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/tags
+                    port: 11434
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 2000m
+                memory: 4Gi
+                nvidia.com/gpu: 1
+              limits:
+                memory: 32Gi
+                nvidia.com/gpu: 1
+    defaultPodOptions:
+      runtimeClassName: nvidia
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+        supplementalGroups: [44] # video group for GPU access
+    service:
+      app:
+        controller: ollama
+        ports:
+          http:
+            port: 11434
+            targetPort: 11434
+            protocol: TCP
+    persistence:
+      models:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: ollama-models-nfs
+        globalMounts:
+          - path: /root/.ollama
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 11434

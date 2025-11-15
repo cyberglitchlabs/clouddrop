@@ -1,0 +1,28 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: n8n-postgres
+  namespace: ai
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.2
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 10Gi
+    storageClass: qnap-nfs
+  superuserSecret:
+    name: n8n-postgres-superuser
+  enableSuperuserAccess: true
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: 256MB
+  monitoring:
+    enabled: false
+  backup:
+    retentionPolicy: 7d
+    barmanObjectStore:
+      wal:
+        compression: bzip2
+        maxParallel: 8
