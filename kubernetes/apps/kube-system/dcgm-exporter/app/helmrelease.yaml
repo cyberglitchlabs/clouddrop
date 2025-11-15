@@ -26,6 +26,14 @@ spec:
     arguments:
       - "-f"
       - "/etc/dcgm-exporter/dcp-metrics-included.csv"
+    # Only deploy on nodes with NVIDIA GPU hardware (uses affinity instead of nodeSelector for flexibility)
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: extensions.talos.dev/nonfree-kmod-nvidia-production
+                  operator: Exists
     runtimeClassName: nvidia
     podSecurityContext:
       runAsNonRoot: false
