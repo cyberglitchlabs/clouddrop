@@ -12,9 +12,9 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cloudnative-pg-operator
-      namespace: flux-system
+      namespace: security
     - name: cloudflare-tunnel
-      namespace: flux-system
+      namespace: network
   path: ./kubernetes/apps/media/jellystat/app
   postBuild:
     substituteFrom:
