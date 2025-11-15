@@ -78,9 +78,7 @@ spec:
                 memory: 512Mi
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
+        runAsNonRoot: false
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups: [65539]
