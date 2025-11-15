@@ -59,7 +59,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: n8n-postgres-app
-                  key: username
+                  key: user
             password:
               valueFrom:
                 secretKeyRef:
