@@ -15,5 +15,6 @@ resources:
   - ./prowlarr/ks.yaml
   - ./profilarr/ks.yaml
   - ./sabnzbd/ks.yaml
+  - ./seerr/ks.yaml
   - ./huntarr/ks.yaml
   - ./bazarr/ks.yaml
