@@ -27,8 +27,8 @@ spec:
         containers:
           app:
             image:
-              repository: fallenbagel/jellyseerr
-              tag: preview-seerr
+              repository: seerr/seerr
+              tag: develop
             env:
               TZ: America/Chicago
             probes:
