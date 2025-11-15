@@ -18,3 +18,4 @@ resources:
   - ./seerr/ks.yaml
   - ./huntarr/ks.yaml
   - ./bazarr/ks.yaml
+  - ./beets-flask/ks.yaml
