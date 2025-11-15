@@ -113,12 +113,10 @@ spec:
 
       # NVIDIA GPU monitoring dashboards
       nvidia-dashboards:
-        nvidia-dcgm-mig:
-          # Dashboard ID: 23382 - NVIDIA DCGM Dashboard for Kubernetes (MIG & Non-MIG GPUs)
-          # Requires: NVIDIA DCGM exporter deployed in cluster
-          gnetId: 23382
-          revision: 1
-          datasource: Prometheus
+        nvidia-gtx-monitoring:
+          # Custom dashboard optimized for consumer NVIDIA GPUs (GTX/RTX series)
+          # Uses default DCGM metrics available on GeForce cards
+          file: dashboards/nvidia-gtx-monitoring.json
 
     # Grafana configuration
     grafana.ini:
