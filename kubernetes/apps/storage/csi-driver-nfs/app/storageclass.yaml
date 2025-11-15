@@ -29,6 +29,6 @@ mountOptions:
   # Reduce close-to-open consistency checks
   - nocto
   - lookupcache=positive
-reclaimPolicy: Delete
+reclaimPolicy: Retain
 volumeBindingMode: Immediate
 allowVolumeExpansion: false
