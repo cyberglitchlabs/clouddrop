@@ -21,6 +21,7 @@ spec:
   backup:
     retentionPolicy: 7d
     barmanObjectStore:
+      destinationPath: s3://n8n-postgres-backup/
       wal:
         compression: bzip2
         maxParallel: 8

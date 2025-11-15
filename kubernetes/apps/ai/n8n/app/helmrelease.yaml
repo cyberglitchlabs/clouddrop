@@ -29,7 +29,7 @@ spec:
       repository: n8nio/n8n
       tag: latest
       pullPolicy: IfNotPresent
-    
+
     # Main application config
     main:
       config:
@@ -72,7 +72,7 @@ spec:
                   key: password
         executions:
           process: main
-      
+
       # Persistent storage for files
       persistence:
         enabled: true
@@ -81,7 +81,7 @@ spec:
         accessModes:
           - ReadWriteMany
         size: 10Gi
-      
+
       # Resource limits
       resources:
         requests:
@@ -89,14 +89,14 @@ spec:
           memory: 512Mi
         limits:
           memory: 2Gi
-      
+
       # Security context
       podSecurityContext:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-      
+
       # Health probes
       livenessProbe:
         httpGet:
@@ -106,7 +106,7 @@ spec:
         periodSeconds: 10
         timeoutSeconds: 5
         failureThreshold: 6
-      
+
       readinessProbe:
         httpGet:
           path: /healthz
@@ -115,20 +115,20 @@ spec:
         periodSeconds: 10
         timeoutSeconds: 5
         failureThreshold: 3
-      
+
       # Service configuration
       service:
         type: ClusterIP
         port: 5678
-    
+
     # Ingress via Gateway API
     ingress:
       enabled: false
-    
+
     # Webhook disabled (using main app)
     webhook:
       enabled: false
-    
+
     # Worker disabled (using main process)
     worker:
       enabled: false
