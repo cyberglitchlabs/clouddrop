@@ -96,19 +96,10 @@ spec:
                 memory: 512Mi
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-    persistence:
-      dist:
-        type: emptyDir
-        globalMounts:
-          - path: /app/dist
-      tmp:
-        type: emptyDir
-        globalMounts:
-          - path: /tmp
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
     service:
       app:
         controller: jellystat
