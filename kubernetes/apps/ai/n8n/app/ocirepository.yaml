@@ -3,13 +3,13 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: bjw-s-labs
-  namespace: flux-system
+  name: n8n
+  namespace: ai
 spec:
   interval: 15m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 4.4.0
-  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+    tag: 1.1.0
+  url: oci://8gears.container-registry.com/library/n8n
