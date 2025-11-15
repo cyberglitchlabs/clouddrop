@@ -18,8 +18,6 @@ spec:
     parameters:
       max_connections: "200"
       shared_buffers: 256MB
-  monitoring:
-    enabled: false
   backup:
     retentionPolicy: 7d
     barmanObjectStore:
