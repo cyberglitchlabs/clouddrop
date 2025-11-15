@@ -29,44 +29,47 @@ spec:
     main:
       config:
         n8n:
-          encryption_key:
-            valueFrom:
-              secretKeyRef:
-                name: n8n-secrets
-                key: N8N_ENCRYPTION_KEY
-          basic_auth:
-            active: "true"
-            user:
-              valueFrom:
-                secretKeyRef:
-                  name: n8n-secrets
-                  key: N8N_BASIC_AUTH_USER
-            password:
-              valueFrom:
-                secretKeyRef:
-                  name: n8n-secrets
-                  key: N8N_BASIC_AUTH_PASSWORD
           host: "n8n.${SECRET_DOMAIN}"
           protocol: "https"
           port: "443"
+          basic_auth:
+            active: "true"
         db:
           type: postgresdb
           postgresdb:
             database: app
             host: n8n-postgres-rw.ai.svc.cluster.local
             port: "5432"
-            user:
-              valueFrom:
-                secretKeyRef:
-                  name: n8n-postgres-app
-                  key: user
-            password:
-              valueFrom:
-                secretKeyRef:
-                  name: n8n-postgres-app
-                  key: password
         executions:
           process: main
+
+      # Secrets via extraEnv to reference Kubernetes secrets
+      extraEnv:
+        N8N_ENCRYPTION_KEY:
+          valueFrom:
+            secretKeyRef:
+              name: n8n-secrets
+              key: N8N_ENCRYPTION_KEY
+        N8N_BASIC_AUTH_USER:
+          valueFrom:
+            secretKeyRef:
+              name: n8n-secrets
+              key: N8N_BASIC_AUTH_USER
+        N8N_BASIC_AUTH_PASSWORD:
+          valueFrom:
+            secretKeyRef:
+              name: n8n-secrets
+              key: N8N_BASIC_AUTH_PASSWORD
+        DB_POSTGRESDB_USER:
+          valueFrom:
+            secretKeyRef:
+              name: n8n-postgres-app
+              key: user
+        DB_POSTGRESDB_PASSWORD:
+          valueFrom:
+            secretKeyRef:
+              name: n8n-postgres-app
+              key: password
 
       # Persistent storage for files
       persistence:
