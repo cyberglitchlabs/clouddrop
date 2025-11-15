@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./daemonset.yaml
   - ./runtimeclass.yaml
+  - ./time-slicing-config.yaml

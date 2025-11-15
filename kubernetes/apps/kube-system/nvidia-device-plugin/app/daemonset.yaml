@@ -33,6 +33,7 @@ spec:
           args:
             - "--fail-on-init-error=false"
             - "--device-discovery-strategy=nvml"
+            - "--config=/etc/nvidia-device-plugin/config.yaml"
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -42,6 +43,8 @@ spec:
               mountPath: /var/lib/kubelet/device-plugins
             - name: dev
               mountPath: /dev
+            - name: config
+              mountPath: /etc/nvidia-device-plugin
           resources:
             requests:
               cpu: 50m
@@ -55,6 +58,9 @@ spec:
         - name: dev
           hostPath:
             path: /dev
+        - name: config
+          configMap:
+            name: nvidia-device-plugin-config
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
