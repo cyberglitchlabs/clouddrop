@@ -22,6 +22,15 @@ spec:
     remediation:
       retries: 3
   values:
+    runtimeClassName: nvidia
+    podSecurityContext:
+      runAsNonRoot: false
+      runAsUser: 0
+    env:
+      - name: NVIDIA_VISIBLE_DEVICES
+        value: all
+      - name: NVIDIA_DRIVER_CAPABILITIES
+        value: compute,utility
     serviceMonitor:
       enabled: true
       namespace: kube-system
@@ -31,5 +40,7 @@ spec:
       requests:
         cpu: 50m
         memory: 128Mi
+        nvidia.com/gpu: 1
       limits:
         memory: 512Mi
+        nvidia.com/gpu: 1
