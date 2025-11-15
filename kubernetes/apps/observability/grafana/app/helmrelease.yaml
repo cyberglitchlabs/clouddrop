@@ -74,6 +74,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/grafana-dashboards-kubernetes
+          - name: 'nvidia-dashboards'
+            orgId: 1
+            folder: 'NVIDIA'
+            type: file
+            disableDeletion: true
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/nvidia-dashboards
 
     # Import dashboards from dotdc/grafana-dashboards-kubernetes via URLs
     dashboards:
@@ -102,6 +110,15 @@ spec:
         k8s-addons-trivy-operator:
           url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-addons-trivy-operator.json
           token: ''
+
+      # NVIDIA GPU monitoring dashboards
+      nvidia-dashboards:
+        nvidia-dcgm-mig:
+          # Dashboard ID: 23382 - NVIDIA DCGM Dashboard for Kubernetes (MIG & Non-MIG GPUs)
+          # Requires: NVIDIA DCGM exporter deployed in cluster
+          gnetId: 23382
+          revision: 1
+          datasource: Prometheus
 
     # Grafana configuration
     grafana.ini:
