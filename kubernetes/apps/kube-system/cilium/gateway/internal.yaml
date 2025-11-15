@@ -6,6 +6,7 @@ metadata:
   name: internal
   annotations:
     external-dns.alpha.kubernetes.io/target: "192.168.42.12"
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
 spec:
   gatewayClassName: cilium
   addresses:
