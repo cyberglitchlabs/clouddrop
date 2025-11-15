@@ -10,6 +10,9 @@ configMapGenerator:
   - name: grafana-nvidia-dashboard
     files:
       - dashboards/nvidia-gtx-monitoring.json
+    options:
+      labels:
+        grafana_dashboard: "1"
 
 generatorOptions:
   disableNameSuffixHash: true
