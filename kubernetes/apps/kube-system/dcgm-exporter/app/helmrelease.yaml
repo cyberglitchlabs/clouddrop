@@ -22,6 +22,10 @@ spec:
     remediation:
       retries: 3
   values:
+    # Enable profiling metrics for GPU utilization, tensor activity, and DRAM usage
+    arguments:
+      - "-f"
+      - "/etc/dcgm-exporter/dcp-metrics-included.csv"
     runtimeClassName: nvidia
     podSecurityContext:
       runAsNonRoot: false
