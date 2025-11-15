@@ -1,0 +1,105 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: open-webui
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bjw-s-app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  dependsOn:
+    - name: ollama
+      namespace: ai
+    - name: cloudflare-tunnel
+      namespace: network
+  values:
+    controllers:
+      open-webui:
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: ghcr.io/open-webui/open-webui
+              tag: main
+            env:
+              TZ: America/Chicago
+              OLLAMA_BASE_URL: "http://ollama.ai.svc.cluster.local:11434"
+              DATA_DIR: "/app/backend/data"
+              WEBUI_NAME: "CloudDrop AI"
+              ENABLE_SIGNUP: "false"
+              DEFAULT_USER_ROLE: "user"
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8080
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8080
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 200m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+    service:
+      app:
+        controller: open-webui
+        ports:
+          http:
+            port: 8080
+            targetPort: 8080
+            protocol: TCP
+    persistence:
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: open-webui-data-nfs
+        globalMounts:
+          - path: /app/backend/data
+    route:
+      app:
+        hostnames: ["openwebui.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 8080

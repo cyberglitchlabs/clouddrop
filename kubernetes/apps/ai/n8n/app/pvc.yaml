@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: n8n-files-nfs
+  namespace: ai
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: qnap-nfs
+  resources:
+    requests:
+      storage: 10Gi

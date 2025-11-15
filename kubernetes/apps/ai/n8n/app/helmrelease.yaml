@@ -1,0 +1,134 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: n8n
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: n8n
+      version: 0.28.0
+      sourceRef:
+        kind: HelmRepository
+        name: 8gears-n8n
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  dependsOn:
+    - name: cloudflare-tunnel
+      namespace: network
+  values:
+    image:
+      repository: n8nio/n8n
+      tag: latest
+      pullPolicy: IfNotPresent
+    
+    # Main application config
+    main:
+      config:
+        n8n:
+          encryption_key:
+            valueFrom:
+              secretKeyRef:
+                name: n8n-secrets
+                key: N8N_ENCRYPTION_KEY
+          basic_auth:
+            active: "true"
+            user:
+              valueFrom:
+                secretKeyRef:
+                  name: n8n-secrets
+                  key: N8N_BASIC_AUTH_USER
+            password:
+              valueFrom:
+                secretKeyRef:
+                  name: n8n-secrets
+                  key: N8N_BASIC_AUTH_PASSWORD
+          host: "n8n.${SECRET_DOMAIN}"
+          protocol: "https"
+          port: "443"
+        db:
+          type: postgresdb
+          postgresdb:
+            database: app
+            host: n8n-postgres-rw.ai.svc.cluster.local
+            port: "5432"
+            user:
+              valueFrom:
+                secretKeyRef:
+                  name: n8n-postgres-app
+                  key: username
+            password:
+              valueFrom:
+                secretKeyRef:
+                  name: n8n-postgres-app
+                  key: password
+        executions:
+          process: main
+      
+      # Persistent storage for files
+      persistence:
+        enabled: true
+        type: existing
+        existingClaim: n8n-files-nfs
+        accessModes:
+          - ReadWriteMany
+        size: 10Gi
+      
+      # Resource limits
+      resources:
+        requests:
+          cpu: 500m
+          memory: 512Mi
+        limits:
+          memory: 2Gi
+      
+      # Security context
+      podSecurityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      
+      # Health probes
+      livenessProbe:
+        httpGet:
+          path: /healthz
+          port: http
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        timeoutSeconds: 5
+        failureThreshold: 6
+      
+      readinessProbe:
+        httpGet:
+          path: /healthz
+          port: http
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        timeoutSeconds: 5
+        failureThreshold: 3
+      
+      # Service configuration
+      service:
+        type: ClusterIP
+        port: 5678
+    
+    # Ingress via Gateway API
+    ingress:
+      enabled: false
+    
+    # Webhook disabled (using main app)
+    webhook:
+      enabled: false
+    
+    # Worker disabled (using main process)
+    worker:
+      enabled: false

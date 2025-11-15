@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: open-webui-data-nfs
+  namespace: ai
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: qnap-nfs
+  resources:
+    requests:
+      storage: 20Gi
