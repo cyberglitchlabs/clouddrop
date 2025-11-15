@@ -13,6 +13,12 @@ configMapGenerator:
     options:
       labels:
         grafana_dashboard: "1"
+  - name: grafana-jellyfin-dashboard
+    files:
+      - dashboards/jellyfin-monitoring.json
+    options:
+      labels:
+        grafana_dashboard: "1"
 
 generatorOptions:
   disableNameSuffixHash: true
