@@ -33,7 +33,7 @@ spec:
           args:
             - "--fail-on-init-error=false"
             - "--device-discovery-strategy=nvml"
-            - "--config=/etc/nvidia-device-plugin/config.yaml"
+            - "--config-file=/etc/nvidia-device-plugin/config.yaml"
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
