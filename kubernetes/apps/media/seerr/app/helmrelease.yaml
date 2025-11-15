@@ -9,7 +9,7 @@ spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: seerr-chart
+    name: bjw-s-app-template
   install:
     remediation:
       retries: -1
@@ -21,65 +21,78 @@ spec:
     - name: cloudflare-tunnel
       namespace: network
   values:
-    image:
-      registry: ghcr.io
-      repository: seerr-team/seerr
-      tag: 4.3.0
-      pullPolicy: IfNotPresent
-
-    extraEnv:
-      - name: TZ
-        value: America/Chicago
-
-    config:
-      persistence:
-        size: 5Gi
-        accessModes:
-          - ReadWriteOnce
-
+    controllers:
+      seerr:
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: ghcr.io/seerr-team/seerr
+              tag: 4.3.0
+            env:
+              TZ: America/Chicago
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 5055
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 5055
+                  initialDelaySeconds: 15
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
     service:
-      type: ClusterIP
-      port: 5055
-
-    ingress:
-      enabled: false
-
-    resources:
-      requests:
-        cpu: 100m
-        memory: 256Mi
-      limits:
-        memory: 512Mi
-
-    podSecurityContext:
-      runAsNonRoot: true
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-
-    securityContext:
-      allowPrivilegeEscalation: false
-      readOnlyRootFilesystem: false
-      capabilities:
-        drop:
-          - ALL
-
-    probes:
-      livenessProbe:
+      app:
+        controller: seerr
+        ports:
+          http:
+            port: 5055
+    persistence:
+      config:
         enabled: true
-        httpGet:
-          path: /
-          port: 5055
-        initialDelaySeconds: 30
-        periodSeconds: 30
-        timeoutSeconds: 10
-        failureThreshold: 5
-      readinessProbe:
-        enabled: true
-        httpGet:
-          path: /
-          port: 5055
-        initialDelaySeconds: 15
-        periodSeconds: 10
-        timeoutSeconds: 5
-        failureThreshold: 3
+        type: persistentVolumeClaim
+        storageClass: qnap-nfs
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        globalMounts:
+          - path: /app/config
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 5055
