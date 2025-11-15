@@ -35,7 +35,7 @@ spec:
               OLLAMA_BASE_URL: "http://ollama.ai.svc.cluster.local:11434"
               DATA_DIR: "/app/backend/data"
               WEBUI_NAME: "CloudDrop AI"
-              ENABLE_SIGNUP: "false"
+              ENABLE_SIGNUP: "true"
               DEFAULT_USER_ROLE: "user"
             envFrom:
               - secretRef:
