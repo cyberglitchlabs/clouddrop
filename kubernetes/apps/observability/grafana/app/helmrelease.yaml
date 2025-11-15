@@ -82,6 +82,22 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/nvidia-dashboards
+          - name: 'media-dashboards'
+            orgId: 1
+            folder: 'Media'
+            type: file
+            disableDeletion: true
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/media-dashboards
+          - name: 'network-dashboards'
+            orgId: 1
+            folder: 'Network'
+            type: file
+            disableDeletion: true
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/network-dashboards
 
     # Import dashboards from dotdc/grafana-dashboards-kubernetes via URLs
     dashboards:
@@ -118,6 +134,11 @@ spec:
           # Uses default DCGM metrics available on GeForce cards
           file: dashboards/nvidia-gtx-monitoring.json
 
+      # Media application monitoring dashboards
+      media-dashboards:
+        jellyfin-monitoring:
+          file: dashboards/jellyfin-monitoring.json
+
     # Grafana configuration
     grafana.ini:
       server:
@@ -144,6 +165,7 @@ spec:
         enabled: true
         label: grafana_dashboard
         labelValue: "1"
+        folderAnnotation: grafana_folder
         folder: /tmp/dashboards
         defaultFolderName: General
         searchNamespace: ALL

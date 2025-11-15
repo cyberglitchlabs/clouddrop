@@ -13,12 +13,14 @@ configMapGenerator:
     options:
       labels:
         grafana_dashboard: "1"
+        grafana_folder: "NVIDIA"
   - name: grafana-jellyfin-dashboard
     files:
       - dashboards/jellyfin-monitoring.json
     options:
       labels:
         grafana_dashboard: "1"
+        grafana_folder: "Media"
 
 generatorOptions:
   disableNameSuffixHash: true
