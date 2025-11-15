@@ -100,6 +100,15 @@ spec:
         runAsUser: 568
         runAsGroup: 568
         fsGroup: 568
+    persistence:
+      dist:
+        type: emptyDir
+        globalMounts:
+          - path: /app/dist
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
     service:
       app:
         controller: jellystat
