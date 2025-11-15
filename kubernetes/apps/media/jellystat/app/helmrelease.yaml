@@ -44,6 +44,7 @@ spec:
                     key: password
               POSTGRES_IP: jellystat-postgres-rw
               POSTGRES_PORT: "5432"
+              POSTGRES_DB: app
               # Jellyfin connection
               JF_HOST:
                 valueFrom:
