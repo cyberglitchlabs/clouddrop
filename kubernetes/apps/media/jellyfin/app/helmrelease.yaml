@@ -19,6 +19,14 @@ spec:
   dependsOn:
     - name: cloudflare-tunnel
       namespace: network
+  # Note: Metrics require the OpenTelemetry plugin to be installed in Jellyfin
+  # 1. Go to Dashboard > Plugins > Catalog
+  # 2. Install "OpenTelemetry" plugin
+  # 3. Restart Jellyfin
+  # 4. Go to Dashboard > Plugins > OpenTelemetry
+  # 5. Configure metrics endpoint: localhost:9090
+  # 6. Enable Prometheus exporter
+  # Metrics will be exposed internally only (not via HTTPRoute)
   values:
     controllers:
       jellyfin:
@@ -85,11 +93,17 @@ spec:
             port: 8096
             targetPort: 8096
             protocol: TCP
+          metrics:
+            port: 9090
+            targetPort: 9090
+            protocol: TCP
     serviceMonitor:
       app:
         enabled: true
         endpoints:
-          - port: http
+          - port: metrics
+            path: /metrics
+            interval: 30s
     persistence:
       config:
         enabled: true
