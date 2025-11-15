@@ -18,10 +18,3 @@ spec:
     parameters:
       max_connections: "200"
       shared_buffers: 256MB
-  backup:
-    retentionPolicy: 7d
-    barmanObjectStore:
-      destinationPath: s3://n8n-postgres-backup/
-      wal:
-        compression: bzip2
-        maxParallel: 8
