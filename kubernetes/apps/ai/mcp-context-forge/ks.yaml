@@ -21,7 +21,7 @@ spec:
   timeout: 5m
   wait: true
   dependsOn:
-    - name: cloudnative-pg
+    - name: cloudnative-pg-operator
       namespace: security
     - name: cloudflare-tunnel
       namespace: network
