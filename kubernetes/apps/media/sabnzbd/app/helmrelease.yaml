@@ -24,7 +24,7 @@ spec:
       sabnzbd:
         strategy: RollingUpdate
         containers:
-          app:
+          sabnzbd:
             image:
               repository: ghcr.io/home-operations/sabnzbd
               tag: 4.5.5

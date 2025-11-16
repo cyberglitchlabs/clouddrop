@@ -25,7 +25,7 @@ spec:
       jellystat:
         strategy: RollingUpdate
         containers:
-          app:
+          jellystat:
             image:
               repository: cyfershepard/jellystat
               tag: 1.1.6

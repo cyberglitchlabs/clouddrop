@@ -24,7 +24,7 @@ spec:
       prowlarr:
         strategy: RollingUpdate
         containers:
-          app:
+          prowlarr:
             image:
               repository: ghcr.io/home-operations/prowlarr
               tag: 2.1.5.5216

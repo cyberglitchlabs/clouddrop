@@ -24,7 +24,7 @@ spec:
       profilarr:
         strategy: RollingUpdate
         containers:
-          app:
+          profilarr:
             image:
               repository: santiagosayshey/profilarr
               tag: v1.1.2
