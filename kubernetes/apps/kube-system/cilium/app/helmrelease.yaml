@@ -16,6 +16,30 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  # Use server-side apply to avoid 256KB annotation limit for large dashboard ConfigMaps
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: ConfigMap
+              name: cilium-dashboard
+            patch: |
+              apiVersion: v1
+              kind: ConfigMap
+              metadata:
+                name: cilium-dashboard
+                annotations:
+                  helm.toolkit.fluxcd.io/apply-mode: server-side
+          - target:
+              kind: ConfigMap
+              name: cilium-operator-dashboard
+            patch: |
+              apiVersion: v1
+              kind: ConfigMap
+              metadata:
+                name: cilium-operator-dashboard
+                annotations:
+                  helm.toolkit.fluxcd.io/apply-mode: server-side
   values:
     autoDirectNodeRoutes: true
     bpf:
