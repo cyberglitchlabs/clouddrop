@@ -24,7 +24,7 @@ spec:
       beets-flask:
         strategy: RollingUpdate
         containers:
-          app:
+          beets-flask:
             image:
               repository: pspitzner/beets-flask
               tag: latest
