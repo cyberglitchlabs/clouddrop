@@ -1,0 +1,17 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: mcp-context-forge
+  namespace: ai
+spec:
+  hostnames:
+    - mcp-context-forge.${SECRET_DOMAIN}
+  parentRefs:
+    - name: internal
+      namespace: kube-system
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: mcp-context-forge
+          port: 4444
