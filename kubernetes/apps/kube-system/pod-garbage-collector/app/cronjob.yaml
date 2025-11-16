@@ -56,15 +56,15 @@ spec:
                 - |
                   echo "=== Pod Garbage Collector ==="
                   echo "Cleaning up Failed and Succeeded pods older than 1 hour..."
-                  
+
                   # Delete Failed pods older than 1 hour
                   FAILED_PODS=$(kubectl get pods --all-namespaces \
                     --field-selector=status.phase=Failed \
                     -o json | \
-                    jq -r '.items[] | 
-                      select((now - (.status.startTime | fromdateiso8601)) > 3600) | 
+                    jq -r '.items[] |
+                      select((now - (.status.startTime | fromdateiso8601)) > 3600) |
                       "\(.metadata.namespace) \(.metadata.name)"')
-                  
+
                   if [ -n "$FAILED_PODS" ]; then
                     echo "Found Failed pods to delete:"
                     echo "$FAILED_PODS"
@@ -75,16 +75,16 @@ spec:
                   else
                     echo "No Failed pods found older than 1 hour"
                   fi
-                  
+
                   # Delete Succeeded pods older than 1 hour (excluding Jobs)
                   SUCCEEDED_PODS=$(kubectl get pods --all-namespaces \
                     --field-selector=status.phase=Succeeded \
                     -o json | \
-                    jq -r '.items[] | 
-                      select((now - (.status.startTime | fromdateiso8601)) > 3600) | 
+                    jq -r '.items[] |
+                      select((now - (.status.startTime | fromdateiso8601)) > 3600) |
                       select(.metadata.ownerReferences // [] | all(.kind != "Job")) |
                       "\(.metadata.namespace) \(.metadata.name)"')
-                  
+
                   if [ -n "$SUCCEEDED_PODS" ]; then
                     echo "Found Succeeded pods to delete:"
                     echo "$SUCCEEDED_PODS"
@@ -95,7 +95,7 @@ spec:
                   else
                     echo "No Succeeded pods found older than 1 hour"
                   fi
-                  
+
                   echo "Cleanup complete!"
               resources:
                 requests:
