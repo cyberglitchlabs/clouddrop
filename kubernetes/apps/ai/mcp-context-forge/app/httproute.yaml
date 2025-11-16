@@ -4,6 +4,8 @@ kind: HTTPRoute
 metadata:
   name: mcp-context-forge
   namespace: ai
+  annotations:
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
 spec:
   hostnames:
     - mcp-context-forge.${SECRET_DOMAIN}
