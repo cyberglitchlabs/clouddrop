@@ -1,0 +1,136 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mcp-context-forge
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bjw-s-app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  dependsOn:
+    - name: cloudflare-tunnel
+      namespace: network
+  values:
+    controllers:
+      mcp-context-forge:
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: ghcr.io/ibm/mcp-context-forge
+              tag: 0.9.0
+            env:
+              TZ: America/Chicago
+              HOST: "0.0.0.0"
+              PORT: "4444"
+              MCPGATEWAY_UI_ENABLED: "true"
+              MCPGATEWAY_ADMIN_API_ENABLED: "true"
+              AUTH_REQUIRED: "true"
+              SECURE_COOKIES: "false"
+              # Database configuration
+              POSTGRES_HOST: mcp-context-forge-postgres-rw.ai.svc.cluster.local
+              POSTGRES_PORT: "5432"
+              POSTGRES_DB: app
+              # Redis configuration
+              REDIS_HOST: mcp-context-forge-redis.ai.svc.cluster.local
+              REDIS_PORT: "6379"
+              # JWT and admin secrets from secret
+              JWT_SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: mcp-context-forge-secrets
+                    key: JWT_SECRET_KEY
+              PLATFORM_ADMIN_EMAIL:
+                valueFrom:
+                  secretKeyRef:
+                    name: mcp-context-forge-secrets
+                    key: PLATFORM_ADMIN_EMAIL
+              PLATFORM_ADMIN_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: mcp-context-forge-secrets
+                    key: PLATFORM_ADMIN_PASSWORD
+              PLATFORM_ADMIN_FULL_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: mcp-context-forge-secrets
+                    key: PLATFORM_ADMIN_FULL_NAME
+              # Database credentials from CloudNativePG
+              POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: mcp-context-forge-postgres-app
+                    key: username
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: mcp-context-forge-postgres-app
+                    key: password
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 4444
+                  initialDelaySeconds: 60
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 4444
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+    service:
+      app:
+        controller: mcp-context-forge
+        ports:
+          http:
+            port: 4444
+            targetPort: 4444
+            protocol: TCP
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: mcp-context-forge
+                port: 4444
