@@ -36,13 +36,15 @@ spec:
               MCPGATEWAY_ADMIN_API_ENABLED: "true"
               AUTH_REQUIRED: "true"
               SECURE_COOKIES: "false"
-              # Database configuration
-              POSTGRES_HOST: mcp-context-forge-postgres-rw.ai.svc.cluster.local
-              POSTGRES_PORT: "5432"
-              POSTGRES_DB: app
               # Redis configuration
               REDIS_HOST: mcp-context-forge-redis.ai.svc.cluster.local
               REDIS_PORT: "6379"
+              # Database URL (constructed from credentials)
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: mcp-context-forge-postgres-app
+                    key: uri
               # JWT and admin secrets from secret
               JWT_SECRET_KEY:
                 valueFrom:
@@ -64,17 +66,6 @@ spec:
                   secretKeyRef:
                     name: mcp-context-forge-secrets
                     key: PLATFORM_ADMIN_FULL_NAME
-              # Database credentials from CloudNativePG
-              POSTGRES_USER:
-                valueFrom:
-                  secretKeyRef:
-                    name: mcp-context-forge-postgres-app
-                    key: username
-              POSTGRES_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: mcp-context-forge-postgres-app
-                    key: password
             probes:
               liveness:
                 enabled: true
