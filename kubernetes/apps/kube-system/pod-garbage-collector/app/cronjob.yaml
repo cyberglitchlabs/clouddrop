@@ -1,0 +1,105 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pod-garbage-collector
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pod-garbage-collector
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["list", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pod-garbage-collector
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: pod-garbage-collector
+subjects:
+  - kind: ServiceAccount
+    name: pod-garbage-collector
+    namespace: kube-system
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pod-garbage-collector
+  namespace: kube-system
+spec:
+  schedule: "*/30 * * * *"  # Run every 30 minutes
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 3600  # Clean up job pods after 1 hour
+      template:
+        metadata:
+          labels:
+            app: pod-garbage-collector
+        spec:
+          serviceAccountName: pod-garbage-collector
+          restartPolicy: OnFailure
+          containers:
+            - name: kubectl
+              image: bitnami/kubectl:1.31.3
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  echo "=== Pod Garbage Collector ==="
+                  echo "Cleaning up Failed and Succeeded pods older than 1 hour..."
+                  
+                  # Delete Failed pods older than 1 hour
+                  FAILED_PODS=$(kubectl get pods --all-namespaces \
+                    --field-selector=status.phase=Failed \
+                    -o json | \
+                    jq -r '.items[] | 
+                      select((now - (.status.startTime | fromdateiso8601)) > 3600) | 
+                      "\(.metadata.namespace) \(.metadata.name)"')
+                  
+                  if [ -n "$FAILED_PODS" ]; then
+                    echo "Found Failed pods to delete:"
+                    echo "$FAILED_PODS"
+                    echo "$FAILED_PODS" | while read namespace pod; do
+                      echo "Deleting $namespace/$pod"
+                      kubectl delete pod "$pod" -n "$namespace" --ignore-not-found=true
+                    done
+                  else
+                    echo "No Failed pods found older than 1 hour"
+                  fi
+                  
+                  # Delete Succeeded pods older than 1 hour (excluding Jobs)
+                  SUCCEEDED_PODS=$(kubectl get pods --all-namespaces \
+                    --field-selector=status.phase=Succeeded \
+                    -o json | \
+                    jq -r '.items[] | 
+                      select((now - (.status.startTime | fromdateiso8601)) > 3600) | 
+                      select(.metadata.ownerReferences // [] | all(.kind != "Job")) |
+                      "\(.metadata.namespace) \(.metadata.name)"')
+                  
+                  if [ -n "$SUCCEEDED_PODS" ]; then
+                    echo "Found Succeeded pods to delete:"
+                    echo "$SUCCEEDED_PODS"
+                    echo "$SUCCEEDED_PODS" | while read namespace pod; do
+                      echo "Deleting $namespace/$pod"
+                      kubectl delete pod "$pod" -n "$namespace" --ignore-not-found=true
+                    done
+                  else
+                    echo "No Succeeded pods found older than 1 hour"
+                  fi
+                  
+                  echo "Cleanup complete!"
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 32Mi
+                limits:
+                  memory: 64Mi

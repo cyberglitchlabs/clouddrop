@@ -12,3 +12,4 @@ resources:
   - ./nvidia-device-plugin/ks.yaml
   - ./dcgm-exporter/ks.yaml
   - ./reloader/ks.yaml
+  - ./pod-garbage-collector/ks.yaml
