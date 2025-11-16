@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: pspitzner/beets-flask
-              tag: stable
+              tag: latest
             env:
               TZ: ${SECRET_TZ}
               USER_ID: "568"
