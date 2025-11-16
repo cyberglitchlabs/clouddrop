@@ -24,7 +24,7 @@ spec:
       sonarr:
         strategy: RollingUpdate
         containers:
-          app:
+          sonarr:
             image:
               repository: ghcr.io/home-operations/sonarr
               tag: 4.0.16.2943

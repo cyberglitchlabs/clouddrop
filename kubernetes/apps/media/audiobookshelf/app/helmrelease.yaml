@@ -24,7 +24,7 @@ spec:
       audiobookshelf:
         strategy: RollingUpdate
         containers:
-          app:
+          audiobookshelf:
             image:
               repository: ghcr.io/advplyr/audiobookshelf
               tag: latest
