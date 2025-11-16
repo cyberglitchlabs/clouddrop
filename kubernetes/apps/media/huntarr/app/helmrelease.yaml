@@ -24,7 +24,7 @@ spec:
       huntarr:
         strategy: RollingUpdate
         containers:
-          app:
+          huntarr:
             image:
               repository: ghcr.io/plexguide/huntarr
               tag: 8.2.10
