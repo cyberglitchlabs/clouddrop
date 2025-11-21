@@ -36,6 +36,8 @@ spec:
               MCPGATEWAY_ADMIN_API_ENABLED: "true"
               AUTH_REQUIRED: "true"
               SECURE_COOKIES: "false"
+              # CORS configuration for Open WebUI access
+              CORS_ALLOWED_ORIGINS: "https://openwebui.cyberglitch.systems"
               # Redis configuration
               REDIS_HOST: mcp-context-forge-redis.ai.svc.cluster.local
               REDIS_PORT: "6379"
