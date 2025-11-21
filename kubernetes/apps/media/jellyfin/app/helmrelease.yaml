@@ -27,7 +27,7 @@ spec:
       jellyfin:
         strategy: RollingUpdate
         containers:
-          app:
+          jellyfin:
             image:
               repository: ghcr.io/jellyfin/jellyfin
               tag: 10.11.3
