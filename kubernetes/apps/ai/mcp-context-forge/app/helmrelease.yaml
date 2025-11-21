@@ -34,7 +34,7 @@ spec:
               PORT: "4444"
               MCPGATEWAY_UI_ENABLED: "true"
               MCPGATEWAY_ADMIN_API_ENABLED: "true"
-              AUTH_REQUIRED: "true"
+              AUTH_REQUIRED: "false"
               SECURE_COOKIES: "false"
               # CORS configuration for Open WebUI access
               CORS_ENABLED: "true"
