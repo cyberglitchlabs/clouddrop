@@ -100,9 +100,11 @@ spec:
           - path: /media
     route:
       app:
+        annotations:
+          external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
         parentRefs:
-          - name: external
+          - name: internal
             namespace: kube-system
             sectionName: https
         rules:
