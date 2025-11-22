@@ -4,6 +4,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
   name: bjw-s-app-template
+  namespace: media
 spec:
   interval: 15m
   layerSelector:
