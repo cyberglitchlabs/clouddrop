@@ -36,7 +36,9 @@ spec:
             env:
               TZ: America/Chicago
               # Database configuration - using CloudNativePG
+              ROMM_DB_DRIVER: postgresql
               DB_HOST: romm-postgres-rw.games.svc.cluster.local
+              DB_PORT: "5432"
               DB_NAME: app
               DB_USER:
                 valueFrom:
