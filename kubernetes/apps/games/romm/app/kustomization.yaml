@@ -5,6 +5,8 @@ kind: Kustomization
 namespace: games
 resources:
   - ocirepository.yaml
+  - postgres-superuser-secret.sops.yaml
+  - postgres-cluster.yaml
   - helmrelease.yaml
   - pvc.yaml
   - secret.sops.yaml

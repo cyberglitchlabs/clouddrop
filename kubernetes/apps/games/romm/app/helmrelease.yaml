@@ -36,10 +36,18 @@ spec:
             env:
               TZ: America/Chicago
               # Database configuration - using CloudNativePG
-              DB_HOST: ${SECRET_POSTGRES_HOST}
-              DB_NAME: romm
-              DB_USER: ${SECRET_POSTGRES_USER}
-              DB_PASSWD: ${SECRET_POSTGRES_PASSWORD}
+              DB_HOST: romm-postgres-rw.games.svc.cluster.local
+              DB_NAME: app
+              DB_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: romm-postgres-app
+                    key: username
+              DB_PASSWD:
+                valueFrom:
+                  secretKeyRef:
+                    name: romm-postgres-app
+                    key: password
               # Optional metadata providers (add to cluster-secrets if needed)
               # SCREENSCRAPER_USER: ""
               # SCREENSCRAPER_PASSWORD: ""
