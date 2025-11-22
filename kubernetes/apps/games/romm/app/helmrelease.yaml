@@ -33,6 +33,8 @@ spec:
             envFrom:
               - secretRef:
                   name: romm-secrets
+              - secretRef:
+                  name: romm-metadata-secrets
             env:
               TZ: America/Chicago
               # Database configuration - using CloudNativePG
@@ -50,11 +52,7 @@ spec:
                   secretKeyRef:
                     name: romm-postgres-app
                     key: password
-              # Optional metadata providers (add to cluster-secrets if needed)
-              # SCREENSCRAPER_USER: ""
-              # SCREENSCRAPER_PASSWORD: ""
-              # RETROACHIEVEMENTS_API_KEY: ""
-              # STEAMGRIDDB_API_KEY: ""
+              # Metadata provider API keys are loaded from romm-metadata-secrets
               HASHEOUS_API_ENABLED: "true"
             probes:
               liveness:

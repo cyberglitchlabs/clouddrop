@@ -11,3 +11,4 @@ resources:
   - helmrelease.yaml
   - pvc.yaml
   - secret.sops.yaml
+  - metadata-secrets.sops.yaml
