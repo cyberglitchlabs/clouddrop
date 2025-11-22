@@ -1,0 +1,63 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: romm-config
+  namespace: games
+data:
+  config.yml: |
+    # RomM Configuration
+    # Only uncomment the lines you want to use/modify, or add new ones where needed
+
+    exclude:
+      # Exclude platforms to be scanned
+      platforms: []
+      # Exclude roms or parts of roms to be scanned
+      roms:
+        # Single file games section
+        single_file:
+          # Exclude all files with certain extensions to be scanned
+          extensions: []
+          # Exclude matched file names to be scanned
+          # Supports unix filename pattern matching
+          names: []
+        # Multi files games section
+        multi_file:
+          # Exclude matched 'folder' names to be scanned
+          names: []
+          # Exclude files within sub-folders
+          parts:
+            names: []
+            extensions: []
+
+    system:
+      # Associate different platform names to your current file system platform names
+      # [your custom platform folder name]: [RomM platform name]
+      platforms: {}
+      # Associate one platform to its main version
+      versions: {}
+
+    # The folder name where your roms are located
+    filesystem: {}
+
+    # Metadata priority during scans
+    # scan:
+    #   priority:
+    #     metadata:
+    #       - "igdb"
+    #       - "moby"
+    #       - "ss"
+    #       - "ra"
+    #       - "launchbox"
+    #       - "gamelist"
+    #       - "hasheous"
+    #       - "flashpoint"
+    #       - "hltb"
+    #     artwork:
+    #       - "igdb"
+    #       - "moby"
+    #       - "ss"
+    #       - "ra"
+    #       - "launchbox"
+    #       - "gamelist"
+    #       - "flashpoint"
