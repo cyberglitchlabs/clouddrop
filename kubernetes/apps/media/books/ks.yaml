@@ -13,8 +13,8 @@ spec:
   dependsOn:
     - name: cloudflare-tunnel
       namespace: network
-    - name: csi-driver-nfs
-      namespace: storage
+    - name: csi-driver-smb
+      namespace: trident
   path: ./kubernetes/apps/media/books/app
   postBuild:
     substituteFrom:
