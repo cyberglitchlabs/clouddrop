@@ -6,7 +6,7 @@ metadata:
   name: romm-resources-nfs
 spec:
   accessModes: ["ReadWriteMany"]
-  storageClassName: nfs-client
+  storageClassName: qnap-nfs
   resources:
     requests:
       storage: 10Gi
@@ -18,7 +18,7 @@ metadata:
   name: romm-library-nfs
 spec:
   accessModes: ["ReadWriteMany"]
-  storageClassName: nfs-client
+  storageClassName: qnap-nfs
   resources:
     requests:
       storage: 100Gi
@@ -30,7 +30,7 @@ metadata:
   name: romm-assets-nfs
 spec:
   accessModes: ["ReadWriteMany"]
-  storageClassName: nfs-client
+  storageClassName: qnap-nfs
   resources:
     requests:
       storage: 10Gi
@@ -42,7 +42,7 @@ metadata:
   name: romm-redis-nfs
 spec:
   accessModes: ["ReadWriteMany"]
-  storageClassName: nfs-client
+  storageClassName: qnap-nfs
   resources:
     requests:
       storage: 1Gi
@@ -54,7 +54,7 @@ metadata:
   name: romm-config-nfs
 spec:
   accessModes: ["ReadWriteMany"]
-  storageClassName: nfs-client
+  storageClassName: qnap-nfs
   resources:
     requests:
       storage: 1Gi
