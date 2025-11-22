@@ -62,7 +62,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /
+                    path: /api/heartbeat
                     port: 8080
                   initialDelaySeconds: 60
                   periodSeconds: 10
@@ -73,7 +73,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /
+                    path: /api/heartbeat
                     port: 8080
                   initialDelaySeconds: 60
                   periodSeconds: 10
