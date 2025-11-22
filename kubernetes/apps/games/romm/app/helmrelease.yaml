@@ -1,0 +1,134 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: romm
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bjw-s-app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  dependsOn:
+    - name: cloudflare-tunnel
+      namespace: network
+    - name: cloudnative-pg
+      namespace: security
+  values:
+    controllers:
+      romm:
+        strategy: RollingUpdate
+        containers:
+          romm:
+            image:
+              repository: rommapp/romm
+              tag: 4.4.1
+            envFrom:
+              - secretRef:
+                  name: romm-secrets
+            env:
+              TZ: America/Chicago
+              # Database configuration - using CloudNativePG
+              DB_HOST: ${SECRET_POSTGRES_HOST}
+              DB_NAME: romm
+              DB_USER: ${SECRET_POSTGRES_USER}
+              DB_PASSWD: ${SECRET_POSTGRES_PASSWORD}
+              # Optional metadata providers (add to cluster-secrets if needed)
+              # SCREENSCRAPER_USER: ""
+              # SCREENSCRAPER_PASSWORD: ""
+              # RETROACHIEVEMENTS_API_KEY: ""
+              # STEAMGRIDDB_API_KEY: ""
+              HASHEOUS_API_ENABLED: "true"
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8080
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8080
+                  initialDelaySeconds: 15
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+    service:
+      app:
+        controller: romm
+        ports:
+          http:
+            port: 8080
+            targetPort: 8080
+            protocol: TCP
+    route:
+      app:
+        hostnames: ["romm.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+    persistence:
+      resources:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: romm-resources-nfs
+        globalMounts:
+          - path: /romm/resources
+      library:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: romm-library-nfs
+        globalMounts:
+          - path: /romm/library
+      assets:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: romm-assets-nfs
+        globalMounts:
+          - path: /romm/assets
+      redis-data:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: romm-redis-nfs
+        globalMounts:
+          - path: /redis-data
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: romm-config-nfs
+        globalMounts:
+          - path: /romm/config
