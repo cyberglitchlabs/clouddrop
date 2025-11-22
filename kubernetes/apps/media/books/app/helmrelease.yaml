@@ -71,7 +71,8 @@ spec:
         runAsNonRoot: false
         runAsUser: 0
         runAsGroup: 0
-        fsGroup: 0
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
     service:
       app:
         controller: books
@@ -97,7 +98,7 @@ spec:
         type: persistentVolumeClaim
         existingClaim: books-media-smb
         globalMounts:
-          - path: /media
+          - path: /calibre-library
     route:
       app:
         annotations:
