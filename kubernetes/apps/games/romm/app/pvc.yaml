@@ -1,0 +1,60 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/persistentvolumeclaim-v1.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: romm-resources-nfs
+spec:
+  accessModes: ["ReadWriteMany"]
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 10Gi
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/persistentvolumeclaim-v1.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: romm-library-nfs
+spec:
+  accessModes: ["ReadWriteMany"]
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 100Gi
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/persistentvolumeclaim-v1.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: romm-assets-nfs
+spec:
+  accessModes: ["ReadWriteMany"]
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 10Gi
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/persistentvolumeclaim-v1.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: romm-redis-nfs
+spec:
+  accessModes: ["ReadWriteMany"]
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 1Gi
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/persistentvolumeclaim-v1.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: romm-config-nfs
+spec:
+  accessModes: ["ReadWriteMany"]
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 1Gi
