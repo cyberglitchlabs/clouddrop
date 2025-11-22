@@ -19,3 +19,4 @@ resources:
   - ./huntarr/ks.yaml
   - ./bazarr/ks.yaml
   - ./beets-flask/ks.yaml
+  - ./listenarr/ks.yaml
