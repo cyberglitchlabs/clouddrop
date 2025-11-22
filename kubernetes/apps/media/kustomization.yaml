@@ -20,3 +20,4 @@ resources:
   - ./bazarr/ks.yaml
   - ./beets-flask/ks.yaml
   - ./listenarr/ks.yaml
+  - ./books/ks.yaml
