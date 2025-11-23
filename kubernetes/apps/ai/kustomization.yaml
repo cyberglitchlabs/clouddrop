@@ -7,6 +7,7 @@ components:
   - ../../components/common
 resources:
   - ./mcp-context-forge/ks.yaml
+#  - ./meilisearch/ks.yaml
   - ./n8n/ks.yaml
   - ./ollama/ks.yaml
   - ./open-webui/ks.yaml
