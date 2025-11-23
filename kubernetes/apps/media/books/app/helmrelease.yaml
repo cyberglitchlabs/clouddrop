@@ -102,6 +102,8 @@ spec:
         globalMounts:
           - path: /calibre-library
             subPath: Books
+          - path: /cwa-book-ingest
+            subPath: cwa-book-ingest
       cache:
         enabled: true
         type: emptyDir
