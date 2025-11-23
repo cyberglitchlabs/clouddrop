@@ -101,6 +101,7 @@ spec:
         existingClaim: books-media-smb
         globalMounts:
           - path: /calibre-library
+            subPath: Books
       cache:
         enabled: true
         type: emptyDir
