@@ -16,9 +16,6 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  dependsOn:
-    - name: cloudflare-tunnel
-      namespace: network
   values:
     controllers:
       meilisearch:
@@ -98,6 +95,8 @@ spec:
           - path: /tmp
     route:
       app:
+        annotations:
+          external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
         hostnames: ["meilisearch.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal

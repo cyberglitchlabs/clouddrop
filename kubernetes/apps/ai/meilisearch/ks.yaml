@@ -20,9 +20,6 @@ spec:
   retryInterval: 2m
   timeout: 5m
   wait: true
-  dependsOn:
-    - name: cloudflare-tunnel
-      namespace: network
   decryption:
     provider: sops
   postBuild:
