@@ -101,6 +101,11 @@ spec:
         existingClaim: books-media-smb
         globalMounts:
           - path: /calibre-library
+      cache:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /app/calibre-web-automated/cps/cache
     route:
       app:
         annotations:
