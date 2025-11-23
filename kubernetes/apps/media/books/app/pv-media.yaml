@@ -26,7 +26,7 @@ spec:
     readOnly: false
     volumeHandle: books-media-smb
     volumeAttributes:
-      source: //192.168.100.180/Media
+      source: //192.168.100.180/Media/Books
     nodeStageSecretRef:
       name: smb-creds
       namespace: kube-system
