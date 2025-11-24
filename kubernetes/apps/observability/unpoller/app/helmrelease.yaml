@@ -6,19 +6,6 @@ metadata:
   name: unpoller
 spec:
   interval: 1h
-  valuesFrom:
-    - kind: Secret
-      name: unpoller-credentials
-      valuesKey: UNIFI_HOST
-      targetPath: unifiUrl
-    - kind: Secret
-      name: unpoller-credentials
-      valuesKey: UNIFI_USER
-      targetPath: unifiUser
-    - kind: Secret
-      name: unpoller-credentials
-      valuesKey: UNIFI_PASS
-      targetPath: unifiPass
   chart:
     spec:
       chart: unpoller
@@ -52,9 +39,9 @@ spec:
       [loki]
           disable = true
       [[unifi.controller]]
-          url         = "{{ .Values.unifiUrl }}"
-          user        = "{{ .Values.unifiUser }}"
-          pass        = "{{ .Values.unifiPass }}"
+          url         = "$(UNIFI_URL)"
+          user        = "$(UNIFI_USER)"
+          pass        = "$(UNIFI_PASS)"
           sites       = ["all"]
           save_ids    = false
           save_dpi    = false
@@ -62,10 +49,23 @@ spec:
           hash_pii    = false
           verify_ssl  = false
 
-    # These will be templated into upConfig
-    unifiUrl: ""  # Will be overridden by valuesFrom
-    unifiUser: ""  # Will be overridden by valuesFrom
-    unifiPass: ""  # Will be overridden by valuesFrom
+    # Environment variables for config substitution
+    extraEnv:
+      - name: UNIFI_URL
+        valueFrom:
+          secretKeyRef:
+            name: unpoller-credentials
+            key: UNIFI_HOST
+      - name: UNIFI_USER
+        valueFrom:
+          secretKeyRef:
+            name: unpoller-credentials
+            key: UNIFI_USER
+      - name: UNIFI_PASS
+        valueFrom:
+          secretKeyRef:
+            name: unpoller-credentials
+            key: UNIFI_PASS
 
     # Disable all Grafana-related resources
     dashboards:
