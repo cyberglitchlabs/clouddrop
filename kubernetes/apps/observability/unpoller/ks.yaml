@@ -18,11 +18,10 @@ spec:
     name: flux-system
     namespace: flux-system
   wait: false
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
   dependsOn:
     - name: kube-prometheus-stack
       namespace: observability
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: unpoller-credentials
-        optional: false
