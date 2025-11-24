@@ -156,23 +156,23 @@ spec:
 
       # UniFi network monitoring dashboards (UnPoller/Prometheus)
       unifi-dashboards:
+        unifi-client-insights:
+          url: https://raw.githubusercontent.com/unpoller/dashboards/master/dashboards/prometheus/UniFi-Poller%3A%20Client%20Insights%20-%20Prometheus.json
+          datasource: Prometheus
         unifi-client-dpi:
-          gnetId: 11310
+          url: https://raw.githubusercontent.com/unpoller/dashboards/master/dashboards/prometheus/UniFi-Poller%3A%20Client%20DPI%20-%20Prometheus.json
           datasource: Prometheus
-        unifi-sites:
-          gnetId: 11311
+        unifi-network-sites:
+          url: https://raw.githubusercontent.com/unpoller/dashboards/master/dashboards/prometheus/UniFi-Poller%3A%20Network%20Sites%20-%20Prometheus.json
           datasource: Prometheus
-        unifi-usw:
-          gnetId: 11312
+        unifi-uap-insights:
+          url: https://raw.githubusercontent.com/unpoller/dashboards/master/dashboards/prometheus/UniFi-Poller%3A%20UAP%20Insights%20-%20Prometheus.json
           datasource: Prometheus
-        unifi-usg:
-          gnetId: 11313
+        unifi-usg-insights:
+          url: https://raw.githubusercontent.com/unpoller/dashboards/master/dashboards/prometheus/UniFi-Poller%3A%20USG%20Insights%20-%20Prometheus.json
           datasource: Prometheus
-        unifi-uap:
-          gnetId: 11314
-          datasource: Prometheus
-        unifi-clients:
-          gnetId: 11315
+        unifi-usw-insights:
+          url: https://raw.githubusercontent.com/unpoller/dashboards/master/dashboards/prometheus/UniFi-Poller%3A%20USW%20Insights%20-%20Prometheus.json
           datasource: Prometheus
 
     # Grafana configuration
