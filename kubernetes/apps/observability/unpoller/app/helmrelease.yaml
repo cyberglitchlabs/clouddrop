@@ -6,6 +6,19 @@ metadata:
   name: unpoller
 spec:
   interval: 1h
+  valuesFrom:
+    - kind: Secret
+      name: unpoller-credentials
+      valuesKey: UNIFI_HOST
+      targetPath: unifiUrl
+    - kind: Secret
+      name: unpoller-credentials
+      valuesKey: UNIFI_USER
+      targetPath: unifiUser
+    - kind: Secret
+      name: unpoller-credentials
+      valuesKey: UNIFI_PASS
+      targetPath: unifiPass
   chart:
     spec:
       chart: unpoller
@@ -22,27 +35,37 @@ spec:
       retries: 3
       strategy: rollback
   values:
-    # Environment variables for UniFi authentication
-    extraEnv:
-      - name: UP_UNIFI_DEFAULT_URL
-        valueFrom:
-          secretKeyRef:
-            name: unpoller-credentials
-            key: UNIFI_HOST
-      - name: UP_UNIFI_DEFAULT_USER
-        valueFrom:
-          secretKeyRef:
-            name: unpoller-credentials
-            key: UNIFI_USER
-      - name: UP_UNIFI_DEFAULT_PASS
-        valueFrom:
-          secretKeyRef:
-            name: unpoller-credentials
-            key: UNIFI_PASS
-      - name: UP_UNIFI_DEFAULT_VERIFY_SSL
-        value: "false"
-      - name: UP_UNIFI_DEFAULT_SAVE_SITES
-        value: "true"
+    # Override the default config file with our values
+    upConfig: |
+      [poller]
+          debug = false
+          quiet = false
+          plugins = []
+      [prometheus]
+        disable = false
+        http_listen = "0.0.0.0:9130"
+        report_errors = false
+      [influxdb]
+        disable = true
+      [unifi]
+          dynamic = false
+      [loki]
+          disable = true
+      [[unifi.controller]]
+          url         = "{{ .Values.unifiUrl }}"
+          user        = "{{ .Values.unifiUser }}"
+          pass        = "{{ .Values.unifiPass }}"
+          sites       = ["all"]
+          save_ids    = false
+          save_dpi    = false
+          save_sites  = true
+          hash_pii    = false
+          verify_ssl  = false
+
+    # These will be templated into upConfig
+    unifiUrl: ""  # Will be overridden by valuesFrom
+    unifiUser: ""  # Will be overridden by valuesFrom
+    unifiPass: ""  # Will be overridden by valuesFrom
 
     # Disable all Grafana-related resources
     dashboards:
