@@ -60,6 +60,13 @@ spec:
             editable: true
             jsonData:
               timeInterval: 30s
+          - name: Loki
+            type: loki
+            access: proxy
+            url: http://loki-gateway.observability.svc.cluster.local
+            editable: true
+            jsonData:
+              maxLines: 1000
 
     # Dashboard providers
     dashboardProviders:
