@@ -8,17 +8,17 @@ spec:
   interval: 1h
   valuesFrom:
     - kind: Secret
-      name: unpoller-secrets
+      name: unpoller-credentials
       valuesKey: UNIFI_HOST
       targetPath: unpoller.config.unifi.defaults.url
       optional: false
     - kind: Secret
-      name: unpoller-secrets
+      name: unpoller-credentials
       valuesKey: UNIFI_USER
       targetPath: unpoller.config.unifi.defaults.user
       optional: false
     - kind: Secret
-      name: unpoller-secrets
+      name: unpoller-credentials
       valuesKey: UNIFI_PASS
       targetPath: unpoller.config.unifi.defaults.pass
       optional: false
