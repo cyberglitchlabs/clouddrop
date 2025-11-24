@@ -20,8 +20,6 @@ spec:
   wait: false
   decryption:
     provider: sops
-    secretRef:
-      name: sops-age
   dependsOn:
     - name: kube-prometheus-stack
       namespace: observability
