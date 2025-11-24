@@ -105,6 +105,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/network-dashboards
+          - name: 'unifi-dashboards'
+            orgId: 1
+            folder: 'UniFi'
+            type: file
+            disableDeletion: true
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/unifi-dashboards
 
     # Import dashboards from dotdc/grafana-dashboards-kubernetes via URLs
     dashboards:
@@ -145,6 +153,27 @@ spec:
       media-dashboards:
         jellyfin-monitoring:
           file: dashboards/jellyfin-monitoring.json
+
+      # UniFi network monitoring dashboards (UnPoller/Prometheus)
+      unifi-dashboards:
+        unifi-client-dpi:
+          gnetId: 10419
+          datasource: Prometheus
+        unifi-sites:
+          gnetId: 10414
+          datasource: Prometheus
+        unifi-usw:
+          gnetId: 10417
+          datasource: Prometheus
+        unifi-usg:
+          gnetId: 10416
+          datasource: Prometheus
+        unifi-uap:
+          gnetId: 10415
+          datasource: Prometheus
+        unifi-clients:
+          gnetId: 10418
+          datasource: Prometheus
 
     # Grafana configuration
     grafana.ini:
