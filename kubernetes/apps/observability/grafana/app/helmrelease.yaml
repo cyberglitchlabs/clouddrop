@@ -157,22 +157,22 @@ spec:
       # UniFi network monitoring dashboards (UnPoller/Prometheus)
       unifi-dashboards:
         unifi-client-dpi:
-          gnetId: 10419
+          gnetId: 11310
           datasource: Prometheus
         unifi-sites:
-          gnetId: 10414
+          gnetId: 11311
           datasource: Prometheus
         unifi-usw:
-          gnetId: 10417
+          gnetId: 11312
           datasource: Prometheus
         unifi-usg:
-          gnetId: 10416
+          gnetId: 11313
           datasource: Prometheus
         unifi-uap:
-          gnetId: 10415
+          gnetId: 11314
           datasource: Prometheus
         unifi-clients:
-          gnetId: 10418
+          gnetId: 11315
           datasource: Prometheus
 
     # Grafana configuration
