@@ -6,22 +6,6 @@ metadata:
   name: unpoller
 spec:
   interval: 1h
-  valuesFrom:
-    - kind: Secret
-      name: unpoller-credentials
-      valuesKey: UNIFI_HOST
-      targetPath: unpoller.config.unifi.defaults.url
-      optional: false
-    - kind: Secret
-      name: unpoller-credentials
-      valuesKey: UNIFI_USER
-      targetPath: unpoller.config.unifi.defaults.user
-      optional: false
-    - kind: Secret
-      name: unpoller-credentials
-      valuesKey: UNIFI_PASS
-      targetPath: unpoller.config.unifi.defaults.pass
-      optional: false
   chart:
     spec:
       chart: unpoller
@@ -38,6 +22,28 @@ spec:
       retries: 3
       strategy: rollback
   values:
+    # Environment variables for UniFi authentication
+    env:
+      - name: UP_UNIFI_DEFAULT_URL
+        valueFrom:
+          secretKeyRef:
+            name: unpoller-credentials
+            key: UNIFI_HOST
+      - name: UP_UNIFI_DEFAULT_USER
+        valueFrom:
+          secretKeyRef:
+            name: unpoller-credentials
+            key: UNIFI_USER
+      - name: UP_UNIFI_DEFAULT_PASS
+        valueFrom:
+          secretKeyRef:
+            name: unpoller-credentials
+            key: UNIFI_PASS
+      - name: UP_UNIFI_DEFAULT_VERIFY_SSL
+        value: "false"
+      - name: UP_UNIFI_DEFAULT_SAVE_SITES
+        value: "true"
+
     # Disable all Grafana-related resources
     dashboards:
       create: false
