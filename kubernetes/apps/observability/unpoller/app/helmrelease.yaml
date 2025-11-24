@@ -42,6 +42,9 @@ spec:
     grafana:
       enabled: false
 
+    dashboards:
+      enabled: false
+
     # UniFi Controller configuration
     unpoller:
       config:
