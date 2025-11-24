@@ -38,6 +38,10 @@ spec:
       retries: 3
       strategy: rollback
   values:
+    # Disable Grafana CRD resources (using Prometheus instead)
+    grafana:
+      enabled: false
+
     # UniFi Controller configuration
     unpoller:
       config:
