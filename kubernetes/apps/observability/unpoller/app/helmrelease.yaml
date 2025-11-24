@@ -6,6 +6,22 @@ metadata:
   name: unpoller
 spec:
   interval: 1h
+  valuesFrom:
+    - kind: Secret
+      name: unpoller-secrets
+      valuesKey: UNIFI_HOST
+      targetPath: unpoller.config.unifi.defaults.url
+      optional: false
+    - kind: Secret
+      name: unpoller-secrets
+      valuesKey: UNIFI_USER
+      targetPath: unpoller.config.unifi.defaults.user
+      optional: false
+    - kind: Secret
+      name: unpoller-secrets
+      valuesKey: UNIFI_PASS
+      targetPath: unpoller.config.unifi.defaults.pass
+      optional: false
   chart:
     spec:
       chart: unpoller
@@ -29,9 +45,6 @@ spec:
         unifi:
           dynamic: false
           defaults:
-            url: "https://${UNIFI_HOST}"
-            user: "${UNIFI_USER}"
-            pass: "${UNIFI_PASS}"
             verify_ssl: false
             save_sites: true
             save_ids: false
