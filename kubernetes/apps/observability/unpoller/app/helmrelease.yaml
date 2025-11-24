@@ -23,7 +23,7 @@ spec:
       strategy: rollback
   values:
     # Environment variables for UniFi authentication
-    env:
+    extraEnv:
       - name: UP_UNIFI_DEFAULT_URL
         valueFrom:
           secretKeyRef:
