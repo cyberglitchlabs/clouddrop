@@ -31,7 +31,7 @@ spec:
                   RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
                     "http://jellyfin.media.svc.cluster.local:8096/Backup/Create" \
                     -H "Content-Type: application/json" \
-                    -H "X-Emby-Token: ${JELLYFIN_API_KEY}" \
+                    -H "Authorization: MediaBrowser Token=\"${JELLYFIN_API_KEY}\"" \
                     -d '{"includeJellyfindb":true,"includeLibrarydb":true}')
 
                   HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
