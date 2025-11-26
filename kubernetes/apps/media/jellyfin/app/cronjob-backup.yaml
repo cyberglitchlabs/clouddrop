@@ -1,0 +1,55 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: jellyfin-database-backup
+  namespace: media
+spec:
+  # Run daily at 2 AM
+  schedule: "0 2 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 86400  # Clean up after 24 hours
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: backup
+              image: curlimages/curl:latest
+              command:
+                - sh
+                - -c
+                - |
+                  set -e
+
+                  echo "Starting Jellyfin database backup via API..."
+
+                  # Call Jellyfin API to create a backup
+                  RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+                    "http://jellyfin.media.svc.cluster.local:8096/Backup/Create" \
+                    -H "Content-Type: application/json" \
+                    -H "X-Emby-Token: ${JELLYFIN_API_KEY}" \
+                    -d '{"includeJellyfindb":true,"includeLibrarydb":true}')
+
+                  HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+                  BODY=$(echo "$RESPONSE" | head -n-1)
+
+                  if [ "$HTTP_CODE" = "200" ]; then
+                    echo "✓ Backup created successfully!"
+                    echo "Response: $BODY"
+                  else
+                    echo "✗ Backup failed with HTTP code: $HTTP_CODE"
+                    echo "Response: $BODY"
+                    exit 1
+                  fi
+
+                  echo "Backup completed!"
+              env:
+                - name: JELLYFIN_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: jellyfin-api-key
+                      key: api-key

@@ -7,3 +7,4 @@ resources:
   - ./pvc-config-nfs.yaml
   - ./pvc-media.yaml
   - ./pv-media.yaml
+  - ./cronjob-backup.yaml
