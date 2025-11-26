@@ -8,3 +8,4 @@ resources:
   - ./pvc-media.yaml
   - ./pv-media.yaml
   - ./cronjob-backup.yaml
+  - ./secret-api-key.sops.yaml
