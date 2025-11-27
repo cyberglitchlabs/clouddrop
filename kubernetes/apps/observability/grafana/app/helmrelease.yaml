@@ -155,24 +155,25 @@ spec:
           file: dashboards/jellyfin-monitoring.json
 
       # UniFi network monitoring dashboards (UnPoller/Prometheus)
+      # Using GitHub raw URLs from v2.0.0 release
       unifi-dashboards:
         unifi-client-insights:
-          url: https://raw.githubusercontent.com/unpoller/dashboards/master/dashboards/prometheus/UniFi-Poller%3A%20Client%20Insights%20-%20Prometheus.json
+          url: https://raw.githubusercontent.com/unpoller/dashboards/refs/heads/master/v2.0.0/UniFi-Poller_%20Client%20Insights%20-%20Prometheus.json
           datasource: Prometheus
         unifi-client-dpi:
-          url: https://raw.githubusercontent.com/unpoller/dashboards/master/dashboards/prometheus/UniFi-Poller%3A%20Client%20DPI%20-%20Prometheus.json
+          url: https://raw.githubusercontent.com/unpoller/dashboards/refs/heads/master/v2.0.0/UniFi-Poller_%20Client%20DPI%20-%20Prometheus.json
           datasource: Prometheus
         unifi-network-sites:
-          url: https://raw.githubusercontent.com/unpoller/dashboards/master/dashboards/prometheus/UniFi-Poller%3A%20Network%20Sites%20-%20Prometheus.json
+          url: https://raw.githubusercontent.com/unpoller/dashboards/refs/heads/master/v2.0.0/UniFi-Poller_%20Network%20Sites%20-%20Prometheus.json
           datasource: Prometheus
         unifi-uap-insights:
-          url: https://raw.githubusercontent.com/unpoller/dashboards/master/dashboards/prometheus/UniFi-Poller%3A%20UAP%20Insights%20-%20Prometheus.json
+          url: https://raw.githubusercontent.com/unpoller/dashboards/refs/heads/master/v2.0.0/UniFi-Poller_%20UAP%20Insights%20-%20Prometheus.json
           datasource: Prometheus
         unifi-usg-insights:
-          url: https://raw.githubusercontent.com/unpoller/dashboards/master/dashboards/prometheus/UniFi-Poller%3A%20USG%20Insights%20-%20Prometheus.json
+          url: https://raw.githubusercontent.com/unpoller/dashboards/refs/heads/master/v2.0.0/UniFi-Poller_%20USG%20Insights%20-%20Prometheus.json
           datasource: Prometheus
         unifi-usw-insights:
-          url: https://raw.githubusercontent.com/unpoller/dashboards/master/dashboards/prometheus/UniFi-Poller%3A%20USW%20Insights%20-%20Prometheus.json
+          url: https://raw.githubusercontent.com/unpoller/dashboards/refs/heads/master/v2.0.0/UniFi-Poller_%20USW%20Insights%20-%20Prometheus.json
           datasource: Prometheus
 
     # Grafana configuration
