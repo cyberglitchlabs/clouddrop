@@ -28,6 +28,11 @@ spec:
     adminUser: admin
     adminPassword: admin # Change this in production!
 
+    # Environment variable to allow UI updates for provisioned dashboards
+    env:
+      - name: GF_PROVISIONING_DASHBOARDS_ALLOWUIUPDATES
+        value: "true"
+
     # Service configuration
     service:
       enabled: true
@@ -111,6 +116,7 @@ spec:
             type: file
             disableDeletion: false
             editable: true
+            allowUiUpdates: true
             options:
               path: /var/lib/grafana/dashboards/unifi-dashboards
 
@@ -218,7 +224,7 @@ spec:
         label: grafana_dashboard
         labelValue: "1"
         folderAnnotation: grafana_folder
-        folder: /tmp/dashboards
+        folder: /var/lib/grafana/dashboards
         defaultFolderName: General
         searchNamespace: ALL
         provider:
