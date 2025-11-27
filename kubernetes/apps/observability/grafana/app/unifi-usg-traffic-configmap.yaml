@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unifi-usg-traffic-dashboard
+  namespace: observability
+  labels:
+    grafana_dashboard: "1"
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/part-of: unifi-dashboards
+  annotations:
+    grafana_folder: UniFi
+    dashboard.unpoller.io/upstream-url: https://raw.githubusercontent.com/unpoller/dashboards/refs/heads/master/v2.0.0/UniFi-Poller_%20USG%20Traffic%20-%20Prometheus.json
+data:
+  unifi-usg-traffic.json: |
+    # This file is managed by automation. Do not edit manually.
+    # (dashboard JSON will be inserted here by the GitHub Action or a script)
