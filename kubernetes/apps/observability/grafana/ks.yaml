@@ -19,6 +19,8 @@ spec:
     namespace: flux-system
   wait: false
   dependsOn:
+    - name: cloudnative-pg
+      namespace: security
     - name: kube-prometheus-stack
   postBuild:
     substituteFrom:
