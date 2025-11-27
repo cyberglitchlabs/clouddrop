@@ -26,8 +26,8 @@ spec:
 
       image:
         pullPolicy: Always
-        # Force amd64 architecture by using explicit digest
-        tag: "3.5.7@sha256:bf26399a58b4719387b06abfd024ebca942d702b2e77cc600fa3439356584c73"
+        # Use older stable version to bypass exec format error
+        tag: "3.3.0"
 
       commonConfig:
         replication_factor: 1
