@@ -186,6 +186,10 @@ spec:
         allow_embedding: true
       auth.anonymous:
         enabled: false
+      database:
+        type: postgres
+        host: grafana-postgres-rw.observability.svc.cluster.local:5432
+        name: app
 
     # Resources
     resources:
@@ -194,6 +198,17 @@ spec:
         memory: 128Mi
       limits:
         memory: 512Mi
+
+    # Environment variables for database credentials
+    envValueFrom:
+      GF_DATABASE_USER:
+        secretKeyRef:
+          name: grafana-postgres-app
+          key: user
+      GF_DATABASE_PASSWORD:
+        secretKeyRef:
+          name: grafana-postgres-app
+          key: password
 
     # Sidecar for dashboard auto-loading
     sidecar:
