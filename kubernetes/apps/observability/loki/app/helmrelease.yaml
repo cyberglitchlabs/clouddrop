@@ -24,6 +24,9 @@ spec:
     loki:
       auth_enabled: false
 
+      image:
+        pullPolicy: Always
+
       commonConfig:
         replication_factor: 1
 
