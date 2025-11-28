@@ -29,11 +29,19 @@ jobs:
             echo "Downloading $dash..."
             curl -fsSLO "$base_url/$dash"
           done
+          
           # Rename files to replace %20 with dashes (ConfigMap keys can't contain %)
           for file in *%20*.json; do
             newname=$(echo "$file" | sed 's/%20/-/g')
             mv "$file" "$newname"
             echo "Renamed: $file -> $newname"
+          done
+          
+          # Replace datasource template variables with actual datasource name
+          # The Grafana sidecar doesn't perform datasource substitution, so we need to do it here
+          for file in UniFi-Poller_*.json; do
+            echo "Processing datasource variables in $file..."
+            sed -i 's/\${DS_PROMETHEUS}/Prometheus/g' "$file"
           done
 
       - name: Check for changes
