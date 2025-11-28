@@ -22,6 +22,8 @@ spec:
     service:
       type: ClusterIP
       port: 8443
+      annotations:
+        service.cilium.io/backend-protocol: "https"
 
     # Service account with admin permissions
     serviceAccount:
