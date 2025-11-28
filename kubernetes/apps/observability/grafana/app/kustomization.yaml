@@ -27,7 +27,7 @@ configMapGenerator:
   # UniFi dashboards from unpoller/dashboards
   - name: unifi-client-insights-dashboard
     files:
-      - dashboards/UniFi-Poller_%20Client%20Insights%20-%20Prometheus.json
+      - dashboards/UniFi-Poller_-Client-Insights---Prometheus.json
     options:
       labels:
         grafana_dashboard: "1"
@@ -36,7 +36,7 @@ configMapGenerator:
         kustomize.toolkit.fluxcd.io/substitute: disabled
   - name: unifi-client-dpi-dashboard
     files:
-      - dashboards/UniFi-Poller_%20Client%20DPI%20-%20Prometheus.json
+      - dashboards/UniFi-Poller_-Client-DPI---Prometheus.json
     options:
       labels:
         grafana_dashboard: "1"
@@ -45,7 +45,7 @@ configMapGenerator:
         kustomize.toolkit.fluxcd.io/substitute: disabled
   - name: unifi-network-sites-dashboard
     files:
-      - dashboards/UniFi-Poller_%20Network%20Sites%20-%20Prometheus.json
+      - dashboards/UniFi-Poller_-Network-Sites---Prometheus.json
     options:
       labels:
         grafana_dashboard: "1"
@@ -54,7 +54,7 @@ configMapGenerator:
         kustomize.toolkit.fluxcd.io/substitute: disabled
   - name: unifi-uap-insights-dashboard
     files:
-      - dashboards/UniFi-Poller_%20UAP%20Insights%20-%20Prometheus.json
+      - dashboards/UniFi-Poller_-UAP-Insights---Prometheus.json
     options:
       labels:
         grafana_dashboard: "1"
@@ -63,7 +63,7 @@ configMapGenerator:
         kustomize.toolkit.fluxcd.io/substitute: disabled
   - name: unifi-usg-insights-dashboard
     files:
-      - dashboards/UniFi-Poller_%20USG%20Insights%20-%20Prometheus.json
+      - dashboards/UniFi-Poller_-USG-Insights---Prometheus.json
     options:
       labels:
         grafana_dashboard: "1"
@@ -72,7 +72,7 @@ configMapGenerator:
         kustomize.toolkit.fluxcd.io/substitute: disabled
   - name: unifi-usw-insights-dashboard
     files:
-      - dashboards/UniFi-Poller_%20USW%20Insights%20-%20Prometheus.json
+      - dashboards/UniFi-Poller_-USW-Insights---Prometheus.json
     options:
       labels:
         grafana_dashboard: "1"
