@@ -1,0 +1,41 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kubewall
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: kubewall
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+      strategy: rollback
+  values:
+    # Service configuration
+    service:
+      type: ClusterIP
+      port: 8443
+
+    # Service account with admin permissions
+    serviceAccount:
+      create: true
+      name: kubewall
+
+    # Resource limits (required in this cluster)
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        memory: 256Mi
+
+    # TLS configuration (using self-signed certs by default)
+    tls:
+      secretName: ""  # Empty to use default self-signed certs
