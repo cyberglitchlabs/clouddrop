@@ -24,6 +24,55 @@ configMapGenerator:
         grafana_dashboard: "1"
       annotations:
         grafana_folder: "Media"
+  # UniFi dashboards from unpoller/dashboards
+  - name: unifi-client-insights-dashboard
+    files:
+      - dashboards/UniFi-Poller_%20Client%20Insights%20-%20Prometheus.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      annotations:
+        grafana_folder: "UniFi"
+  - name: unifi-client-dpi-dashboard
+    files:
+      - dashboards/UniFi-Poller_%20Client%20DPI%20-%20Prometheus.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      annotations:
+        grafana_folder: "UniFi"
+  - name: unifi-network-sites-dashboard
+    files:
+      - dashboards/UniFi-Poller_%20Network%20Sites%20-%20Prometheus.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      annotations:
+        grafana_folder: "UniFi"
+  - name: unifi-uap-insights-dashboard
+    files:
+      - dashboards/UniFi-Poller_%20UAP%20Insights%20-%20Prometheus.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      annotations:
+        grafana_folder: "UniFi"
+  - name: unifi-usg-insights-dashboard
+    files:
+      - dashboards/UniFi-Poller_%20USG%20Insights%20-%20Prometheus.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      annotations:
+        grafana_folder: "UniFi"
+  - name: unifi-usw-insights-dashboard
+    files:
+      - dashboards/UniFi-Poller_%20USW%20Insights%20-%20Prometheus.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      annotations:
+        grafana_folder: "UniFi"
 
 generatorOptions:
   disableNameSuffixHash: true
