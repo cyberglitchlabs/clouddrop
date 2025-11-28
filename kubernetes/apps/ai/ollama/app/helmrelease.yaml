@@ -89,7 +89,7 @@ spec:
         type: persistentVolumeClaim
         existingClaim: ollama-models-nfs
         globalMounts:
-          - path: /root/.ollama
+          - path: /home/ubuntu/.ollama
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
