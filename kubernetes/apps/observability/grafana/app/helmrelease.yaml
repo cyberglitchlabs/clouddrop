@@ -114,6 +114,14 @@ spec:
             allowUiUpdates: true
             options:
               path: /var/lib/grafana/dashboards/unifi-dashboards
+          - name: 'loki-dashboards'
+            orgId: 1
+            folder: 'Loki'
+            type: file
+            disableDeletion: true
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/loki-dashboards
 
     # Import dashboards from dotdc/grafana-dashboards-kubernetes via URLs
     dashboards:
