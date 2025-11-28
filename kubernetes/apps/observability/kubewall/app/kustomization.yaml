@@ -6,3 +6,15 @@ resources:
   - ./helmrelease.yaml
   - ./httproute.yaml
   - ./ocirepository.yaml
+
+patches:
+  - target:
+      kind: Service
+      name: kubewall
+    patch: |-
+      - op: add
+        path: /metadata/annotations/service.cilium.io~1backend-protocol
+        value: "https"
+      - op: add
+        path: /metadata/annotations/service.cilium.io~1tls-validation
+        value: "false"
