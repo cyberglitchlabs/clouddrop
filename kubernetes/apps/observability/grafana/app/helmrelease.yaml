@@ -27,10 +27,13 @@ spec:
     # Admin credentials
     adminUser: admin
     adminPassword: admin # Change this in production!
+    GF_SECURITY_ADMIN_PASSWORD__FILE: null
 
     # Environment variable to allow UI updates for provisioned dashboards
     env:
       - name: GF_PROVISIONING_DASHBOARDS_ALLOWUIUPDATES
+        value: "true"
+      - name: GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION
         value: "true"
 
     # Service configuration
