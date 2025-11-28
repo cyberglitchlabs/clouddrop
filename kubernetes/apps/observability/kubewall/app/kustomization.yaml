@@ -13,8 +13,6 @@ patches:
       name: kubewall
     patch: |-
       - op: add
-        path: /metadata/annotations/service.cilium.io~1backend-protocol
+        path: /spec/ports/0/appProtocol
         value: "https"
-      - op: add
-        path: /metadata/annotations/service.cilium.io~1tls-validation
-        value: "false"
+
