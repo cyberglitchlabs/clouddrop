@@ -36,6 +36,13 @@ spec:
       limits:
         memory: 256Mi
 
+    # Persistence configuration
+    persistence:
+      enabled: true
+      storageClass: qnap-nfs
+      size: 1Gi
+      accessMode: ReadWriteOnce
+
     # TLS configuration (using self-signed certs by default)
     tls:
       secretName: ""  # Empty to use default self-signed certs
