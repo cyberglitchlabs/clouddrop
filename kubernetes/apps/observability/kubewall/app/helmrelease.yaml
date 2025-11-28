@@ -37,8 +37,7 @@ spec:
         memory: 256Mi
 
     # Persistence configuration
-    persistence:
-      enabled: true
+    pvc:
       storageClass: qnap-nfs
       size: 1Gi
       accessMode: ReadWriteOnce
