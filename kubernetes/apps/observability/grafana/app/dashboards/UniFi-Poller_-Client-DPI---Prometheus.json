@@ -108,7 +108,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "gridPos": {
         "h": 2,
@@ -131,7 +131,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "refId": "A"
         }
@@ -142,7 +142,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "This shows lifetime rx+tx total and totals accumulated during the selected time range. The filters at the top of this page control _all_ of the graphs, and in some cases control the visibility of graphs. ie. Adding more clients displays more graphs under the collapsed Clients rows.",
       "fieldConfig": {
@@ -374,7 +374,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (site_name, category) (unpoller_client_dpi_receive_bytes{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", category=~\"$Category\"})",
           "format": "table",
@@ -386,7 +386,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (site_name, category) (unpoller_client_dpi_transmit_bytes{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", category=~\"$Category\"})",
           "format": "table",
@@ -398,7 +398,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (site_name, category) (increase(unpoller_client_dpi_receive_bytes{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", category=~\"$Category\"}[$__range]))",
           "format": "table",
@@ -410,7 +410,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (site_name, category) (increase(unpoller_client_dpi_transmit_bytes{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", category=~\"$Category\"}[$__range]))",
           "format": "table",
@@ -423,7 +423,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (site_name, category)  (increase(unpoller_client_dpi_receive_packets{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", category=~\"$Category\"}[$__range]))",
           "format": "table",
@@ -436,7 +436,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (site_name, category)  (increase(unpoller_client_dpi_transmit_packets{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", category=~\"$Category\"}[$__range]))",
           "format": "table",
@@ -467,7 +467,7 @@
       },
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Showing traffic by category.\nThis updates with the variables on the dashboard.",
       "fieldConfig": {
@@ -532,7 +532,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (category) (increase(unpoller_client_dpi_receive_bytes{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", [[Identifier]]!~\"TOTAL\", category=~\"$Category\"}[$__range])+increase(unpoller_client_dpi_transmit_bytes{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", [[Identifier]]!~\"TOTAL\", category=~\"$Category\"}[$__range]))",
           "instant": true,
@@ -555,7 +555,7 @@
       },
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Showing traffic by application for selected clients. This updates with the variables on the dashboard.",
       "fieldConfig": {
@@ -620,7 +620,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": " sum by (category, application) (increase(unpoller_client_dpi_receive_bytes{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", [[Identifier]]!~\"TOTAL\", category=~\"$Category\"}[$__range])+increase(unpoller_client_dpi_transmit_bytes{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", [[Identifier]]!~\"TOTAL\",  category=~\"$Category\"}[$__range]))",
           "instant": true,
@@ -637,7 +637,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Bytes Transferred by Category. Receive is on the negative axis.",
       "fieldConfig": {
@@ -776,7 +776,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (category)(rate(unpoller_client_dpi_receive_bytes{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", [[Identifier]]!~\"TOTAL\", category=~\"$Category\"}[$__interval]))",
           "interval": "$Smooth",
@@ -786,7 +786,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (category)(rate(unpoller_client_dpi_transmit_bytes{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", [[Identifier]]!~\"TOTAL\",  category=~\"$Category\"}[$__interval]))",
           "interval": "$Smooth",
@@ -800,7 +800,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Packets Transferred by Category. Receive is on the negative axis.",
       "fieldConfig": {
@@ -939,7 +939,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (category)(rate(unpoller_client_dpi_receive_packets{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", [[Identifier]]!~\"TOTAL\", category=~\"$Category\"}[$__interval]))",
           "interval": "$Smooth",
@@ -949,7 +949,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (category)(rate(unpoller_client_dpi_transmit_packets{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", [[Identifier]]!~\"TOTAL\", category=~\"$Category\"}[$__interval]))",
           "interval": "$Smooth",
@@ -989,7 +989,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Receive Packets per Application for $Client",
       "fieldConfig": {
@@ -1098,7 +1098,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "rate(unpoller_client_dpi_receive_packets{site_name=~\"$Site\", [[Identifier]]!~\"TOTAL\", [[Identifier]]=~\"$Client\"}[$__interval])",
           "interval": "$Smooth",
@@ -1138,7 +1138,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Transmit Bytes per Application for $Client",
       "fieldConfig": {
@@ -1247,7 +1247,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "rate(unpoller_client_dpi_transmit_bytes{site_name=~\"$Site\", [[Identifier]]!~\"TOTAL\", [[Identifier]]=~\"$Client\"}[$__interval])",
           "interval": "$Smooth",
@@ -1287,7 +1287,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Transmit Packets per Application for $Client",
       "fieldConfig": {
@@ -1396,7 +1396,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "rate(unpoller_client_dpi_transmit_packets{site_name=~\"$Site\", [[Identifier]]!~\"TOTAL\", [[Identifier]]=~\"$Client\"}[$__interval])",
           "interval": "$Smooth",
@@ -1436,7 +1436,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Receive Bytes per Application for $Client",
       "fieldConfig": {
@@ -1545,7 +1545,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "rate(unpoller_client_dpi_receive_bytes{site_name=~\"$Site\", [[Identifier]]!~\"TOTAL\", [[Identifier]]=~\"$Client\"}[$__interval])",
           "instant": false,
@@ -1587,7 +1587,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Receive Bytes per Client / Application",
       "fieldConfig": {
@@ -1694,7 +1694,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by ($Identifier,application) (rate(unpoller_client_dpi_receive_bytes{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", [[Identifier]]!~\"TOTAL\", category=\"$Category\"}[$__interval]))",
           "interval": "$Smooth",
@@ -1708,7 +1708,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Transmit Bytes per Client / Application",
       "fieldConfig": {
@@ -1815,7 +1815,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by ($Identifier,application) (rate(unpoller_client_dpi_transmit_bytes{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", [[Identifier]]!~\"TOTAL\", category=\"$Category\"}[$__interval]))",
           "interval": "$Smooth",
@@ -1829,7 +1829,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Receive Packets per Client / Application",
       "fieldConfig": {
@@ -1936,7 +1936,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by ($Identifier,application) (rate(unpoller_client_dpi_receive_packets{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", [[Identifier]]!~\"TOTAL\", category=\"$Category\"}[$__interval]))",
           "interval": "$Smooth",
@@ -1950,7 +1950,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Transmit Packets per Client / Application",
       "fieldConfig": {
@@ -2057,7 +2057,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by ($Identifier,application) (rate(unpoller_client_dpi_transmit_packets{site_name=~\"$Site\", [[Identifier]]=~\"$Client\", [[Identifier]]!~\"TOTAL\", category=\"$Category\"}[$__interval]))",
           "interval": "$Smooth",
@@ -2082,7 +2082,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "Prometheus"
         },
         "definition": "label_values(source)",
         "hide": 2,
@@ -2105,7 +2105,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "Prometheus"
         },
         "definition": "label_values(unpoller_client_uptime_seconds{source=~\"$Controller\"},site_name)",
         "hide": 0,
@@ -2155,7 +2155,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "Prometheus"
         },
         "definition": "label_values(unpoller_client_dpi_transmit_bytes{site_name=~\"$Site\"},[[Identifier]])",
         "hide": 0,
@@ -2178,7 +2178,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "Prometheus"
         },
         "definition": "label_values(unpoller_client_dpi_transmit_bytes{site_name=~\"$Site\"},category)",
         "hide": 0,

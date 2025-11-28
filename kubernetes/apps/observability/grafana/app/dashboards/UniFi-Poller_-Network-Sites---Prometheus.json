@@ -108,7 +108,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -172,7 +172,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum(unpoller_site_switches)",
           "format": "time_series",
@@ -187,7 +187,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -251,7 +251,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum(unpoller_site_aps)",
           "format": "time_series",
@@ -266,7 +266,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -330,7 +330,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum(unpoller_site_gateways)",
           "format": "time_series",
@@ -345,7 +345,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -410,7 +410,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum(unpoller_site_stations)",
           "format": "time_series",
@@ -425,7 +425,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "gridPos": {
         "h": 4,
@@ -448,7 +448,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "refId": "A"
         }
@@ -486,7 +486,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -550,7 +550,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_uptime_seconds",
           "format": "time_series",
@@ -565,7 +565,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "These are counters, totals, but they don't change much so the graph does not show rate.",
       "fieldConfig": {
@@ -674,7 +674,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_iots{site_name=~\"$Site\",subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -684,7 +684,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_adopted{site_name=~\"$Site\",subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -694,7 +694,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_disabled{site_name=~\"$Site\",subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -704,7 +704,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_disconnected{site_name=~\"$Site\",subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -714,7 +714,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_pending{site_name=~\"$Site\",subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -724,7 +724,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_gateways{site_name=~\"$Site\",subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -734,7 +734,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_switches{site_name=~\"$Site\",subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -744,7 +744,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_intenet_drops_total{site_name=~\"$Site\",subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -758,7 +758,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -826,7 +826,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_latency_seconds{site_name=~\"$Site\"}",
           "instant": true,
@@ -839,7 +839,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -906,7 +906,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_speedtest_ping{site_name=~\"$Site\"}",
           "interval": "$Smooth",
@@ -918,7 +918,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Shows data transfer for each subsystem on the site. RX is on the negative axis.",
       "fieldConfig": {
@@ -1018,7 +1018,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_transmit_rate_bytes{site_name=~\"$Site\", subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -1028,7 +1028,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_receive_rate_bytes{site_name=~\"$Site\", subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -1042,7 +1042,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "This graphs shows clients connected to the site.",
       "fieldConfig": {
@@ -1130,7 +1130,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_users{site_name=~\"$Site\", subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -1140,7 +1140,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_guests{site_name=~\"$Site\", subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -1150,7 +1150,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_remote_user_active{site_name=~\"$Site\", subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -1160,7 +1160,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_remote_user_inactive{site_name=~\"$Site\", subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -1170,7 +1170,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_site_stations{site_name=~\"$Site\", subsystem=~\"$Subsystem\"}",
           "interval": "$Smooth",
@@ -1184,7 +1184,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "This graphs shows clients connected to the site.",
       "fieldConfig": {
@@ -1285,7 +1285,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "rate(unpoller_site_remote_user_transmit_bytes_total{site_name=~\"$Site\"}[$__interval])",
           "interval": "$Smooth",
@@ -1295,7 +1295,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "rate(unpoller_site_remote_user_receive_bytes_total{site_name=~\"$Site\"}[$__interval])",
           "interval": "$Smooth",
@@ -1309,7 +1309,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "This graph only works if DPI is enabled on the controller and DPI collection is enabled in UniFi Poller. Rx is on the negative axis.",
       "fieldConfig": {
@@ -1450,7 +1450,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (category) (rate(unpoller_site_dpi_receive_bytes{site_name=~\"$Site\"}[$__interval]))",
           "hide": false,
@@ -1461,7 +1461,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (category) (rate(unpoller_site_dpi_transmit_bytes{site_name=~\"$Site\"}[$__interval]))",
           "hide": false,
@@ -1486,7 +1486,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "Prometheus"
         },
         "definition": "label_values(unpoller_site_transmit_rate_bytes,source)",
         "hide": 0,
@@ -1510,7 +1510,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "Prometheus"
         },
         "definition": "label_values(unpoller_site_transmit_rate_bytes{source=~\"$Controller\"},site_name)",
         "hide": 2,
@@ -1534,7 +1534,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "Prometheus"
         },
         "definition": "label_values(subsystem)",
         "hide": 2,

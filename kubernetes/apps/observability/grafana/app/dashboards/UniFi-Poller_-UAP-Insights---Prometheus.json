@@ -128,7 +128,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "gridPos": {
         "h": 3,
@@ -151,7 +151,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "refId": "A"
         }
@@ -172,7 +172,7 @@
       },
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "decimals": 0,
       "description": "Visualize wireless channel usage w/ wired client counts.",
@@ -237,7 +237,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "count by (channel) (unpoller_client_roam_count_total{site_name=~\"$Site\", ap_name=~\"$AP\"})\n",
           "instant": false,
@@ -265,7 +265,7 @@
       },
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "decimals": 0,
       "description": "Visualize how many clients are connected to which radios/APs.",
@@ -331,7 +331,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "count by (radio_desc) (unpoller_client_uptime_seconds{site_name=~\"$Site\", ap_name=~\"$AP\"})",
           "instant": false,
@@ -354,7 +354,7 @@
       },
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "decimals": 0,
       "description": "This shows an OUI breakdown from Unifi's perspective.",
@@ -420,7 +420,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "count by (oui) (unpoller_client_uptime_seconds{site_name=~\"$Site\", ap_name=~\"$AP\"})",
           "instant": false,
@@ -437,7 +437,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -492,7 +492,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum(unpoller_device_stations{site_name=~\"$Site\", name=~\"$AP\", station_type=\"user\"})",
           "instant": true,
@@ -505,7 +505,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -560,7 +560,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum(unpoller_device_stations{site_name=~\"$Site\", name=~\"$AP\", station_type=\"guest\"})",
           "instant": true,
@@ -579,7 +579,7 @@
       },
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "dateSettings": {
         "dateFormat": "YYYY-MM-DD",
@@ -636,7 +636,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "refId": "A"
         }
@@ -658,7 +658,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1009,7 +1009,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (ip,mac,model,name,serial,site_name,type,version) (unpoller_device_info{site_name=~\"$Site\", name=~\"$AP\"})",
           "format": "table",
@@ -1021,7 +1021,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (ip,mac,model,name,serial,site_name,type,version) (unpoller_device_uptime_seconds{site_name=~\"$Site\", name=~\"$AP\"})",
           "format": "table",
@@ -1034,7 +1034,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (ip,mac,model,name,serial,site_name,type,version) (unpoller_device_bytes_total{site_name=~\"$Site\", name=~\"$AP\"})",
           "format": "table",
@@ -1059,7 +1059,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "The counters in this table represent uptime totals and do not change with the time range selector. ",
       "fieldConfig": {
@@ -1674,7 +1674,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (bssid,essid,ap_name,name,radio,radio_name,vap_name,site_name,usage,source) (unpoller_device_vap_ccq_ratio{site_name=~\"$Site\", name=~\"$AP\"})",
           "format": "table",
@@ -1685,7 +1685,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (bssid,essid,ap_name,name,radio,radio_name,vap_name,site_name,usage,source) (unpoller_device_vap_average_client_signal{site_name=~\"$Site\", name=~\"$AP\"})",
           "format": "table",
@@ -1697,7 +1697,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (bssid,essid,ap_name,name,radio,radio_name,vap_name,site_name,usage,source) (unpoller_device_vap_receive_dropped_total{site_name=~\"$Site\", name=~\"$AP\"}) ",
           "format": "table",
@@ -1709,7 +1709,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (bssid,essid,ap_name,name,radio,radio_name,vap_name,site_name,usage,source) (unpoller_device_vap_transmit_dropped_total{site_name=~\"$Site\", name=~\"$AP\"}) ",
           "format": "table",
@@ -1721,7 +1721,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (bssid,essid,ap_name,name,radio,radio_name,vap_name,site_name,usage,source) (unpoller_device_vap_transmit_bytes_total{site_name=~\"$Site\", name=~\"$AP\"}) ",
           "format": "table",
@@ -1733,7 +1733,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (bssid,essid,ap_name,name,radio,radio_name,vap_name,site_name,usage,source) (unpoller_device_vap_receive_bytes_total{site_name=~\"$Site\", name=~\"$AP\"}) ",
           "format": "table",
@@ -1745,7 +1745,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (bssid,essid,ap_name,name,radio,radio_name,vap_name,site_name,usage,source) (unpoller_device_vap_receive_packets_total{site_name=~\"$Site\", name=~\"$AP\"}) ",
           "format": "table",
@@ -1757,7 +1757,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum by (bssid,essid,ap_name,name,radio,radio_name,vap_name,site_name,usage,source) (unpoller_device_vap_transmit_packets_total{site_name=~\"$Site\", name=~\"$AP\"}) ",
           "format": "table",
@@ -1782,7 +1782,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1920,7 +1920,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_device_cpu_utilization_ratio{site_name=~\"$Site\",name=~\"$AP\"}",
           "interval": "$Smooth",
@@ -1934,7 +1934,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -2072,7 +2072,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_device_memory_utilization_ratio{site_name=~\"$Site\",name=~\"$AP\"}",
           "interval": "$Smooth",
@@ -2086,7 +2086,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -2291,7 +2291,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_device_load_average_1{site_name=~\"$Site\",name=~\"$AP\"}",
           "interval": "$Smooth",
@@ -2301,7 +2301,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_device_load_average_5{site_name=~\"$Site\",name=~\"$AP\"}",
           "hide": true,
@@ -2312,7 +2312,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_device_load_average_15{site_name=~\"$Site\",name=~\"$AP\"}",
           "interval": "$Smooth",
@@ -2327,7 +2327,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -2434,7 +2434,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_device_stations{site_name=~\"$Site\",name=~\"$AP\"}",
           "interval": "$Smooth",
@@ -2449,7 +2449,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Devices TX / RX bytes per second grouped by OUI. RX on negative axis.",
       "fieldConfig": {
@@ -2569,7 +2569,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (unpoller_client_receive_rate_bytes{site_name=~\"$Site\",ap_name=~\"$AP\"}) by (oui)",
           "interval": "$Smooth",
@@ -2579,7 +2579,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (unpoller_client_transmit_rate_bytes{site_name=~\"$Site\",ap_name=~\"$AP\"}) by (oui)",
           "interval": "$Smooth",
@@ -2593,7 +2593,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -2720,7 +2720,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (unpoller_device_radio_stations{radio=\"ng\", site_name=~\"$Site\",name=~\"$AP\", station_type=\"guest\"}) by  (radio,name)",
           "hide": false,
@@ -2731,7 +2731,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (unpoller_device_radio_stations{radio=\"ng\", site_name=~\"$Site\",name=~\"$AP\", station_type=\"user\"}) by (radio,name)",
           "interval": "$Smooth",
@@ -2741,7 +2741,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (unpoller_device_radio_stations{radio=\"na\", site_name=~\"$Site\",name=~\"$AP\", station_type=\"user\"}) by (radio,name)",
           "hide": false,
@@ -2752,7 +2752,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (unpoller_device_radio_stations{radio=\"na\", site_name=~\"$Site\",name=~\"$AP\", station_type=\"guest\"}) by (radio,name)",
           "hide": false,
@@ -2767,7 +2767,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -2895,7 +2895,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_device_vap_average_client_signal{name=~\"$AP\"}",
           "interval": "$Smooth",
@@ -2910,7 +2910,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -3038,7 +3038,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "avg(unpoller_client_rssi_db{ap_name=~\"$AP\"}) by (ap_name, radio_name)",
           "interval": "$Smooth",
@@ -3053,7 +3053,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -3180,7 +3180,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_device_vap_ccq_ratio{site_name=~\"$Site\",name=~\"$AP\", radio=\"na\"}",
           "interval": "$Smooth",
@@ -3195,7 +3195,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -3322,7 +3322,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_device_vap_ccq_ratio{site_name=~\"$Site\",name=~\"$AP\", radio=\"ng\"}",
           "interval": "1m",
@@ -3341,7 +3341,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "decimals": 0,
       "editable": true,
@@ -3399,7 +3399,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_device_radio_channel_utilization_receive_ratio{radio=\"na\",site_name=~\"$Site\",name=~\"$AP\"}",
           "interval": "$Smooth",
@@ -3409,7 +3409,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_device_radio_channel_utilization_transmit_ratio{radio=\"na\",site_name=~\"$Site\",name=~\"$AP\"}",
           "interval": "$Smooth",
@@ -3452,7 +3452,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Displays 2.4GHz usage.",
       "fieldConfig": {
@@ -3559,7 +3559,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_device_radio_channel_utilization_receive_ratio{radio=\"ng\",site_name=~\"$Site\",name=~\"$AP\"}",
           "interval": "$Smooth",
@@ -3569,7 +3569,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "unpoller_device_radio_channel_utilization_transmit_ratio{radio=\"ng\",site_name=~\"$Site\",name=~\"$AP\"}",
           "interval": "$Smooth",
@@ -3583,7 +3583,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "RX is on the negative Axis.",
       "fieldConfig": {
@@ -3703,7 +3703,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_transmit_bytes_total{radio=\"na\",site_name=~\"$Site\",name=~\"$AP\"}[5m])) by (name)",
           "interval": "$Smooth",
@@ -3713,7 +3713,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_receive_bytes_total{radio=\"na\",site_name=~\"$Site\",name=~\"$AP\"}[5m])) by (name)",
           "interval": "$Smooth",
@@ -3728,7 +3728,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "RX is on the negative Axis.",
       "fieldConfig": {
@@ -3847,7 +3847,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_transmit_bytes_total{radio=\"ng\",site_name=~\"$Site\",name=~\"$AP\"}[5m])) by (name)",
           "interval": "$Smooth",
@@ -3857,7 +3857,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_receive_bytes_total{radio=\"ng\",site_name=~\"$Site\",name=~\"$AP\"}[5m])) by (name)",
           "interval": "$Smooth",
@@ -3872,7 +3872,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "PPS on the na band. In is on the negative Axis.",
       "fieldConfig": {
@@ -3992,7 +3992,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_transmit_packets_total{radio=\"na\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "hide": false,
@@ -4003,7 +4003,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_receive_packets_total{radio=\"na\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4017,7 +4017,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "PPS on the ng band calculated in 30 second buckets. In is on the negative Axis.",
       "fieldConfig": {
@@ -4137,7 +4137,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_transmit_packets_total{radio=\"ng\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4147,7 +4147,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_receive_packets_total{radio=\"ng\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4161,7 +4161,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Visualize packet errors (several types)  per second in the 5GHz band.",
       "fieldConfig": {
@@ -4281,7 +4281,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_receive_dropped_total{radio=\"na\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4291,7 +4291,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_transmit_dropped_total{radio=\"na\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4301,7 +4301,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_receive_errors_total{radio=\"na\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4311,7 +4311,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_transmit_errors_total{radio=\"na\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4321,7 +4321,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_receive_crypts_total{radio=\"na\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4331,7 +4331,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_receive_frags_total{radio=\"na\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4341,7 +4341,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_receive_nwids_total{radio=\"na\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4351,7 +4351,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_transmit_retries_total{radio=\"na\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4366,7 +4366,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "In is on the negative axis.",
       "fieldConfig": {
@@ -4486,7 +4486,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_receive_dropped_total{radio=\"ng\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4496,7 +4496,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_transmit_dropped_total{radio=\"ng\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4506,7 +4506,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_receive_errors_total{radio=\"ng\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4516,7 +4516,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_transmit_errors_total{radio=\"ng\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4526,7 +4526,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_receive_crypts_total{radio=\"ng\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4536,7 +4536,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_receive_frags_total{radio=\"ng\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4546,7 +4546,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_receive_nwids_total{radio=\"ng\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4556,7 +4556,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "expr": "sum (rate(unpoller_device_vap_transmit_retries_total{radio=\"ng\",site_name=~\"$Site\",name=~\"$AP\"}[$__interval])) by (name)",
           "interval": "$Smooth",
@@ -4583,7 +4583,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "Prometheus"
         },
         "definition": "label_values(unpoller_device_info{type=\"uap\"},source)",
         "hide": 2,
@@ -4605,7 +4605,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "Prometheus"
         },
         "definition": "label_values(unpoller_device_info{source=~\"$Controller\", type=\"uap\"},site_name)",
         "hide": 0,
@@ -4627,7 +4627,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "Prometheus"
         },
         "definition": "label_values(unpoller_device_info{site_name=~\"$Site\", type=~\"uap|udm\",model!=\"UDMPRO\"},name)",
         "hide": 0,
