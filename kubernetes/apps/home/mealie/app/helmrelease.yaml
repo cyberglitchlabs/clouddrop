@@ -115,6 +115,6 @@ spec:
       app:
         hostnames: ["mealie.${SECRET_DOMAIN}"]
         parentRefs:
-          - name: internal
+          - name: external
             namespace: kube-system
             sectionName: https
