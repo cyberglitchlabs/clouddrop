@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: mealie-postgres
+  namespace: home
+spec:
+  instances: 1
+
+  # Use PostgreSQL 17
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.2
+
+  postgresql:
+    parameters:
+      max_connections: "50"
+      shared_buffers: 128MB
+
+  storage:
+    size: 5Gi
+    storageClass: qnap-nfs
+
+  monitoring:
+    enablePodMonitor: true
