@@ -6,4 +6,5 @@ namespace: home
 resources:
   - ./ocirepository.yaml
   - ./postgres-cluster.yaml
+  - ./secret.sops.yaml
   - ./helmrelease.yaml
