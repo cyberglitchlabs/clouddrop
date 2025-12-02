@@ -33,6 +33,9 @@ spec:
               lidarr__AUTH__METHOD: Forms
               lidarr__LOG__LEVEL: info
               lidarr__APP__THEME: dark
+              # Workaround for NFS AccessViolationException
+              DOTNET_EnableDiagnostics: "0"
+              DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: "1"
             probes:
               liveness:
                 enabled: true
@@ -100,6 +103,12 @@ spec:
         existingClaim: lidarr-media-smb
         globalMounts:
           - path: /media
+      tmp:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+        globalMounts:
+          - path: /tmp
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
