@@ -33,9 +33,6 @@ spec:
               lidarr__AUTH__METHOD: Forms
               lidarr__LOG__LEVEL: info
               lidarr__APP__THEME: dark
-              # Workaround for NFS AccessViolationException
-              DOTNET_EnableDiagnostics: "0"
-              DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: "1"
             probes:
               liveness:
                 enabled: true
