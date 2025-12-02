@@ -29,6 +29,8 @@ spec:
               repository: lscr.io/linuxserver/lidarr
               tag: 3.1.0.4875-ls12
             env:
+              PUID: "1000"
+              PGID: "1000"
               TZ: America/Chicago
               lidarr__AUTH__METHOD: Forms
               lidarr__LOG__LEVEL: info
@@ -69,9 +71,9 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups: [65539]
     service:
