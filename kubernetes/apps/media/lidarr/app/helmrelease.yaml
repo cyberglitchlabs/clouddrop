@@ -32,7 +32,7 @@ spec:
               PUID: "1000"
               PGID: "1000"
               TZ: America/Chicago
-              lidarr__AUTH__METHOD: Forms
+#              lidarr__AUTH__METHOD: Forms
               lidarr__LOG__LEVEL: info
               lidarr__APP__THEME: dark
             probes:
