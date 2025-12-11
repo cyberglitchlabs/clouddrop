@@ -24,7 +24,7 @@ spec:
           app:
             image:
               repository: getmeili/meilisearch
-              tag: v1.27.0
+              tag: v1.29.0
             env:
               TZ: America/Chicago
               MEILI_ENV: production
