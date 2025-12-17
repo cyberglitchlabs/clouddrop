@@ -43,9 +43,9 @@ spec:
                   httpGet:
                     path: /ping
                     port: 8686
-                  initialDelaySeconds: 10
-                  periodSeconds: 10
-                  timeoutSeconds: 5
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
                   failureThreshold: 5
               readiness:
                 enabled: true
@@ -54,9 +54,9 @@ spec:
                   httpGet:
                     path: /ping
                     port: 8686
-                  initialDelaySeconds: 5
-                  periodSeconds: 10
-                  timeoutSeconds: 5
+                  initialDelaySeconds: 15
+                  periodSeconds: 20
+                  timeoutSeconds: 10
                   failureThreshold: 3
             securityContext:
               allowPrivilegeEscalation: false
@@ -66,10 +66,10 @@ spec:
                 add: ["CHOWN", "SETUID", "SETGID"]
             resources:
               requests:
-                cpu: 100m
-                memory: 256Mi
+                cpu: 500m
+                memory: 512Mi
               limits:
-                memory: 1024Mi
+                memory: 2Gi
     defaultPodOptions:
       securityContext:
         fsGroup: 1000
