@@ -26,8 +26,10 @@ spec:
         containers:
           lidarr:
             image:
-              repository: lscr.io/linuxserver/lidarr
-              tag: 3.1.0.4875-ls12
+              repository: blampe/lidarr
+              #repository: lscr.io/linuxserver/lidarr
+              tag: latest
+              #tag: 3.1.0.4875-ls12
             env:
               PUID: "1000"
               PGID: "1000"
