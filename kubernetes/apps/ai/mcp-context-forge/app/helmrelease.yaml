@@ -38,6 +38,7 @@ spec:
               AUTH_REQUIRED: "false"
               SECURE_COOKIES: "false"
               ENVIRONMENT: "production"
+              PLUGINS_ENABLED: "true"
               # CORS configuration for Open WebUI access
               CORS_ENABLED: "true"
               CORS_ALLOW_CREDENTIALS: "true"
