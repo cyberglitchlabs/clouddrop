@@ -1,0 +1,17 @@
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: local-ai
+  namespace: ai
+spec:
+  parentRefs:
+    - name: external
+      namespace: kube-system
+      sectionName: https
+  hostnames:
+    - "localai.cyberglitch.systems"
+  rules:
+    - backendRefs:
+        - name: local-ai
+          port: 80
