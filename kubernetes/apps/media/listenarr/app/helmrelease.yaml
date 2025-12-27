@@ -27,7 +27,7 @@ spec:
           listenarr:
             image:
               repository: ghcr.io/therobbiedavis/listenarr
-              tag: canary-0.2.40
+              tag: canary-0.2.45
             env:
               TZ: America/Chicago
               LISTENARR__LOG__LEVEL: info
