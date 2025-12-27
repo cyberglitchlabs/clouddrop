@@ -30,7 +30,16 @@ spec:
     deployment:
       image:
         repository: quay.io/go-skynet/local-ai
-        tag: latest
+        tag: latest-gpu-nvidia-cuda-12
+      runtimeClassName: nvidia
+      resources:
+        requests:
+          cpu: 200m
+          memory: 4Gi
+          nvidia.com/gpu: 1
+        limits:
+          memory: 8Gi
+          nvidia.com/gpu: 1
     ingress:
       enabled: false
     persistence:
