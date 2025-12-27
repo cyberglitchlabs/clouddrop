@@ -33,3 +33,20 @@ spec:
         tag: latest
     ingress:
       enabled: false
+    persistence:
+      models:
+        enabled: true
+        type: pvc
+        storageClass: qnap-nfs
+        accessModes:
+          - ReadWriteMany
+        size: 10Gi
+        mountPath: /models
+      output:
+        enabled: true
+        type: pvc
+        storageClass: qnap-nfs
+        accessModes:
+          - ReadWriteMany
+        size: 5Gi
+        mountPath: /tmp/generated/images
