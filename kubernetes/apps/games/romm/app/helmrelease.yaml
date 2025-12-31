@@ -29,7 +29,7 @@ spec:
           romm:
             image:
               repository: rommapp/romm
-              tag: 4.4.1
+              tag: 4.5.0
             envFrom:
               - secretRef:
                   name: romm-secrets
