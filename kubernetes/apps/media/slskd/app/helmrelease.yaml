@@ -32,6 +32,16 @@ spec:
               TZ: America/Chicago
               SLSKD_REMOTE_CONFIGURATION: "true"
               SLSKD_SHARED_DIR: "/media"
+              SLSKD_NO_AUTH: "true"
+              SLSKD_NO_HTTPS: "true"
+              SLSKD_NO_VERSION_CHECK: "true"
+              SLSKD_SLSK_DIAG_LEVEL: Debug
+              DOTNET_BUNDLE_EXTRACT_BASE_DIR: "/tmp/.net"
+            ports:
+              - name: http
+                containerPort: 5030
+              - name: soulseek
+                containerPort: 50300
             probes:
               liveness:
                 enabled: true
@@ -118,3 +128,7 @@ spec:
         existingClaim: slskd-media-smb
         globalMounts:
           - path: /media
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
