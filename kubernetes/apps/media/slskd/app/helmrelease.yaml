@@ -27,7 +27,7 @@ spec:
           slskd:
             image:
               repository: slskd/slskd
-              tag: latest
+              tag: 0.24.1
             env:
               TZ: America/Chicago
               SLSKD_REMOTE_CONFIGURATION: "true"
