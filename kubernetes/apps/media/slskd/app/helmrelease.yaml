@@ -31,7 +31,9 @@ spec:
             env:
               TZ: America/Chicago
               SLSKD_REMOTE_CONFIGURATION: "true"
-              # SLSKD_SHARED_DIR: "/media"
+              SLSKD_SHARED_DIR: "/media/Music"
+              SLSKD_DOWNLOADS_DIR: "/media/downloads"
+              SLSKD_INCOMPLETE_DIR: "/media/incomplete"
               SLSKD_NO_AUTH: "true"
               SLSKD_NO_HTTPS: "true"
               SLSKD_NO_VERSION_CHECK: "true"
