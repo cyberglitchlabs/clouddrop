@@ -1,0 +1,93 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: slskd
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bjw-s-app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  dependsOn:
+    - name: cloudflare-tunnel
+      namespace: network
+  values:
+    controllers:
+      slskd:
+        strategy: RollingUpdate
+        containers:
+          slskd:
+            image:
+              repository: slskd/slskd
+              tag: latest
+            env:
+              TZ: America/Chicago
+              SLSKD_REMOTE_CONFIGURATION: "true"
+              SLSKD_SHARED_DIR: "/media"
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
+        supplementalGroups: [65539]
+    service:
+      app:
+        controller: slskd
+        ports:
+          http:
+            port: 5030
+            targetPort: 5030
+          soulseek:
+            port: 50300
+            targetPort: 50300
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 5030
+    persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: slskd-nfs
+        globalMounts:
+          - path: /app
+      media:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: slskd-media-smb
+        globalMounts:
+          - path: /media
