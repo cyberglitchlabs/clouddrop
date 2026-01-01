@@ -34,7 +34,7 @@ spec:
               UMASK: "022"
               FLASK_ENV: production
               PYTHONPATH: /app
-              SOULSYNC_CONFIG_PATH: /app/config/config.json
+              SOULSYNC_CONFIG_PATH: /config/config.json
               SLSKD_HOST: slskd.media.svc.cluster.local
               SLSKD_PORT: "5030"
               SLSKD_USE_SSL: "false"
@@ -102,7 +102,7 @@ spec:
         type: persistentVolumeClaim
         existingClaim: soulsync-nfs
         globalMounts:
-          - path: /app/config
+          - path: /config
           - path: /app/data
       media:
         enabled: true
