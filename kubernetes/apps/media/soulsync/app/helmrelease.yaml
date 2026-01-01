@@ -35,6 +35,12 @@ spec:
               FLASK_ENV: production
               PYTHONPATH: /app
               SOULSYNC_CONFIG_PATH: /app/config/config.json
+              SLSKD_HOST: slskd.media.svc.cluster.local
+              SLSKD_PORT: "5030"
+              SLSKD_USE_SSL: "false"
+            envFrom:
+              - secretRef:
+                  name: soulsync-secret
             probes:
               liveness:
                 enabled: true
