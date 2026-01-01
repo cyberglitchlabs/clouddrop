@@ -17,6 +17,7 @@ resources:
   - ./profilarr/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./slskd/ks.yaml
+  - ./soulsync/ks.yaml
   - ./seerr/ks.yaml
   - ./huntarr/ks.yaml
   - ./bazarr/ks.yaml
