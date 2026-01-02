@@ -85,17 +85,6 @@ spec:
             port: 8888
           tidal:
             port: 8889
-    route:
-      app:
-        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
-        parentRefs:
-          - name: external
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: 8008
     persistence:
       config:
         enabled: true
