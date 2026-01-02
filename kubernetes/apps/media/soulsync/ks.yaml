@@ -3,7 +3,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: soulsync
-  namespace: flux-system
+  namespace: media
 spec:
   targetNamespace: media
   path: ./kubernetes/apps/media/soulsync/app
@@ -14,8 +14,6 @@ spec:
     namespace: flux-system
   decryption:
     provider: sops
-    secretRef:
-      name: sops-age
   postBuild:
     substituteFrom:
       - kind: Secret
