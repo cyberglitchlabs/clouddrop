@@ -24,6 +24,31 @@ configMapGenerator:
         grafana_dashboard: "1"
       annotations:
         grafana_folder: "Media"
+  # FluxCD dashboards
+  - name: grafana-flux-cluster-dashboard
+    files:
+      - dashboards/flux-cluster.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      annotations:
+        grafana_folder: "Flux"
+  - name: grafana-flux-control-plane-dashboard
+    files:
+      - dashboards/flux-control-plane.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      annotations:
+        grafana_folder: "Flux"
+  - name: grafana-flux-logs-dashboard
+    files:
+      - dashboards/flux-logs.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      annotations:
+        grafana_folder: "Flux"
   # UniFi dashboards from unpoller/dashboards
   - name: unifi-client-insights-dashboard
     files:
