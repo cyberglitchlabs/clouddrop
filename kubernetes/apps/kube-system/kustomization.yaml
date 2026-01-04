@@ -13,3 +13,4 @@ resources:
   - ./dcgm-exporter/ks.yaml
   - ./reloader/ks.yaml
   - ./pod-garbage-collector/ks.yaml
+  - ./etcd-backup/ks.yaml

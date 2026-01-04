@@ -1,0 +1,69 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: etcd-backup
+  namespace: kube-system
+spec:
+  schedule: "0 */6 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: backup-storage
+              persistentVolumeClaim:
+                claimName: etcd-backup-pvc
+            - name: talos-secrets
+              secret:
+                secretName: etcd-backup-secret
+          containers:
+            - name: talosctl
+              image: alpine:latest
+              command: ["/bin/sh", "-c"]
+              args:
+                - |
+                  # Install dependencies
+                  apk add --no-cache curl bash
+
+                  # Download talosctl
+                  echo "Downloading talosctl..."
+                  curl -L -o /usr/local/bin/talosctl https://github.com/siderolabs/talos/releases/download/v1.11.5/talosctl-linux-amd64
+                  chmod +x /usr/local/bin/talosctl
+
+                  # Ensure backup directory exists
+                  mkdir -p /backups
+
+                  # Create filename with timestamp
+                  FILENAME="etcd-snapshot-$(date +%s).snapshot"
+
+                  echo "Creating snapshot: /backups/$FILENAME"
+
+                  # Take snapshot mapping to one of the control plane nodes
+                  # We use a loop or just target the VIP/one node if available.
+                  # For now targeting both just in case one is down, or just the first one.
+                  # Better approach: Try one, if fails try other.
+
+                  # Attempt backup on tuf1
+                  if talosctl -n 192.168.42.254 etcd snapshot "/backups/$FILENAME" --talosconfig=/var/secrets/talosconfig; then
+                      echo "Backup successful on tuf1!"
+                  else
+                      echo "Backup failed on tuf1, trying skully..."
+                      if talosctl -n 192.168.42.253 etcd snapshot "/backups/$FILENAME" --talosconfig=/var/secrets/talosconfig; then
+                          echo "Backup successful on skully!"
+                      else
+                          echo "Backup failed on skully too!"
+                          exit 1
+                      fi
+                  fi
+
+                  # Cleanup old backups (keep last 10)
+                  find /backups -name "etcd-snapshot-*.snapshot" -type f -printf '%T@ %p\n' | sort -n | head -n -10 | cut -d' ' -f2- | xargs -r rm
+              volumeMounts:
+                - name: backup-storage
+                  mountPath: /backups
+                - name: talos-secrets
+                  mountPath: /var/secrets
+          restartPolicy: OnFailure
