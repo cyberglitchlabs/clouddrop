@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: ghcr.io/ibm/mcp-context-forge
-              tag: 1.0.0-BETA-1
+              tag: latest@sha256:d18a31510d6c66228b97565f61a0867732ad1fe84054f9ab4559bb721a9eca31
               pullPolicy: Always
             env:
               TZ: America/Chicago
@@ -47,12 +47,12 @@ spec:
               # Redis configuration
               REDIS_HOST: mcp-context-forge-redis.ai.svc.cluster.local
               REDIS_PORT: "6379"
-              # Database URL (constructed from credentials)
+              # Database URL (referenced from SOPS secret for security)
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
-                    name: mcp-context-forge-postgres-app
-                    key: uri
+                    name: mcp-context-forge-secrets
+                    key: DATABASE_URL
               # JWT and admin secrets from secret
               JWT_SECRET_KEY:
                 valueFrom:
