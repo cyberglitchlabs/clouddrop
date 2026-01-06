@@ -176,27 +176,6 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "",
-          "value": ""
-        },
-        "description": "String to search for",
-        "hide": 0,
-        "label": "Search Query",
-        "name": "query",
-        "options": [
-          {
-            "selected": true,
-            "text": "",
-            "value": ""
-          }
-        ],
-        "query": "",
-        "skipUrlSync": false,
-        "type": "textbox"
-      },
-      {
         "allValue": "info|error",
         "current": {
           "selected": false,
