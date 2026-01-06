@@ -84,6 +84,21 @@ spec:
       prometheus:
         monitor:
           enabled: true
+      rbac:
+        extraRules:
+          - apiGroups:
+              - source.toolkit.fluxcd.io
+              - kustomize.toolkit.fluxcd.io
+              - helm.toolkit.fluxcd.io
+            resources:
+              - gitrepositories
+              - buckets
+              - helmrepositories
+              - helmcharts
+              - ocirepositories
+              - kustomizations
+              - helmreleases
+            verbs: ["list", "watch"]
       customResourceState:
         enabled: true
         config:
