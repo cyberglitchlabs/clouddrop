@@ -84,6 +84,144 @@ spec:
       prometheus:
         monitor:
           enabled: true
+      customResourceState:
+        enabled: true
+        config:
+          spec:
+            resources:
+              - groupVersionKind:
+                  group: source.toolkit.fluxcd.io
+                  version: v1
+                  kind: GitRepository
+                metricNamePrefix: gotk
+                metrics:
+                  - name: resource_info
+                    help: "Flux GitRepository info"
+                    each:
+                      type: Info
+                      info:
+                        labelsFromPath:
+                          name: [metadata, name]
+                          exported_namespace: [metadata, namespace]
+                          ready: [status, conditions, "[type=Ready]", status]
+                          suspended: [spec, suspend]
+                          revision: [status, artifact, revision]
+                          url: [spec, url]
+                commonLabels:
+                  customresource_group: source.toolkit.fluxcd.io
+                  customresource_kind: GitRepository
+                  customresource_version: v1
+              - groupVersionKind:
+                  group: source.toolkit.fluxcd.io
+                  version: v1
+                  kind: HelmRepository
+                metricNamePrefix: gotk
+                metrics:
+                  - name: resource_info
+                    help: "Flux HelmRepository info"
+                    each:
+                      type: Info
+                      info:
+                        labelsFromPath:
+                          name: [metadata, name]
+                          exported_namespace: [metadata, namespace]
+                          ready: [status, conditions, "[type=Ready]", status]
+                          suspended: [spec, suspend]
+                          revision: [status, artifact, revision]
+                          url: [spec, url]
+                commonLabels:
+                  customresource_group: source.toolkit.fluxcd.io
+                  customresource_kind: HelmRepository
+                  customresource_version: v1
+              - groupVersionKind:
+                  group: source.toolkit.fluxcd.io
+                  version: v1beta2
+                  kind: Bucket
+                metricNamePrefix: gotk
+                metrics:
+                  - name: resource_info
+                    help: "Flux Bucket info"
+                    each:
+                      type: Info
+                      info:
+                        labelsFromPath:
+                          name: [metadata, name]
+                          exported_namespace: [metadata, namespace]
+                          ready: [status, conditions, "[type=Ready]", status]
+                          suspended: [spec, suspend]
+                          revision: [status, artifact, revision]
+                          bucket_name: [spec, bucketName]
+                commonLabels:
+                  customresource_group: source.toolkit.fluxcd.io
+                  customresource_kind: Bucket
+                  customresource_version: v1beta2
+              - groupVersionKind:
+                  group: source.toolkit.fluxcd.io
+                  version: v1beta2
+                  kind: OCIRepository
+                metricNamePrefix: gotk
+                metrics:
+                  - name: resource_info
+                    help: "Flux OCIRepository info"
+                    each:
+                      type: Info
+                      info:
+                        labelsFromPath:
+                          name: [metadata, name]
+                          exported_namespace: [metadata, namespace]
+                          ready: [status, conditions, "[type=Ready]", status]
+                          suspended: [spec, suspend]
+                          revision: [status, artifact, revision]
+                          url: [spec, url]
+                commonLabels:
+                  customresource_group: source.toolkit.fluxcd.io
+                  customresource_kind: OCIRepository
+                  customresource_version: v1beta2
+              - groupVersionKind:
+                  group: kustomize.toolkit.fluxcd.io
+                  version: v1
+                  kind: Kustomization
+                metricNamePrefix: gotk
+                metrics:
+                  - name: resource_info
+                    help: "Flux Kustomization info"
+                    each:
+                      type: Info
+                      info:
+                        labelsFromPath:
+                          name: [metadata, name]
+                          exported_namespace: [metadata, namespace]
+                          ready: [status, conditions, "[type=Ready]", status]
+                          suspended: [spec, suspend]
+                          revision: [status, lastAppliedRevision]
+                          source_name: [spec, sourceRef, name]
+                commonLabels:
+                  customresource_group: kustomize.toolkit.fluxcd.io
+                  customresource_kind: Kustomization
+                  customresource_version: v1
+              - groupVersionKind:
+                  group: helm.toolkit.fluxcd.io
+                  version: v2
+                  kind: HelmRelease
+                metricNamePrefix: gotk
+                metrics:
+                  - name: resource_info
+                    help: "Flux HelmRelease info"
+                    each:
+                      type: Info
+                      info:
+                        labelsFromPath:
+                          name: [metadata, name]
+                          exported_namespace: [metadata, namespace]
+                          ready: [status, conditions, "[type=Ready]", status]
+                          suspended: [spec, suspend]
+                          revision: [status, history, "0", chartVersion]
+                          chart_name: [status, history, "0", chartName]
+                          chart_source_name: [spec, chartRef, name]
+                commonLabels:
+                  customresource_group: helm.toolkit.fluxcd.io
+                  customresource_kind: HelmRelease
+                  customresource_version: v2
 
     grafana:
       enabled: false
