@@ -1,0 +1,56 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: promtail
+  namespace: observability
+spec:
+  interval: 30m
+  timeout: 5m
+  chartRef:
+    kind: OCIRepository
+    name: promtail
+  values:
+    # Promtail configuration to collect logs and send to Loki
+    config:
+      clients:
+        - url: http://loki-gateway.observability.svc.cluster.local/loki/api/v1/push
+          tenant_id: 1
+
+      # Default scrape configs will collect logs from all pods
+      # This automatically includes flux-system namespace
+      snippets:
+        pipelineStages:
+          - cri: {}
+          - drop:
+              # Drop noisy logs that aren't useful
+              expression: ".*healthcheck.*"
+          - drop:
+              expression: ".*probe.*"
+
+    # DaemonSet configuration - runs on all nodes
+    daemonset:
+      enabled: true
+
+    # Resource limits
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 256Mi
+
+    # Tolerations to run on all nodes including control plane
+    tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/control-plane
+        operator: Exists
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+        operator: Exists
+
+    # Service monitor for Prometheus to scrape Promtail metrics
+    serviceMonitor:
+      enabled: true
+      labels:
+        prometheus.io/scrap: "true"
