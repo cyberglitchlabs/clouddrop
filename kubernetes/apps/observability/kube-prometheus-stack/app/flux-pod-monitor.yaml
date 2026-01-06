@@ -1,5 +1,5 @@
 apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+kind: PodMonitor
 metadata:
   name: flux-system
   namespace: flux-system
@@ -17,8 +17,8 @@ spec:
           - notification-controller
           - image-reflector-controller
           - image-automation-controller
-  endpoints:
-    - port: http-prom
+  podMetricsEndpoints:
+    - port: http-metrics
       interval: 30s
       path: /metrics
   namespaceSelector:
