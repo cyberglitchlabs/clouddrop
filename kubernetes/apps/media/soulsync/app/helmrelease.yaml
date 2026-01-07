@@ -27,6 +27,7 @@ spec:
             image:
               repository: boulderbadgedad/soulsync
               tag: latest
+              digest: sha256:c59a84527dc2b366276fb0f864ce34e97b755a538ca717afe816526e558fb01b
             env:
               TZ: America/Chicago
               PUID: 568
