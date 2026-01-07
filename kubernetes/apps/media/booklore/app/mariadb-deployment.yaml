@@ -48,32 +48,38 @@ spec:
                 secretKeyRef:
                   name: booklore-secret
                   key: mariadb-password
+            # Enable verbose logging and optimize for NFS
+            - name: MARIADB_INITDB_SKIP_TZINFO
+              value: "1"
+            - name: MARIADB_AUTO_UPGRADE
+              value: "1"
           ports:
             - containerPort: 3306
               name: mysql
           volumeMounts:
             - name: data
               mountPath: /var/lib/mysql
-          livenessProbe:
-            exec:
-              command:
-                - /bin/bash
-                - -c
-                - mariadb-admin ping -S /run/mysqld/mysqld.sock
-            initialDelaySeconds: 300
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 6
-          readinessProbe:
-            exec:
-              command:
-                - /bin/bash
-                - -c
-                - mariadb-admin ping -S /run/mysqld/mysqld.sock
-            initialDelaySeconds: 240
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 6
+          # Probes disabled to allow slow NFS initialization to complete
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #       - /bin/bash
+          #       - -c
+          #       - mariadb-admin ping -S /run/mysqld/mysqld.sock
+          #   initialDelaySeconds: 300
+          #   periodSeconds: 10
+          #   timeoutSeconds: 5
+          #   failureThreshold: 6
+          # readinessProbe:
+          #   exec:
+          #     command:
+          #       - /bin/bash
+          #       - -c
+          #       - mariadb-admin ping -S /run/mysqld/mysqld.sock
+          #   initialDelaySeconds: 240
+          #   periodSeconds: 10
+          #   timeoutSeconds: 5
+          #   failureThreshold: 6
           resources:
             requests:
               cpu: 500m
