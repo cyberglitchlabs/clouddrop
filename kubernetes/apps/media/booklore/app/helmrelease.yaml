@@ -44,7 +44,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: booklore-secret
-                    key: MARIADB_PASSWORD
+                    key: DATABASE_PASSWORD
               SWAGGER_ENABLED: "false"
               FORCE_DISABLE_OIDC: "false"
             probes:
