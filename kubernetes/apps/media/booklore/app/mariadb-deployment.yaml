@@ -60,6 +60,8 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /config
+            - name: initdb
+              mountPath: /config/initdb.d
           livenessProbe:
             exec:
               command:
@@ -90,3 +92,6 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: booklore-mariadb
+        - name: initdb
+          configMap:
+            name: mariadb-initdb
