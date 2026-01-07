@@ -44,7 +44,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: booklore-secret
-                    key: DATABASE_PASSWORD
+                    key: mariadb-password
               SWAGGER_ENABLED: "false"
               FORCE_DISABLE_OIDC: "false"
             probes:

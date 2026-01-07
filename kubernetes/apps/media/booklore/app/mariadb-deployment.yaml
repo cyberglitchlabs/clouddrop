@@ -57,22 +57,20 @@ spec:
           livenessProbe:
             exec:
               command:
-                - mariadb-admin
-                - ping
-                - -h
-                - localhost
-            initialDelaySeconds: 60
+                - /bin/bash
+                - -c
+                - mariadb-admin ping -S /run/mysqld/mysqld.sock
+            initialDelaySeconds: 200
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
           readinessProbe:
             exec:
               command:
-                - mariadb-admin
-                - ping
-                - -h
-                - localhost
-            initialDelaySeconds: 30
+                - /bin/bash
+                - -c
+                - mariadb-admin ping -S /run/mysqld/mysqld.sock
+            initialDelaySeconds: 60
             periodSeconds: 5
             timeoutSeconds: 3
             failureThreshold: 3
