@@ -42,7 +42,7 @@ spec:
             - name: MYSQL_DATABASE
               value: booklore
             - name: MARIADB_STARTUP_TIMEOUT
-              value: "600"
+              value: "900"
             - name: MYSQL_USER
               value: booklore
             - name: MYSQL_PASSWORD
