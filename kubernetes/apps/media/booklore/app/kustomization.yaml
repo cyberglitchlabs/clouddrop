@@ -6,6 +6,7 @@ resources:
   - ./secret.sops.yaml
   - ./pvc-mariadb.yaml
   - ./mariadb-deployment.yaml
+  - ./mariadb-configmap.yaml
   - ./pvc-nfs.yaml
   - ./pv-books.yaml
   - ./pvc-books.yaml
