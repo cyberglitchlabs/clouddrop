@@ -1,0 +1,134 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: booklore
+  namespace: media
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bjw-s-app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  dependsOn:
+    - name: cloudflare-tunnel
+      namespace: network
+  values:
+    controllers:
+      booklore:
+        strategy: Recreate
+        containers:
+          booklore:
+            image:
+              repository: ghcr.io/booklore-app/booklore
+              tag: latest
+            env:
+              TZ: America/Chicago
+              USER_ID: "568"
+              GROUP_ID: "568"
+              BOOKLORE_PORT: "6060"
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: booklore-secret
+                    key: DATABASE_URL
+              DATABASE_USERNAME: booklore
+              DATABASE_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: booklore-secret
+                    key: MARIADB_PASSWORD
+              SWAGGER_ENABLED: "false"
+              FORCE_DISABLE_OIDC: "false"
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/healthcheck
+                    port: 6060
+                  initialDelaySeconds: 60
+                  periodSeconds: 60
+                  timeoutSeconds: 10
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/healthcheck
+                    port: 6060
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop: ["ALL"]
+                add: ["CHOWN", "SETUID", "SETGID"]
+            resources:
+              requests:
+                cpu: 200m
+                memory: 512Mi
+              limits:
+                memory: 2048Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
+    service:
+      app:
+        controller: booklore
+        ports:
+          http:
+            port: 6060
+            targetPort: 6060
+            protocol: TCP
+    serviceMonitor:
+      app:
+        enabled: true
+        endpoints:
+          - port: http
+    persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: booklore-config-nfs
+        globalMounts:
+          - path: /app/data
+      books:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: booklore-books-smb
+        globalMounts:
+          - path: /books
+      bookdrop:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: booklore-bookdrop-nfs
+        globalMounts:
+          - path: /bookdrop
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 6060

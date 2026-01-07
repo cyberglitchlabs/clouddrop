@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: booklore-books-smb
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 1Ti
+  volumeName: booklore-books-smb

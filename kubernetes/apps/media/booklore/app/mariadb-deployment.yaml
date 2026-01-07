@@ -1,0 +1,92 @@
+---
+# yaml-language-server: $schema=https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30
+apiVersion: v1
+kind: Service
+metadata:
+  name: booklore-mariadb
+  namespace: media
+spec:
+  ports:
+    - name: mysql
+      port: 3306
+      targetPort: 3306
+  selector:
+    app: booklore-mariadb
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: booklore-mariadb
+  namespace: media
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: booklore-mariadb
+  template:
+    metadata:
+      labels:
+        app: booklore-mariadb
+    spec:
+      containers:
+        - name: mariadb
+          image: lscr.io/linuxserver/mariadb:11.4.8
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: America/Chicago
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: booklore-secret
+                  key: mariadb-root-password
+            - name: MYSQL_DATABASE
+              value: booklore
+            - name: MYSQL_USER
+              value: booklore
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: booklore-secret
+                  key: mariadb-password
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: data
+              mountPath: /config
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - mariadb-admin ping -h localhost -u root -p$MYSQL_ROOT_PASSWORD
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - mariadb-admin ping -h localhost -u root -p$MYSQL_ROOT_PASSWORD
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 1024Mi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: booklore-mariadb
