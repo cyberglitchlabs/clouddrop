@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mariadb-config
+data:
+  # This file will be mounted into the container
+  my.cnf: |
+    [mariadb]
+    innodb_use_native_aio = 0
