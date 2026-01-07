@@ -55,7 +55,7 @@ spec:
                   httpGet:
                     path: /api/v1/healthcheck
                     port: 6060
-                  initialDelaySeconds: 60
+                  initialDelaySeconds: 300
                   periodSeconds: 60
                   timeoutSeconds: 10
                   failureThreshold: 5
@@ -66,7 +66,7 @@ spec:
                   httpGet:
                     path: /api/v1/healthcheck
                     port: 6060
-                  initialDelaySeconds: 30
+                  initialDelaySeconds: 180
                   periodSeconds: 30
                   timeoutSeconds: 10
                   failureThreshold: 3
