@@ -32,14 +32,8 @@ spec:
     spec:
       containers:
         - name: mariadb
-          image: lscr.io/linuxserver/mariadb:11.4.8
+          image: mariadb:11.4
           env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
-            - name: TZ
-              value: America/Chicago
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -59,30 +53,29 @@ spec:
               name: mysql
           volumeMounts:
             - name: data
-              mountPath: /config
-            - name: initdb
-              mountPath: /config/initdb.d
-              readOnly: true
+              mountPath: /var/lib/mysql
           livenessProbe:
             exec:
               command:
-                - /bin/sh
-                - -c
-                - mariadb-admin ping -h localhost -u root -p$MYSQL_ROOT_PASSWORD
-            initialDelaySeconds: 180
+                - mariadb-admin
+                - ping
+                - -h
+                - localhost
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
-            failureThreshold: 10
+            failureThreshold: 3
           readinessProbe:
             exec:
               command:
-                - /bin/sh
-                - -c
-                - mariadb-admin ping -h localhost -u root -p$MYSQL_ROOT_PASSWORD
-            initialDelaySeconds: 150
+                - mariadb-admin
+                - ping
+                - -h
+                - localhost
+            initialDelaySeconds: 30
             periodSeconds: 5
             timeoutSeconds: 3
-            failureThreshold: 10
+            failureThreshold: 3
           resources:
             requests:
               cpu: 100m
@@ -93,6 +86,3 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: booklore-mariadb
-        - name: initdb
-          configMap:
-            name: mariadb-initdb
