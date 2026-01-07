@@ -41,6 +41,8 @@ spec:
                   key: mariadb-root-password
             - name: MYSQL_DATABASE
               value: booklore
+            - name: MARIADB_STARTUP_TIMEOUT
+              value: "600"
             - name: MYSQL_USER
               value: booklore
             - name: MYSQL_PASSWORD
