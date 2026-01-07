@@ -30,22 +30,26 @@ spec:
       labels:
         app: booklore-mariadb
     spec:
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
       containers:
         - name: mariadb
           image: mariadb:11.4
           env:
-            - name: MYSQL_ROOT_PASSWORD
+            - name: MARIADB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: booklore-secret
                   key: mariadb-root-password
-            - name: MYSQL_DATABASE
+            - name: MARIADB_DATABASE
               value: booklore
             - name: MARIADB_STARTUP_TIMEOUT
               value: "900"
-            - name: MYSQL_USER
+            - name: MARIADB_USER
               value: booklore
-            - name: MYSQL_PASSWORD
+            - name: MARIADB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: booklore-secret
@@ -62,7 +66,7 @@ spec:
             - name: data
               mountPath: /var/lib/mysql
             - name: config-volume
-              mountPath: /etc/mysql/conf.d/custom.cnf
+              mountPath: /etc/mysql/conf.d/z-custom.cnf
               subPath: my.cnf
           # Probes disabled to allow slow NFS initialization to complete
           # livenessProbe:
