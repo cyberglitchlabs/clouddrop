@@ -24,3 +24,4 @@ resources:
   - ./beets-flask/ks.yaml
   - ./listenarr/ks.yaml
   - ./books/ks.yaml
+  - ./booklore/ks.yaml
