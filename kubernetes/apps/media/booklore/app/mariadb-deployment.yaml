@@ -36,7 +36,7 @@ spec:
         fsGroup: 999
       containers:
         - name: mariadb
-          image: mariadb:11.4
+          image: mariadb:12.1
           env:
             - name: MARIADB_ROOT_PASSWORD
               valueFrom:
