@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: ghcr.io/ibm/mcp-context-forge
-              tag: latest@sha256:c21d9578423ae97678baabd79c680f9aa7473520dd48002c9e09ccd87eea57d3
+              tag: latest@sha256:0df7469071489e06b63f80bc4de99fab4620bd2e232f5a1081cfe847d16a8d79
               pullPolicy: Always
             env:
               TZ: America/Chicago
