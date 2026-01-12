@@ -49,24 +49,24 @@ spec:
               FORCE_DISABLE_OIDC: "false"
             probes:
               liveness:
-                enabled: false
+                enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /api/v1/healthcheck
-                    port: 6060
-                  initialDelaySeconds: 300
+                    port: 8080
+                  initialDelaySeconds: 30
                   periodSeconds: 60
                   timeoutSeconds: 10
                   failureThreshold: 5
               readiness:
-                enabled: false
+                enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /api/v1/healthcheck
-                    port: 6060
-                  initialDelaySeconds: 180
+                    port: 8080
+                  initialDelaySeconds: 30
                   periodSeconds: 30
                   timeoutSeconds: 10
                   failureThreshold: 3
@@ -94,8 +94,8 @@ spec:
         controller: booklore
         ports:
           http:
-            port: 6060
-            targetPort: 6060
+            port: 8080
+            targetPort: 8080
             protocol: TCP
     serviceMonitor:
       app:
