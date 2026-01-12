@@ -69,26 +69,26 @@ spec:
               mountPath: /etc/mysql/conf.d/z-custom.cnf
               subPath: my.cnf
           # Probes disabled to allow slow NFS initialization to complete
-          # livenessProbe:
-          #   exec:
-          #     command:
-          #       - /bin/bash
-          #       - -c
-          #       - mariadb-admin ping -S /run/mysqld/mysqld.sock
-          #   initialDelaySeconds: 300
-          #   periodSeconds: 10
-          #   timeoutSeconds: 5
-          #   failureThreshold: 6
-          # readinessProbe:
-          #   exec:
-          #     command:
-          #       - /bin/bash
-          #       - -c
-          #       - mariadb-admin ping -S /run/mysqld/mysqld.sock
-          #   initialDelaySeconds: 240
-          #   periodSeconds: 10
-          #   timeoutSeconds: 5
-          #   failureThreshold: 6
+          livenessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - -c
+                - mariadb-admin ping -S /run/mysqld/mysqld.sock -u root -p$MARIADB_ROOT_PASSWORD
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - -c
+                - mariadb-admin ping -S /run/mysqld/mysqld.sock -u root -p$MARIADB_ROOT_PASSWORD
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
           resources:
             requests:
               cpu: 500m
