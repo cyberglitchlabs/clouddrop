@@ -42,10 +42,10 @@ spec:
     kubeEtcd:
       service:
         selector:
-          component: kube-apiserver  # etcd runs on control plane nodes in Talos
+          component: kube-apiserver # etcd runs on control plane nodes in Talos
 
     kubeProxy:
-      enabled: false  # Cilium replaces kube-proxy
+      enabled: false # Cilium replaces kube-proxy
 
     prometheus:
       prometheusSpec:
@@ -62,9 +62,9 @@ spec:
         resources:
           requests:
             cpu: 100m
-            memory: 512Mi
+            memory: 1Gi
           limits:
-            memory: 2Gi
+            memory: 4Gi
         storageSpec:
           volumeClaimTemplate:
             spec:
