@@ -29,8 +29,8 @@ spec:
     volumeAttributes:
       source: //192.168.100.180/Media/Books
     nodeStageSecretRef:
-      name: media-smb-credentials
-      namespace: media
+      name: smb-creds
+      namespace: kube-system
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
