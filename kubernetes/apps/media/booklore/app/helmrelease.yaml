@@ -34,6 +34,8 @@ spec:
               USER_ID: "568"
               GROUP_ID: "568"
               BOOKLORE_PORT: "6060"
+              ROOT_LOG_LEVEL: "DEBUG"
+              LOG_LEVEL: "DEBUG"
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
