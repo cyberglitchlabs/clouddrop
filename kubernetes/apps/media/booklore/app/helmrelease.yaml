@@ -71,11 +71,8 @@ spec:
                   timeoutSeconds: 10
                   failureThreshold: 3
             securityContext:
-              allowPrivilegeEscalation: false
+              allowPrivilegeEscalation: true
               readOnlyRootFilesystem: false
-              capabilities:
-                drop: ["ALL"]
-                add: ["CHOWN", "SETUID", "SETGID"]
             resources:
               requests:
                 cpu: 200m
@@ -131,4 +128,4 @@ spec:
         rules:
           - backendRefs:
               - identifier: app
-                port: 8080
+                port: 6060
