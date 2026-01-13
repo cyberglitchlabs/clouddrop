@@ -112,12 +112,9 @@ spec:
         existingClaim: booklore-books-smb
         globalMounts:
           - path: /media
-      bookdrop:
-        enabled: true
-        type: persistentVolumeClaim
-        existingClaim: booklore-bookdrop-nfs
-        globalMounts:
           - path: /bookdrop
+            subPath: booklore/bookdrop
+
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
