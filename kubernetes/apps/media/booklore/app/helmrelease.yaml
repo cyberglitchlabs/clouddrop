@@ -111,7 +111,7 @@ spec:
         type: persistentVolumeClaim
         existingClaim: booklore-books-smb
         globalMounts:
-          - path: /books
+          - path: /media
       bookdrop:
         enabled: true
         type: persistentVolumeClaim
