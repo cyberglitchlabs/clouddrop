@@ -27,13 +27,13 @@ spec:
         containers:
           booklore:
             image:
-              repository: ghcr.io/booklore-app/booklore
-              tag: latest
+              repository: booklore/booklore
+              tag: v1.17.0
             env:
               TZ: America/Chicago
               USER_ID: "568"
               GROUP_ID: "568"
-              BOOKLORE_PORT: "6060"
+              BOOKLORE_PORT: 6060
               ROOT_LOG_LEVEL: "DEBUG"
               LOG_LEVEL: "DEBUG"
               DATABASE_URL:
@@ -47,8 +47,6 @@ spec:
                   secretKeyRef:
                     name: booklore-secret
                     key: mariadb-password
-              SWAGGER_ENABLED: "false"
-              FORCE_DISABLE_OIDC: "true"
             probes:
               liveness:
                 enabled: true
