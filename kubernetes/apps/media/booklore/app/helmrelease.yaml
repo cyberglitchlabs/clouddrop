@@ -46,7 +46,7 @@ spec:
                     name: booklore-secret
                     key: mariadb-password
               SWAGGER_ENABLED: "false"
-              FORCE_DISABLE_OIDC: "false"
+              FORCE_DISABLE_OIDC: "true"
             probes:
               liveness:
                 enabled: true
