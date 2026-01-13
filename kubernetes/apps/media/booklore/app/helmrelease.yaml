@@ -54,7 +54,7 @@ spec:
                 spec:
                   httpGet:
                     path: /api/v1/healthcheck
-                    port: 8080
+                    port: 6060
                   initialDelaySeconds: 30
                   periodSeconds: 60
                   timeoutSeconds: 10
@@ -65,7 +65,7 @@ spec:
                 spec:
                   httpGet:
                     path: /api/v1/healthcheck
-                    port: 8080
+                    port: 6060
                   initialDelaySeconds: 30
                   periodSeconds: 30
                   timeoutSeconds: 10
@@ -91,8 +91,8 @@ spec:
         controller: booklore
         ports:
           http:
-            port: 8080
-            targetPort: 8080
+            port: 6060
+            targetPort: 6060
             protocol: TCP
     serviceMonitor:
       app:
