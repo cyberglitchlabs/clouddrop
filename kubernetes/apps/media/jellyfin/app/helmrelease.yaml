@@ -118,8 +118,8 @@ spec:
         type: persistentVolumeClaim
         existingClaim: jellyfin-epg-data
         globalMounts:
-          - /data/epg
-        readOnly: true
+          - path: /data/epg
+            readOnly: true
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
