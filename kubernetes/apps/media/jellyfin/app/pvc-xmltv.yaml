@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-epg-data
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany # Required if Jellyfin and CronJob run on different nodes
+  resources:
+    requests:
+      storage: 500Mi
+  storageClassName: qnap-nfs

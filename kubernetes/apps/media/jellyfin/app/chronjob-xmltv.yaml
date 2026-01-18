@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: zap2xml
+  namespace: media
+spec:
+  schedule: "0 */6 * * *" # Runs every 6 hours
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: zap2xml
+            image: ghcr.io/jef/zap2xml:v2.2.0
+            env:
+            - name: POSTAL_CODE
+              value: "55448"
+            - name: TZ
+              value: "America/Chicago"
+            - name: OUTPUT_FILE
+              value: "/data/zap2xml.xml"
+            volumeMounts:
+            - name: epg-data
+              mountPath: /data
+          restartPolicy: OnFailure
+          volumes:
+          - name: epg-data
+            persistentVolumeClaim:
+              claimName: jellyfin-epg-data
