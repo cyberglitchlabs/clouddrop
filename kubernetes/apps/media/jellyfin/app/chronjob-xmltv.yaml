@@ -18,6 +18,12 @@ spec:
               value: "55448"
             - name: TZ
               value: "America/Chicago"
+            - name: LINEUP_ID
+              value: "USA-OTA55448"
+            - name: TIMESPAN
+              value: "72"
+            - name: PREF
+              value: "h"
             - name: OUTPUT_FILE
               value: "/data/zap2xml.xml"
             volumeMounts:
