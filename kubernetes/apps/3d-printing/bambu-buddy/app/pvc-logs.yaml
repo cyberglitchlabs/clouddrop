@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/persistentvolumeclaim-v1.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bambu-buddy-logs
+  namespace: 3d-printing
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: qnap-nfs
+  resources:
+    requests:
+      storage: 2Gi
