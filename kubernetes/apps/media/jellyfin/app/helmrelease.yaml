@@ -113,6 +113,13 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /cache
+      epg:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: jellyfin-epg-data
+        globalMounts:
+          - /data/epg
+        readOnly: true
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
