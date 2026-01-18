@@ -30,7 +30,7 @@ spec:
               tag: latest
             env:
               TZ: America/Chicago
-              DEBUG: true
+              LOG_LEVEL: DEBUG
             probes:
               liveness:
                 enabled: true
