@@ -80,6 +80,8 @@ spec:
               limits:
                 memory: 2048Mi
     defaultPodOptions:
+      nodeSelector:
+        kubernetes.io/hostname: skully
       securityContext:
         runAsNonRoot: false
         runAsUser: 0
