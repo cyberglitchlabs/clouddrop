@@ -22,7 +22,7 @@ spec:
   values:
     controllers:
       lidarr:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           lidarr:
             image:
@@ -92,7 +92,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: lidarr-nfs
+        existingClaim: lidarr-nfs-v2
         globalMounts:
           - path: /config
       media:
