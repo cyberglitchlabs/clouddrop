@@ -1,0 +1,29 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: qnap-nfs-db
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: "192.168.100.180"
+  share: "/talos"
+  subDir: "${pvc.metadata.namespace}-${pvc.metadata.name}"
+# Mount options for NFSv4.1 optimized for databases (No local_lock=all)
+mountOptions:
+  - nfsvers=4.1
+  - hard
+  - timeo=600
+  - retrans=3
+  - rsize=1048576
+  - wsize=1048576
+  # Performance optimizations
+  - async
+  - noatime
+  - nodiratime
+  - actimeo=30
+  # Reduce close-to-open consistency checks
+  - nocto
+  - lookupcache=positive
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+allowVolumeExpansion: false
