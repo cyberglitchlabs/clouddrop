@@ -22,7 +22,7 @@ spec:
   values:
     controllers:
       radarr:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           radarr:
             image:
@@ -91,7 +91,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: radarr-nfs
+        existingClaim: radarr-nfs-v2
         globalMounts:
           - path: /config
       media:

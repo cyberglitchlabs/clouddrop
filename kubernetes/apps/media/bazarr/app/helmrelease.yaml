@@ -22,7 +22,7 @@ spec:
   values:
     controllers:
       bazarr:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           bazarr:
             image:
@@ -91,7 +91,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: bazarr-nfs
+        existingClaim: bazarr-nfs-v2
         globalMounts:
           - path: /config
       media:
