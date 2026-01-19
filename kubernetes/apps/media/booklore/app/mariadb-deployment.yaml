@@ -99,7 +99,7 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: booklore-mariadb
+            claimName: booklore-mariadb-v2
         - name: config-volume
           configMap:
             name: mariadb-config
