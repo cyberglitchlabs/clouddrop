@@ -15,6 +15,7 @@ mountOptions:
   - retrans=3
   - rsize=1048576
   - wsize=1048576
+  - local_lock=all
   - noatime
   - nodiratime
   - actimeo=0
