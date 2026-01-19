@@ -43,6 +43,36 @@ spec:
               port: http
             initialDelaySeconds: 5
             periodSeconds: 10
+          env:
+            - name: UP_POLLER_DEBUG
+              value: "false"
+            - name: UP_PROMETHEUS_HTTP_LISTEN
+              value: "0.0.0.0:9130"
+            - name: UP_INFLUXDB_DISABLE
+              value: "true"
+            - name: UP_LOKI_DISABLE
+              value: "true"
+            - name: UP_UNIFI_CONTROLLER_0_URL
+              valueFrom:
+                secretKeyRef:
+                  name: unpoller-config
+                  key: UP_UNIFI_CONTROLLER_0_URL
+            - name: UP_UNIFI_CONTROLLER_0_USER
+              valueFrom:
+                secretKeyRef:
+                  name: unpoller-config
+                  key: UP_UNIFI_CONTROLLER_0_USER
+            - name: UP_UNIFI_CONTROLLER_0_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: unpoller-config
+                  key: UP_UNIFI_CONTROLLER_0_PASS
+            - name: UP_UN_UNIFI_CONTROLLER_0_SAVE_DPI
+              value: "true"
+            - name: UP_UNIFI_CONTROLLER_0_SITES
+              value: "all"
+            - name: UP_UNIFI_CONTROLLER_0_VERIFY_SSL
+              value: "false"
           resources:
             requests:
               cpu: 50m
@@ -55,12 +85,4 @@ spec:
             capabilities:
               drop:
                 - ALL
-          volumeMounts:
-            - name: config
-              mountPath: /etc/unpoller/up.conf
-              subPath: up.conf
-              readOnly: true
-      volumes:
-        - name: config
-          secret:
-            secretName: unpoller-config
+      volumes: []
