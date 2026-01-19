@@ -22,7 +22,7 @@ spec:
   values:
     controllers:
       prowlarr:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           prowlarr:
             image:
@@ -91,7 +91,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: prowlarr-nfs
+        existingClaim: prowlarr-nfs-v2
         globalMounts:
           - path: /config
       media:
