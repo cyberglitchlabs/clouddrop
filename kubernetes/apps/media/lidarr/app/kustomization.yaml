@@ -7,4 +7,5 @@ resources:
   - ./pvc-media.yaml
   - ./pvc-config-nfs.yaml
   - ./pvc-config-nfs-v2.yaml
+  - ./pvc-config-nfs-v3.yaml
   - ./helmrelease.yaml
