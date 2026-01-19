@@ -1,19 +1,24 @@
-apiVersion: batch/v1
-kind: CronJob
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: zap2xml
   namespace: media
+  labels:
+    app.kubernetes.io/name: zap2xml
 spec:
-  schedule: "0 */6 * * *" # Runs every 6 hours
-  concurrencyPolicy: Forbid
-  jobTemplate:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zap2xml
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zap2xml
     spec:
-      template:
-        spec:
-          containers:
-          - name: zap2xml
-            image: ghcr.io/jef/zap2xml:v2.2.0
-            env:
+      containers:
+        - name: zap2xml
+          image: ghcr.io/jef/zap2xml:v2.2.0
+          env:
             - name: POSTAL_CODE
               value: "55448"
             - name: TZ
@@ -26,11 +31,10 @@ spec:
               value: "h"
             - name: OUTPUT_FILE
               value: "/data/zap2xml.xml"
-            volumeMounts:
+          volumeMounts:
             - name: epg-data
               mountPath: /data
-          restartPolicy: OnFailure
-          volumes:
-          - name: epg-data
-            persistentVolumeClaim:
-              claimName: jellyfin-epg-data
+      volumes:
+        - name: epg-data
+          persistentVolumeClaim:
+            claimName: jellyfin-epg-data
