@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./secret.sops.yaml
   - ./pvc-mariadb.yaml
+  - ./pvc-mariadb-v2.yaml
   - ./mariadb-deployment.yaml
   - ./mariadb-configmap.yaml
   - ./pvc-nfs.yaml
