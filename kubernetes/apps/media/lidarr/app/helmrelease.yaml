@@ -92,7 +92,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: lidarr-nfs-v2
+        existingClaim: lidarr-nfs-v3
         globalMounts:
           - path: /config
       media:

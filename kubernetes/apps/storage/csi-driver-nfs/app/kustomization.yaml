@@ -7,3 +7,4 @@ resources:
   - ./helmrelease.yaml
   - ./storageclass.yaml
   - ./storageclass-db.yaml
+  - ./storageclass-db-sync.yaml
