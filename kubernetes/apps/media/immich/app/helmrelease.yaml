@@ -33,6 +33,7 @@ spec:
               # Machine learning URL
               IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning:3003
               # Database connection (using CNPG)
+              DB_VECTOR_EXTENSION: vectorchord
               DB_HOSTNAME: immich-postgres-rw
               DB_PORT: "5432"
               DB_DATABASE_NAME: app
@@ -88,19 +89,28 @@ spec:
                 limits:
                   memory: 2Gi
 
-    # Machine learning component
+    # Machine learning component with NVIDIA GPU
     machine-learning:
       enabled: true
       controllers:
         main:
           containers:
             main:
+              image:
+                repository: ghcr.io/immich-app/immich-machine-learning
+                tag: v1.132.3-cuda
               resources:
                 requests:
                   cpu: 100m
                   memory: 512Mi
+                  nvidia.com/gpu: 1
                 limits:
-                  memory: 4Gi
+                  memory: 8Gi
+                  nvidia.com/gpu: 1
+          pod:
+            nodeSelector:
+              kubernetes.io/hostname: tuf1
+            runtimeClassName: nvidia
       persistence:
         cache:
           enabled: true
