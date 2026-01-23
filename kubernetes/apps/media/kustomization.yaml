@@ -25,3 +25,4 @@ resources:
   - ./listenarr/ks.yaml
   - ./books/ks.yaml
   - ./booklore/ks.yaml
+  - ./immich/ks.yaml
