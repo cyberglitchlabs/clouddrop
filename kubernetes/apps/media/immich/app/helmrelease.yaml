@@ -10,7 +10,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: immich-charts
-    namespace: flux-system
   install:
     remediation:
       retries: -1
