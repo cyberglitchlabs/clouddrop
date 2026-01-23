@@ -26,13 +26,13 @@ spec:
         containers:
           main:
             image:
-              tag: v1.132.3
+              tag: v2.4.1
             env:
               # Redis connection
               REDIS_HOSTNAME: immich-valkey
               # Machine learning URL
               IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning:3003
-              # Database connection (using CNPG)
+              # Database connection (using CNPG with VectorChord)
               DB_VECTOR_EXTENSION: vectorchord
               DB_HOSTNAME: immich-postgres-rw
               DB_PORT: "5432"
@@ -98,7 +98,7 @@ spec:
             main:
               image:
                 repository: ghcr.io/immich-app/immich-machine-learning
-                tag: v1.132.3-cuda
+                tag: v2.4.1-cuda
               resources:
                 requests:
                   cpu: 100m
