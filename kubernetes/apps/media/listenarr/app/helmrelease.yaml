@@ -38,7 +38,7 @@ spec:
                 spec:
                   httpGet:
                     path: /
-                    port: 5000
+                    port: 4545
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -49,7 +49,7 @@ spec:
                 spec:
                   httpGet:
                     path: /
-                    port: 5000
+                    port: 4545
                   initialDelaySeconds: 5
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -77,8 +77,8 @@ spec:
         controller: listenarr
         ports:
           http:
-            port: 5000
-            targetPort: 5000
+            port: 4545
+            targetPort: 4545
             protocol: TCP
     serviceMonitor:
       app:
@@ -110,4 +110,4 @@ spec:
         rules:
           - backendRefs:
               - identifier: app
-                port: 5000
+                port: 4545
