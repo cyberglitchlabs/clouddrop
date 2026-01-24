@@ -66,6 +66,26 @@ nodes:
           - network: "0.0.0.0/0"
             gateway: "192.168.42.1"
         mtu: 1500
+  - hostname: "buzzy"
+    ipAddress: "192.168.42.252"
+    installDisk: "/dev/mmcblk0"
+    machineSpec:
+      secureboot: false
+    # Same schematic as skully - Intel with i915, intel-ucode, iscsi-tools, nfsrahead
+    talosImageURL: factory.talos.dev/installer/5323d5cf13809e2260e475c0f46ff06a9be7afb806804beedb412cfacd7eeb2d
+    controlPlane: true
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "78:55:36:00:a1:98"
+        dhcp: false
+        addresses:
+          - "192.168.42.252/24"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "192.168.42.1"
+        mtu: 1500
+        vip:
+          ip: "192.168.42.10"
 
 # Global patches
 patches:
