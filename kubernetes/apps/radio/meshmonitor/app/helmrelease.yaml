@@ -30,6 +30,7 @@ spec:
               MESHTASTIC_NODE_IP: "192.168.15.251"
               MESHTASTIC_USE_TLS: "false"
               NODE_ENV: "production"
+              ALLOWED_ORIGINS: "https://meshmonitor.${SECRET_DOMAIN}"
               PORT: "3001"
               COOKIE_SECURE: "true"
               TRUST_PROXY: "1"
