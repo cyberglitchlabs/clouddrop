@@ -31,7 +31,7 @@ spec:
         n8n:
           host: "n8n.${SECRET_DOMAIN}"
           protocol: "https"
-          port: "443"
+          # N8N_PORT is the internal listen port, not external - use default 5678
           basic_auth:
             active: "true"
         db:
