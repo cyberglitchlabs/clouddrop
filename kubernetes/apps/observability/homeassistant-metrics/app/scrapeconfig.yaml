@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: homeassistant
+  namespace: observability
+  labels:
+    prometheus: kube-prometheus-stack
+spec:
+  staticConfigs:
+    - targets:
+        - "ha.sievert.fun:443"
+      labels:
+        job: homeassistant
+  scheme: HTTPS
+  metricsPath: /api/prometheus
+  authorization:
+    credentials:
+      name: homeassistant-metrics-token
+      key: token
+  scrapeInterval: 30s
+  scrapeTimeout: 10s
