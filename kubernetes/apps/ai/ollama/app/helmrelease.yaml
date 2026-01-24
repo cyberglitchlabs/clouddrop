@@ -22,7 +22,7 @@ spec:
   values:
     controllers:
       ollama:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           app:
             image:
