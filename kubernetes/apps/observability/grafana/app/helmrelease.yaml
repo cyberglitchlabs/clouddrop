@@ -118,6 +118,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/loki-dashboards
+          - name: 'homeassistant-dashboards'
+            orgId: 1
+            folder: 'Home Assistant'
+            type: file
+            disableDeletion: true
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/homeassistant-dashboards
 
     # Import dashboards from dotdc/grafana-dashboards-kubernetes via URLs
     dashboards:
@@ -158,6 +166,11 @@ spec:
       media-dashboards:
         jellyfin-monitoring:
           file: dashboards/jellyfin-monitoring.json
+
+      # Home Assistant system monitoring dashboards
+      homeassistant-dashboards:
+        homeassistant-system:
+          file: dashboards/homeassistant-system.json
 
       # UniFi dashboards are now provisioned via ConfigMaps for reliable datasource substitution.
       # See: kubernetes/apps/observability/grafana/app/unifi-*-configmap.yaml
