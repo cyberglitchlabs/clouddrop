@@ -85,7 +85,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "homeassistant_sensor_system_monitor_processor_use_percent{job=\"homeassistant\"}",
+          "expr": "homeassistant_sensor_unit_percent{entity=\"sensor.system_monitor_processor_use\"}",
           "legendFormat": "CPU",
           "range": true,
           "refId": "A"
@@ -158,7 +158,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "homeassistant_sensor_system_monitor_memory_use_percent{job=\"homeassistant\"}",
+          "expr": "homeassistant_sensor_unit_percent{entity=\"sensor.system_monitor_memory_usage\"}",
           "legendFormat": "Memory",
           "range": true,
           "refId": "A"
@@ -231,7 +231,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "homeassistant_sensor_system_monitor_disk_use_percent{job=\"homeassistant\"}",
+          "expr": "homeassistant_sensor_data_size_gib{entity=\"sensor.system_monitor_disk_use\"} / (homeassistant_sensor_data_size_gib{entity=\"sensor.system_monitor_disk_use\"} + homeassistant_sensor_data_size_gib{entity=\"sensor.system_monitor_disk_free\"}) * 100",
           "legendFormat": "Disk",
           "range": true,
           "refId": "A"
@@ -326,7 +326,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "homeassistant_sensor_system_monitor_load_1m{job=\"homeassistant\"}",
+          "expr": "homeassistant_sensor_state{entity=\"sensor.system_monitor_load_1m\"}",
           "legendFormat": "1m",
           "range": true,
           "refId": "A"
@@ -337,7 +337,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "homeassistant_sensor_system_monitor_load_5m{job=\"homeassistant\"}",
+          "expr": "homeassistant_sensor_state{entity=\"sensor.system_monitor_load_5m\"}",
           "hide": false,
           "legendFormat": "5m",
           "range": true,
@@ -349,7 +349,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "homeassistant_sensor_system_monitor_load_15m{job=\"homeassistant\"}",
+          "expr": "homeassistant_sensor_state{entity=\"sensor.system_monitor_load_15m\"}",
           "hide": false,
           "legendFormat": "15m",
           "range": true,
@@ -446,7 +446,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "homeassistant_sensor_system_monitor_processor_use_percent{job=\"homeassistant\"}",
+          "expr": "homeassistant_sensor_unit_percent{entity=\"sensor.system_monitor_processor_use\"}",
           "legendFormat": "CPU %",
           "range": true,
           "refId": "A"
@@ -542,7 +542,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "homeassistant_sensor_system_monitor_memory_use_percent{job=\"homeassistant\"}",
+          "expr": "homeassistant_sensor_unit_percent{entity=\"sensor.system_monitor_memory_usage\"}",
           "legendFormat": "Memory %",
           "range": true,
           "refId": "A"
@@ -638,7 +638,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "homeassistant_sensor_system_monitor_memory_usage_gib{job=\"homeassistant\"}",
+          "expr": "homeassistant_sensor_data_size_mib{entity=\"sensor.system_monitor_memory_use\"} / 1024",
           "legendFormat": "Used",
           "range": true,
           "refId": "A"
@@ -649,7 +649,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "homeassistant_sensor_system_monitor_memory_free_gib{job=\"homeassistant\"}",
+          "expr": "homeassistant_sensor_data_size_mib{entity=\"sensor.system_monitor_memory_free\"} / 1024",
           "hide": false,
           "legendFormat": "Free",
           "range": true,
@@ -746,7 +746,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "homeassistant_sensor_system_monitor_disk_use_gib{job=\"homeassistant\"}",
+          "expr": "homeassistant_sensor_data_size_gib{entity=\"sensor.system_monitor_disk_use\"}",
           "legendFormat": "Used",
           "range": true,
           "refId": "A"
@@ -757,7 +757,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "homeassistant_sensor_system_monitor_disk_free_gib{job=\"homeassistant\"}",
+          "expr": "homeassistant_sensor_data_size_gib{entity=\"sensor.system_monitor_disk_free\"}",
           "hide": false,
           "legendFormat": "Free",
           "range": true,
