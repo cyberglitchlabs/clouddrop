@@ -28,7 +28,7 @@ spec:
           booklore:
             image:
               repository: booklore/booklore
-              tag: v1.17.0
+              tag: v1.18.4
             env:
               TZ: America/Chicago
               USER_ID: "568"
