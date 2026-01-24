@@ -29,6 +29,7 @@ spec:
             image:
               repository: ghcr.io/seerr-team/seerr
               tag: develop
+              pullPolicy: Always
             env:
               TZ: America/Chicago
             probes:
