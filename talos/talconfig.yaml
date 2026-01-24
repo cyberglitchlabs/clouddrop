@@ -55,7 +55,7 @@ nodes:
     machineSpec:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/5323d5cf13809e2260e475c0f46ff06a9be7afb806804beedb412cfacd7eeb2d
-    controlPlane: false
+    controlPlane: true
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "00:1f:c6:9c:aa:11"
@@ -66,6 +66,8 @@ nodes:
           - network: "0.0.0.0/0"
             gateway: "192.168.42.1"
         mtu: 1500
+        vip:
+          ip: "192.168.42.10"
   - hostname: "buzzy"
     ipAddress: "192.168.42.252"
     installDisk: "/dev/mmcblk0"
