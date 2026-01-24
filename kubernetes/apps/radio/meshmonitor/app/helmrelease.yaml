@@ -19,7 +19,7 @@ spec:
   values:
     controllers:
       meshmonitor:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           meshmonitor:
             image:
@@ -84,7 +84,7 @@ spec:
       data:
         enabled: true
         type: persistentVolumeClaim
-        storageClass: qnap-nfs
+        storageClass: qnap-nfs-db-sync
         accessMode: ReadWriteOnce
         size: 1Gi
         globalMounts:
