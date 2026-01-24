@@ -28,7 +28,7 @@ spec:
       priorityClassName: "system-node-critical"
       runtimeClassName: nvidia
       containers:
-        - image: nvcr.io/nvidia/k8s-device-plugin:v0.18.1
+        - image: nvcr.io/nvidia/k8s-device-plugin:v0.18.2
           name: nvidia-device-plugin-ctr
           args:
             - "--fail-on-init-error=false"
