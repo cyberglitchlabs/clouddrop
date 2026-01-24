@@ -24,8 +24,8 @@ nodes:
     installDisk: "/dev/disk/by-id/ata-Samsung_SSD_860_EVO_M.2_1TB_S415NB0K303452A"
     machineSpec:
       secureboot: false
-    # Extensions: amd-ucode, iscsi-tools, nvidia, fuse3, util-linux-tools
-    talosImageURL: factory.talos.dev/installer/29ef87e3f22b196cdb2763b7c438718b92c1ac3a12d429702074c74003d3fbb3
+    # Extensions: amd-ucode, iscsi-tools, nvidia (no fuse3/util-linux-tools - causes boot issues)
+    talosImageURL: factory.talos.dev/installer/7ea205866c6d1ee573d93a4d40a23dfeb20cb38715ade24583eb9ca42cca538d
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
