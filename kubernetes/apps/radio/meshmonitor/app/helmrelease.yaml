@@ -6,13 +6,9 @@ metadata:
   name: meshmonitor
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: helm/meshmonitor
-      sourceRef:
-        kind: GitRepository
-        name: meshmonitor
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: bjw-s-app-template
   install:
     remediation:
       retries: -1
@@ -21,45 +17,87 @@ spec:
     remediation:
       retries: 3
   values:
-    image:
-      repository: ghcr.io/yeraze/meshmonitor
-      tag: "3.2.3"
-      pullPolicy: IfNotPresent
-
-    replicaCount: 1
-
+    controllers:
+      meshmonitor:
+        strategy: RollingUpdate
+        containers:
+          meshmonitor:
+            image:
+              repository: ghcr.io/yeraze/meshmonitor
+              tag: "3.2.3"
+            env:
+              TZ: America/Chicago
+              MESHTASTIC_NODE_IP: "192.168.15.251"
+              MESHTASTIC_USE_TLS: "false"
+              NODE_ENV: "production"
+              PORT: "3001"
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: 3001
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: 3001
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
     service:
-      type: ClusterIP
-      port: 80
-      targetPort: 3001
-
-    env:
-      meshtasticNodeIp: "192.168.15.251"
-      meshtasticUseTls: "false"
-      nodeEnv: "production"
-      port: "3001"
-
+      app:
+        controller: meshmonitor
+        ports:
+          http:
+            port: 3001
+            targetPort: 3001
+            protocol: TCP
     persistence:
-      enabled: true
-      storageClass: qnap-nfs
-      accessMode: ReadWriteOnce
-      size: 1Gi
-
-    resources:
-      requests:
-        cpu: 50m
-        memory: 128Mi
-      limits:
-        memory: 512Mi
-
-    podSecurityContext:
-      fsGroup: 1000
-
-    securityContext:
-      runAsUser: 1000
-      runAsNonRoot: true
-      readOnlyRootFilesystem: false
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop:
-          - ALL
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        storageClass: qnap-nfs
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        globalMounts:
+          - path: /data
+    route:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+        hostnames: ["meshmonitor.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 3001
