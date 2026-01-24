@@ -34,6 +34,9 @@ spec:
               PORT: "3001"
               COOKIE_SECURE: "true"
               TRUST_PROXY: "1"
+            envFrom:
+              - secretRef:
+                  name: meshmonitor-secrets
             probes:
               liveness:
                 enabled: true
