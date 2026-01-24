@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - pvc.yaml
   - cronjob.yaml
+  - secret.sops.yaml
