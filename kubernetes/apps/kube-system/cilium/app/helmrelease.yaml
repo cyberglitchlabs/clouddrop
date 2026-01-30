@@ -16,52 +16,12 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  # Use server-side apply to avoid 256KB annotation limit for large dashboard ConfigMaps
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              kind: ConfigMap
-              name: cilium-dashboard
-            patch: |
-              apiVersion: v1
-              kind: ConfigMap
-              metadata:
-                name: cilium-dashboard
-                annotations:
-                  helm.toolkit.fluxcd.io/apply-mode: server-side
-          - target:
-              kind: ConfigMap
-              name: cilium-operator-dashboard
-            patch: |
-              apiVersion: v1
-              kind: ConfigMap
-              metadata:
-                name: cilium-operator-dashboard
-                annotations:
-                  helm.toolkit.fluxcd.io/apply-mode: server-side
   values:
     autoDirectNodeRoutes: true
     bpf:
       masquerade: true
       # Ref: https://github.com/siderolabs/talos/issues/10002
-      # Note: hostLegacyRouting is for Talos compatibility, conflicts with hostRouting
       hostLegacyRouting: true
-      # Tune conntrack settings for NAS-heavy workload
-      # Faster cleanup of stale connections to QNAP NAS (SMB/iSCSI/NFS)
-      ctTcpTimeout: 21600  # 6 hours (default: 21600)
-      ctAnyTimeout: 60     # 1 minute (default: 60)
-      ctTcpTimeoutFin: 10  # 10 seconds (default: 10)
-      ctTcpTimeoutClose: 10  # 10 seconds (default: 10)
-      # Increase eBPF map sizes for high connection counts
-      mapMax:
-        ct:
-          tcp: 524288  # 512k TCP entries (default: 256k)
-          any: 262144  # 256k non-TCP entries (default: 128k)
-        nat: 262144    # 256k NAT entries (default: 128k)
-    # Bandwidth manager without BBR (requires hostRouting which conflicts with Talos)
-    bandwidthManager:
-      enabled: true
     cni:
       # Required for pairing with Multus CNI
       exclusive: false
@@ -73,8 +33,6 @@ spec:
     # devices: eno+ eth+
     dashboards:
       enabled: true
-      annotations:
-        grafana_folder: "Network"
     endpointRoutes:
       enabled: true
     envoy:
@@ -85,26 +43,7 @@ spec:
     gatewayAPI:
       enabled: true
     hubble:
-      enabled: true
-      metrics:
-        enabled:
-          - dns:query
-          - drop
-          - tcp
-          - flow
-          - port-distribution
-          - icmp
-          - http
-        serviceMonitor:
-          enabled: true
-      relay:
-        enabled: true
-        rollOutPods: true
-      ui:
-        enabled: true
-        rollOutPods: true
-        ingress:
-          enabled: false
+      enabled: false
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: "10.42.0.0/16"
@@ -112,10 +51,6 @@ spec:
     k8sServicePort: 7445
     kubeProxyReplacement: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-    # Enable connection tracking for external services (NFS)
-    enableExternalIPs: true
-    # Optimize for long-lived connections (NFS mounts)
-    installNoConntrackIptablesRules: false
     l2announcements:
       enabled: true
     loadBalancer:
@@ -125,8 +60,6 @@ spec:
     operator:
       dashboards:
         enabled: true
-        annotations:
-          grafana_folder: "Network"
       prometheus:
         enabled: true
         serviceMonitor:
@@ -161,6 +94,4 @@ spec:
           - SYS_ADMIN
           - SYS_RESOURCE
     socketLB:
-      # Enable for all pods to accelerate TCP connections (including NFS)
-      enabled: true
-      hostNamespaceOnly: false
+      hostNamespaceOnly: true

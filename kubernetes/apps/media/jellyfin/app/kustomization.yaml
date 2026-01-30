@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./pvc-xmltv.yaml
-  - ./pvc-config-nfs.yaml
   - ./pvc-config-nfs-v2.yaml
   - ./pvc-media.yaml
   - ./pv-media.yaml

@@ -71,11 +71,9 @@ spec:
           - port: http
     route:
       app:
-        annotations:
-          external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
         parentRefs:
-          - name: internal
+          - name: external
             namespace: kube-system
             sectionName: https
         rules:
