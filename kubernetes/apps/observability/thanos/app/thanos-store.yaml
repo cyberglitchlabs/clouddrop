@@ -49,9 +49,9 @@ spec:
                     port: 10902
             resources:
               requests:
-                cpu: 100m
+                cpu: 50m
               limits:
-                memory: 1Gi
+                memory: 512Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
