@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/persistentvolumeclaim-v1.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: romm-redis-nfs-v2
+spec:
+  accessModes: ["ReadWriteMany"]
+  storageClassName: qnap-nfs-db-sync
+  resources:
+    requests:
+      storage: 1Gi
