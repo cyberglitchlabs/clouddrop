@@ -99,7 +99,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: jellyfin-nfs
+        existingClaim: jellyfin-nfs-v2
         globalMounts:
           - path: /config
       media:
