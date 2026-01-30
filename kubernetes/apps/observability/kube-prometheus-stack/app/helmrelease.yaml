@@ -23,6 +23,9 @@ spec:
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
+      config:
+        useExistingSecret: true
+        existingSecret: alertmanager-secret
       alertmanagerSpec:
         externalUrl: https://alertmanager.${SECRET_DOMAIN}
         storage:
@@ -57,8 +60,15 @@ spec:
         ruleSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
-        retention: 14d
-        retentionSize: 40GB
+        retention: 3d
+        retentionSize: 35GB
+        # Thanos sidecar configuration for object storage
+        thanos:
+          image: quay.io/thanos/thanos:v0.37.4
+          objectStorageConfig:
+            existingSecret:
+              name: thanos-objstore-secret
+              key: objstore.yml
         resources:
           requests:
             cpu: 100m
@@ -66,6 +76,16 @@ spec:
           limits:
             memory: 8Gi
         outOfOrderTimeWindow: 30m
+        # Increase startup probe timeout for large WAL replay
+        startupProbe:
+          enabled: true
+          httpGet:
+            path: /-/ready
+            port: http-web
+            scheme: HTTP
+          periodSeconds: 15
+          failureThreshold: 120  # 30 minutes (120 * 15s)
+          timeoutSeconds: 5
         storageSpec:
           volumeClaimTemplate:
             spec:

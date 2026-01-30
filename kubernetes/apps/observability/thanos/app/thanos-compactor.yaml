@@ -1,0 +1,90 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: thanos-compactor
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bjw-s-app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      thanos-compactor:
+        replicas: 1  # MUST be singleton!
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: quay.io/thanos/thanos
+              tag: v0.37.4
+            command: ["/bin/thanos"]
+            args:
+              - compact
+              - --http-address=0.0.0.0:10902
+              - --data-dir=/var/thanos/compact
+              - --objstore.config-file=/etc/thanos/objstore.yml
+              - --retention.resolution-raw=7d
+              - --retention.resolution-5m=30d
+              - --retention.resolution-1h=180d
+              - --wait
+              - --compact.concurrency=1
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /-/healthy
+                    port: 10902
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /-/ready
+                    port: 10902
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 1Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
+    service:
+      app:
+        controller: thanos-compactor
+        ports:
+          http:
+            port: 10902
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        storageClass: qnap-nfs
+        accessMode: ReadWriteOnce
+        size: 20Gi
+        globalMounts:
+          - path: /var/thanos/compact
+      objstore-config:
+        type: secret
+        name: thanos-objstore-secret
+        globalMounts:
+          - path: /etc/thanos
+            readOnly: true

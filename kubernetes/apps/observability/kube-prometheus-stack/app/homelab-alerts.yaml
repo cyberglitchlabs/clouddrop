@@ -1,0 +1,194 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/jsonschema/prometheusrule.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: homelab-alerts
+  namespace: observability
+spec:
+  groups:
+    # Node/Infrastructure Alerts
+    - name: nodes
+      interval: 30s
+      rules:
+        - alert: NodeDown
+          expr: up{job="node-exporter"} == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Node {{ $labels.instance }} is down"
+            description: "Node {{ $labels.instance }} has been down for more than 5 minutes."
+        
+        - alert: NodeHighCPU
+          expr: (100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)) > 85
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High CPU usage on {{ $labels.instance }}"
+            description: "CPU usage is {{ $value | humanize }}% on {{ $labels.instance }}"
+        
+        - alert: NodeHighMemory
+          expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100 < 10
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Low memory on {{ $labels.instance }}"
+            description: "Available memory is {{ $value | humanize }}% on {{ $labels.instance }}"
+        
+        - alert: NodeDiskSpaceLow
+          expr: (node_filesystem_avail_bytes{fstype!="tmpfs",fstype!="ramfs"} / node_filesystem_size_bytes * 100) < 15
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Low disk space on {{ $labels.instance }}"
+            description: "Disk {{ $labels.mountpoint }} on {{ $labels.instance }} has only {{ $value | humanize }}% available space"
+        
+        - alert: NodeDiskSpaceCritical
+          expr: (node_filesystem_avail_bytes{fstype!="tmpfs",fstype!="ramfs"} / node_filesystem_size_bytes * 100) < 5
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Critical disk space on {{ $labels.instance }}"
+            description: "Disk {{ $labels.mountpoint }} on {{ $labels.instance }} has only {{ $value | humanize }}% available space"
+
+    # Kubernetes Cluster Alerts
+    - name: kubernetes
+      interval: 30s
+      rules:
+        - alert: KubePodCrashLooping
+          expr: rate(kube_pod_container_status_restarts_total[15m]) > 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is crash looping"
+            description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has restarted {{ $value | humanize }} times in the last 15 minutes"
+        
+        - alert: KubePodNotReady
+          expr: sum by (namespace, pod) (kube_pod_status_phase{phase!~"Running|Succeeded"}) > 0
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} not ready"
+            description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has been in a non-ready state for more than 15 minutes"
+        
+        - alert: KubeDeploymentReplicasMismatch
+          expr: kube_deployment_spec_replicas != kube_deployment_status_replicas_available
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Deployment {{ $labels.namespace }}/{{ $labels.deployment }} replicas mismatch"
+            description: "Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has not matched expected replica count for more than 15 minutes"
+        
+        - alert: KubeStatefulSetReplicasMismatch
+          expr: kube_statefulset_status_replicas_ready != kube_statefulset_status_replicas
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: "StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} replicas mismatch"
+            description: "StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} has not matched expected replica count for more than 15 minutes"
+        
+        - alert: KubePersistentVolumeFillingUp
+          expr: (kubelet_volume_stats_available_bytes / kubelet_volume_stats_capacity_bytes) * 100 < 15
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} is filling up"
+            description: "PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} has only {{ $value | humanize }}% available space"
+
+    # Flux GitOps Alerts
+    - name: flux
+      interval: 1m
+      rules:
+        - alert: FluxReconciliationFailure
+          expr: gotk_reconcile_condition{type="Ready",status="False"} == 1
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Flux {{ $labels.kind }}/{{ $labels.name }} reconciliation failing"
+            description: "Flux {{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} has been failing reconciliation for more than 10 minutes"
+        
+        - alert: FluxSuspendedResource
+          expr: gotk_suspend_status == 1
+          for: 1h
+          labels:
+            severity: info
+          annotations:
+            summary: "Flux {{ $labels.kind }}/{{ $labels.name }} is suspended"
+            description: "Flux {{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} has been suspended for more than 1 hour"
+
+    # Storage Alerts
+    - name: storage
+      interval: 1m
+      rules:
+        - alert: PersistentVolumeErrors
+          expr: increase(kubelet_volume_stats_inodes_used[5m]) < 0 or increase(kubelet_volume_stats_used_bytes[5m]) < 0
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} has errors"
+            description: "PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} is reporting anomalous metrics, possible storage issue"
+
+    # Prometheus/Monitoring Alerts
+    - name: monitoring
+      interval: 1m
+      rules:
+        - alert: PrometheusTargetDown
+          expr: up == 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Prometheus target {{ $labels.job }}/{{ $labels.instance }} is down"
+            description: "Prometheus has been unable to scrape {{ $labels.job }}/{{ $labels.instance }} for more than 5 minutes"
+        
+        - alert: PrometheusTSDBCompactionsFailing
+          expr: rate(prometheus_tsdb_compactions_failed_total[5m]) > 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Prometheus TSDB compactions failing"
+            description: "Prometheus is experiencing TSDB compaction failures at {{ $value | humanize }} per second"
+        
+        - alert: PrometheusNotIngestingSamples
+          expr: rate(prometheus_tsdb_head_samples_appended_total[5m]) <= 0
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Prometheus not ingesting samples"
+            description: "Prometheus has not ingested any samples for 10 minutes"
+
+    # Application Health Alerts
+    - name: applications
+      interval: 1m
+      rules:
+        - alert: ContainerOOMKilled
+          expr: (kube_pod_container_status_terminated_reason{reason="OOMKilled"} == 1)
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Container {{ $labels.namespace }}/{{ $labels.pod }}/{{ $labels.container }} was OOMKilled"
+            description: "Container {{ $labels.container }} in pod {{ $labels.namespace }}/{{ $labels.pod }} was killed due to out of memory"
+        
+        - alert: ContainerHighMemoryUsage
+          expr: (container_memory_working_set_bytes{container!=""} / container_spec_memory_limit_bytes{container!=""}) * 100 > 90
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Container {{ $labels.namespace }}/{{ $labels.pod }}/{{ $labels.container }} high memory"
+            description: "Container {{ $labels.container }} in {{ $labels.namespace }}/{{ $labels.pod }} is using {{ $value | humanize }}% of memory limit"
