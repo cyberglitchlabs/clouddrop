@@ -31,8 +31,8 @@ spec:
               - --grpc-address=0.0.0.0:10901
               - --http-address=0.0.0.0:9090
               - --query.replica-label=prometheus_replica
-              - --store=dnssrv+_grpc._tcp.prometheus-operated.observability.svc.cluster.local
-              - --store=dnssrv+_grpc._tcp.thanos-store.observability.svc.cluster.local
+              - --endpoint=dnssrv+_grpc._tcp.prometheus-operated.observability.svc.cluster.local
+              - --endpoint=dnssrv+_grpc._tcp.thanos-store.observability.svc.cluster.local
             probes:
               liveness:
                 enabled: true
