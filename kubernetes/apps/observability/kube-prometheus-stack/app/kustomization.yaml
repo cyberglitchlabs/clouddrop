@@ -8,6 +8,3 @@ resources:
   - ./flux-pod-monitor.yaml
   - ./alertmanager-secret.sops.yaml
   - ./homelab-alerts.yaml
-  - ./helmrelease.yaml
-  - ./httproute.yaml
-  - ./ocirepository.yaml
