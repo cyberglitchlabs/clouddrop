@@ -1,0 +1,34 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "kubernetes": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "kubernetes-mcp-server@latest",
+        "--kubeconfig",
+				"/Users/jason/personal/clouddrop/kubeconfig"],
+      "environment": {
+        "KUBECONFIG": "/users/jason/personal/clouddrop/kubeconfig"
+      }
+
+    },
+    "flux": {
+      "type": "local",
+      "command": ["flux-operator-mcp","serve"],
+      "environment": {
+        "KUBECONFIG": "/users/jason/personal/clouddrop/kubeconfig"
+      }
+
+    },
+    "home-assistant": {
+      "type": "local",
+      "command": ["uvx", "ha-mcp@latest"],
+      "environment": {
+        "HOMEASSISTANT_URL": "https://ha.sievert.fun",
+        "HOMEASSISTANT_TOKEN": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmMTViMWY5MjAwMjU0ZTEzODk3OWI5MzAyZDBjODMyNyIsImlhdCI6MTc2OTI4NzI4OCwiZXhwIjoyMDg0NjQ3Mjg4fQ.QM-FclUMPmJzLn5HVLo6VznzDuRBAD0yy5vsrRWjqps"
+      }
+    }
+  }
+}

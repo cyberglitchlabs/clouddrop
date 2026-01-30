@@ -1,3 +1,2 @@
-cluster:
-  apiServer:
-    admissionControl: []
+- op: remove
+  path: /cluster/apiServer/admissionControl

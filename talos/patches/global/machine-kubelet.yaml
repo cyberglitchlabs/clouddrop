@@ -2,13 +2,6 @@ machine:
   kubelet:
     extraConfig:
       serializeImagePulls: false
-      # Image garbage collection thresholds (percent of disk usage)
-      imageGCHighThresholdPercent: 85
-      imageGCLowThresholdPercent: 80
-      # Eviction settings to free space when node or image filesystem is low
-      evictionHard:
-        "nodefs.available": "5%"
-        "imagefs.available": "10%"
     nodeIP:
       validSubnets:
         - 192.168.42.0/24

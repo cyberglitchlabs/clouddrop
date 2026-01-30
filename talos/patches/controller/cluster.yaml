@@ -7,9 +7,6 @@ cluster:
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
-      # Keep fewer terminated pods to avoid accumulation of completed/failed pod records.
-      # Default is very large; set to a lower value (e.g. 100) to speed cleanup.
-      terminated-pod-gc-threshold: "50"
   coreDNS:
     disabled: true
   etcd:

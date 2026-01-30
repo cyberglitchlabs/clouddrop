@@ -9,8 +9,5 @@ resources:
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
   - ./metrics-server/ks.yaml
-  - ./nvidia-device-plugin/ks.yaml
-  - ./dcgm-exporter/ks.yaml
   - ./reloader/ks.yaml
-  - ./pod-garbage-collector/ks.yaml
-  - ./etcd-backup/ks.yaml
+  - ./spegel/ks.yaml
