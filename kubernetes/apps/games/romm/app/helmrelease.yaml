@@ -133,7 +133,7 @@ spec:
       redis-data:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: romm-redis-nfs
+        existingClaim: romm-redis-nfs-v2
         globalMounts:
           - path: /redis-data
       config:
