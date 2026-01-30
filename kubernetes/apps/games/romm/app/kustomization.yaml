@@ -10,5 +10,6 @@ resources:
   - configmap.yaml
   - helmrelease.yaml
   - pvc.yaml
+  - pvc-redis-v2.yaml
   - secret.sops.yaml
   - metadata-secrets.sops.yaml
