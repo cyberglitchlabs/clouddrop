@@ -8,8 +8,7 @@ spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: bjw-s-app-template
-    namespace: flux-system
+    name: bjw-s-labs
   install:
     remediation:
       retries: 3
