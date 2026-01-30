@@ -1,0 +1,74 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: thanos-query
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bjw-s-app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      thanos-query:
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: quay.io/thanos/thanos
+              tag: v0.37.4
+            command: ["/bin/thanos"]
+            args:
+              - query
+              - --grpc-address=0.0.0.0:10901
+              - --http-address=0.0.0.0:9090
+              - --query.replica-label=prometheus_replica
+              - --store=dnssrv+_grpc._tcp.prometheus-operated.observability.svc.cluster.local
+              - --store=dnssrv+_grpc._tcp.thanos-store.observability.svc.cluster.local
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /-/healthy
+                    port: 9090
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /-/ready
+                    port: 9090
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
+    service:
+      app:
+        controller: thanos-query
+        ports:
+          http:
+            port: 9090
+          grpc:
+            port: 10901
