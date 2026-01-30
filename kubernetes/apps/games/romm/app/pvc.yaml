@@ -34,15 +34,3 @@ spec:
   resources:
     requests:
       storage: 10Gi
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/persistentvolumeclaim-v1.json
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: romm-redis-nfs
-spec:
-  accessModes: ["ReadWriteMany"]
-  storageClassName: qnap-nfs
-  resources:
-    requests:
-      storage: 1Gi
