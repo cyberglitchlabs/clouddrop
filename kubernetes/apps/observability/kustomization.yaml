@@ -11,3 +11,4 @@ resources:
   - ./loki/ks.yaml
   - ./unpoller/ks.yaml
   - ./homeassistant-metrics/ks.yaml
+  - ./thanos/ks.yaml
