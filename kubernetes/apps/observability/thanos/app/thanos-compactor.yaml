@@ -37,6 +37,7 @@ spec:
               - --retention.resolution-1h=180d
               - --wait
               - --compact.concurrency=1
+              - --debug.accept-malformed-index
             probes:
               liveness:
                 enabled: true
