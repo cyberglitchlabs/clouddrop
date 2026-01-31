@@ -2,9 +2,16 @@ machine:
   sysctls:
     fs.inotify.max_user_watches: "1048576"     # Watchdog
     fs.inotify.max_user_instances: "8192"      # Watchdog
+    fs.file-max: "2097152"                     # Increase max file descriptors for storage
     net.core.rmem_max: "7500000"               # Cloudflared | QUIC
     net.core.wmem_max: "7500000"               # Cloudflared | QUIC
+    net.core.netdev_max_backlog: "5000"        # Increase packet queue
     net.ipv4.neigh.default.gc_thresh1: "4096"  # Prevent ARP cache overflows
     net.ipv4.neigh.default.gc_thresh2: "8192"  # Prevent ARP cache overflows
     net.ipv4.neigh.default.gc_thresh3: "16384" # Prevent ARP cache overflows
+    net.ipv4.tcp_keepalive_time: "600"         # Send keepalive after 10min idle (NAS connections)
+    net.ipv4.tcp_keepalive_intvl: "60"         # Retry every 60s
+    net.ipv4.tcp_keepalive_probes: "3"         # 3 failed probes = dead connection
+    net.ipv4.tcp_fin_timeout: "30"             # Faster FIN-WAIT-2 cleanup
+    net.ipv4.tcp_max_syn_backlog: "8192"       # Increase SYN queue
     user.max_user_namespaces: "11255"          # User Namespaces
