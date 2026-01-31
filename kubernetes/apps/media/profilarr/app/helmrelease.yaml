@@ -97,6 +97,11 @@ spec:
         existingClaim: profilarr-media-smb
         globalMounts:
           - path: /media
+      home:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /home/appuser
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
