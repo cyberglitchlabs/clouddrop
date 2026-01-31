@@ -27,7 +27,7 @@ spec:
           profilarr:
             image:
               repository: santiagosayshey/profilarr
-              tag: v1.1.2
+              tag: v1.1.4
             env:
               TZ: America/Chicago
             probes:
