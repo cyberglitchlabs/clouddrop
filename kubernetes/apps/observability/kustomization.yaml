@@ -10,9 +10,12 @@ patches:
       kind: Namespace
       name: not-used
     patch: |
-      - op: add
-        path: /metadata/labels/pod-security.kubernetes.io~1enforce
-        value: privileged
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: not-used
+        labels:
+          pod-security.kubernetes.io/enforce: privileged
 resources:
   - ./kube-prometheus-stack/ks.yaml
   - ./grafana/ks.yaml
