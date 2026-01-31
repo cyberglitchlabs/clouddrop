@@ -24,6 +24,7 @@ nodes:
     installDisk: "/dev/disk/by-id/ata-Samsung_SSD_860_EVO_M.2_1TB_S415NB0K303452A"
     machineSpec:
       secureboot: false
+    # Extensions: amd-ucode, iscsi-tools, nvidia (no fuse3/util-linux-tools - causes boot issues)
     talosImageURL: factory.talos.dev/installer/7ea205866c6d1ee573d93a4d40a23dfeb20cb38715ade24583eb9ca42cca538d
     controlPlane: true
     networkInterfaces:
@@ -38,12 +39,24 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.42.10"
+    patches:
+    - |-
+      machine:
+        kernel:
+          modules:
+            - name: nvidia
+            - name: nvidia_uvm
+            - name: nvidia_drm
+            - name: nvidia_modeset
+        sysctls:
+          net.core.bpf_jit_harden: 1
   - hostname: "skully"
     ipAddress: "192.168.42.253"
     installDisk: "/dev/disk/by-id/nvme-Samsung_SSD_960_EVO_250GB_S3ESNX0J931509B"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/5323d5cf13809e2260e475c0f46ff06a9be7afb806804beedb412cfacd7eeb2d
+    # Extensions: i915, intel-ucode, intel-ice-firmware, iscsi-tools, nfsrahead, fuse3, util-linux-tools
+    talosImageURL: factory.talos.dev/installer/0d7b390d8ce7a2d0458bc74d4930dc947a95e457a41216f88adcbad9f8bae696
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -51,6 +64,26 @@ nodes:
         dhcp: false
         addresses:
           - "192.168.42.253/24"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "192.168.42.1"
+        mtu: 1500
+        vip:
+          ip: "192.168.42.10"
+  - hostname: "buzzy"
+    ipAddress: "192.168.42.252"
+    installDisk: "/dev/mmcblk0"
+    machineSpec:
+      secureboot: false
+    # Extensions: i915, intel-ucode, intel-ice-firmware, iscsi-tools, nfsrahead, fuse3, util-linux-tools
+    talosImageURL: factory.talos.dev/installer/0d7b390d8ce7a2d0458bc74d4930dc947a95e457a41216f88adcbad9f8bae696
+    controlPlane: true
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "78:55:36:00:a1:98"
+        dhcp: false
+        addresses:
+          - "192.168.42.252/24"
         routes:
           - network: "0.0.0.0/0"
             gateway: "192.168.42.1"
