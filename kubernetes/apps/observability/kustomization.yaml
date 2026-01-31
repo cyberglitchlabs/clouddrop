@@ -5,6 +5,14 @@ kind: Kustomization
 namespace: observability
 components:
   - ../../components/common
+patches:
+  - target:
+      kind: Namespace
+      name: not-used
+    patch: |
+      - op: add
+        path: /metadata/labels/pod-security.kubernetes.io~1enforce
+        value: privileged
 resources:
   - ./kube-prometheus-stack/ks.yaml
   - ./grafana/ks.yaml
