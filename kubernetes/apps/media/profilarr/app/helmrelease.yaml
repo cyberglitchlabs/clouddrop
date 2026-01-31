@@ -23,6 +23,16 @@ spec:
     controllers:
       profilarr:
         strategy: RollingUpdate
+        initContainers:
+          init-home:
+            image:
+              repository: busybox
+              tag: latest
+            command: ["sh", "-c", "chown 1000:1000 /home/appuser"]
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
         containers:
           profilarr:
             image:
@@ -58,7 +68,6 @@ spec:
               readOnlyRootFilesystem: false
               capabilities:
                 drop: ["ALL"]
-                add: ["CHOWN"]
             resources:
               requests:
                 cpu: 100m
