@@ -90,6 +90,37 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.42.10"
+  - hostname: "hpe"
+    ipAddress: "192.168.42.251"
+    installDisk: "/dev/disk/by-id/wwn-0x5002538043584d30"
+    machineSpec:
+      secureboot: false
+    # Extensions: intel-ucode, iscsi-tools, nvidia (no intel-ice-firmware - CPU is 1st gen i5-750)
+    talosImageURL: factory.talos.dev/installer/1eb97da818e7dd07facb9c88fe7f8ebff969eeedfb92f7106e69c0e113d3702a
+    controlPlane: true
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "6c:62:6d:0e:c1:46"
+        dhcp: false
+        addresses:
+          - "192.168.42.251/24"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "192.168.42.1"
+        mtu: 1500
+        vip:
+          ip: "192.168.42.10"
+    patches:
+    - |-
+      machine:
+        kernel:
+          modules:
+            - name: nvidia
+            - name: nvidia_uvm
+            - name: nvidia_drm
+            - name: nvidia_modeset
+        sysctls:
+          net.core.bpf_jit_harden: 1
 
 # Global patches
 patches:

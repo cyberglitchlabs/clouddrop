@@ -2,3 +2,4 @@ kubernetes-tuf1.yaml
 talosconfig
 kubernetes-skully.yaml
 kubernetes-buzzy.yaml
+kubernetes-hpe.yaml
