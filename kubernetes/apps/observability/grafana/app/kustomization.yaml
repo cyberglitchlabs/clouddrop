@@ -7,6 +7,7 @@ resources:
   - ./ocirepository.yaml
   - ./httproute.yaml
   - ./postgres-cluster.yaml
+  - ./secret.sops.yaml
 
 configMapGenerator:
   - name: grafana-nvidia-dashboard
