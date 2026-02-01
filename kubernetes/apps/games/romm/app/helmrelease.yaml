@@ -106,11 +106,9 @@ spec:
             protocol: TCP
     route:
       app:
-        annotations:
-          external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
         hostnames: ["romm.${SECRET_DOMAIN}"]
         parentRefs:
-          - name: internal
+          - name: external
             namespace: kube-system
             sectionName: https
     persistence:
