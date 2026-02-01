@@ -10,7 +10,7 @@ spec:
       namespace: kube-system
       sectionName: https
   hostnames:
-    - "authentik.${SECRET_DOMAIN}"
+    - "auth.${SECRET_DOMAIN}"
   rules:
     - backendRefs:
         - name: authentik-server
