@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: descheduler
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: descheduler
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    kind: Deployment
+    deschedulingInterval: 5m
+    deschedulerPolicy:
+      strategies:
+        LowNodeUtilization:
+          enabled: true
+          params:
+            nodeResourceUtilizationThresholds:
+              useDeviationThresholds: true
+              thresholds:
+                cpu: 20
+                memory: 20
+                pods: 20
+              targetThresholds:
+                cpu: 80
+                memory: 80
+                pods: 80
+        RemoveDuplicates:
+          enabled: true
+        RemovePodsViolatingNodeAffinity:
+          enabled: true
+          params:
+            nodeAffinityType:
+              - requiredDuringSchedulingIgnoredDuringExecution
+        RemovePodsViolatingInterPodAntiAffinity:
+          enabled: true
+      maxNoOfPodsToEvictPerNode: 20
+      maxNoOfPodsToEvictPerNamespace: 10
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: "descheduler"
+    resources:
+      requests:
+        cpu: 10m
+      limits:
+        memory: 256Mi
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop: ["ALL"]
+    podSecurityContext:
+      runAsNonRoot: true
+      runAsUser: 65532
+      runAsGroup: 65532
+      fsGroup: 65532
