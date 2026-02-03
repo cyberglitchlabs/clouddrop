@@ -15,8 +15,11 @@ spec:
     - file_mode=0777
     - uid=568
     - gid=568
+    - forceuid
+    - forcegid
     - noperm
     - mfsymlinks
+    - nobrl            # Disable byte-range locking
     - cache=loose      # Better performance than strict
     - actimeo=60       # Cache file attributes for 60 seconds
     - noatime          # Don't update access timestamps
