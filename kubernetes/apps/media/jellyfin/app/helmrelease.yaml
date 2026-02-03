@@ -55,21 +55,21 @@ spec:
                   httpGet:
                     path: /health
                     port: 8096
-                  initialDelaySeconds: 10
-                  periodSeconds: 10
-                  timeoutSeconds: 5
-                  failureThreshold: 3
+                  initialDelaySeconds: 30
+                  periodSeconds: 15
+                  timeoutSeconds: 10
+                  failureThreshold: 5
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 100m
-                memory: 512Mi
+                cpu: 200m
+                memory: 2Gi
                 nvidia.com/gpu: 1
               limits:
-                memory: 4Gi
+                memory: 8Gi
                 nvidia.com/gpu: 1
     defaultPodOptions:
       runtimeClassName: nvidia
