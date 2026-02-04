@@ -36,8 +36,8 @@ spec:
       runtimeClassName: nvidia
     resources:
       requests:
-        cpu: 200m
-        memory: 4Gi
+        cpu: 10m
+        memory: 512Mi
         nvidia.com/gpu: 1
       limits:
         memory: 8Gi
