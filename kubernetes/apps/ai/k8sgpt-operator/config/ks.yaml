@@ -22,7 +22,7 @@ spec:
   wait: true
   dependsOn:
     - name: k8sgpt-operator
-      namespace: ai
+      namespace: k8sgpt-operator-system
   healthChecks:
     - apiVersion: core.k8sgpt.ai/v1alpha1
       kind: K8sGPT
