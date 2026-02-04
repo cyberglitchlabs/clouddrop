@@ -116,3 +116,10 @@ spec:
     # Disable MinIO (using filesystem storage)
     minio:
       enabled: false
+
+    # Disable memcached caches (not needed for SingleBinary with filesystem)
+    chunksCache:
+      enabled: false
+
+    resultsCache:
+      enabled: false

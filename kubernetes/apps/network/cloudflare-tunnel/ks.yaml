@@ -11,6 +11,8 @@ spec:
       app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/apps/network/cloudflare-tunnel
+  decryption:
+    provider: sops
   postBuild:
     substituteFrom:
       - name: cluster-secrets
