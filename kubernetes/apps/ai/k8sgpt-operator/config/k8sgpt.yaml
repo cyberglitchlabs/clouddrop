@@ -4,7 +4,7 @@ apiVersion: core.k8sgpt.ai/v1alpha1
 kind: K8sGPT
 metadata:
   name: k8sgpt-ollama
-  namespace: ai
+  namespace: k8sgpt-operator-system
 spec:
   version: v0.4.27
   analysis:

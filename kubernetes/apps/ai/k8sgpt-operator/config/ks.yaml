@@ -16,7 +16,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
+  targetNamespace: k8sgpt-operator-system
   retryInterval: 2m
   timeout: 5m
   wait: true
@@ -27,4 +27,4 @@ spec:
     - apiVersion: core.k8sgpt.ai/v1alpha1
       kind: K8sGPT
       name: k8sgpt-ollama
-      namespace: ai
+      namespace: k8sgpt-operator-system

@@ -6,7 +6,7 @@ metadata:
   name: k8sgpt-operator
   namespace: ai
 spec:
-  targetNamespace: ai
+  targetNamespace: k8sgpt-operator-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: k8sgpt-operator
