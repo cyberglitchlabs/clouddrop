@@ -11,7 +11,7 @@ spec:
     enabled: true
     backend: localai
     baseUrl: http://ollama:11434/v1
-    model: llama3.2:latest
+    model: deepseek-r1:1.5b
   resources:
     requests:
       cpu: 50m
