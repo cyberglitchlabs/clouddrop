@@ -7,6 +7,7 @@ components:
   - ../../components/common
 resources:
   - ./k8sgpt-operator/ks.yaml
+  - ./k8sgpt-operator/config/ks.yaml
   - ./local-ai/ks.yaml
   - ./mcp-context-forge/ks.yaml
   - ./meilisearch/ks.yaml
