@@ -9,7 +9,7 @@ spec:
   version: v0.4.27
   ai:
     enabled: true
-    backend: localai
+    backend: ollama
     baseUrl: http://ollama:11434
     model: deepseek-r1:1.5b
   resources:
