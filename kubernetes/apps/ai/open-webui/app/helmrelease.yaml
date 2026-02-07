@@ -45,13 +45,12 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /health
+                  tcpSocket:
                     port: 8080
                   initialDelaySeconds: 30
                   periodSeconds: 30
-                  timeoutSeconds: 10
-                  failureThreshold: 6
+                  timeoutSeconds: 5
+                  failureThreshold: 3
               readiness:
                 enabled: true
                 custom: true
@@ -62,7 +61,7 @@ spec:
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 10
-                  failureThreshold: 6
+                  failureThreshold: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -72,7 +71,7 @@ spec:
                 cpu: 200m
                 memory: 512Mi
               limits:
-                memory: 2Gi
+                memory: 4Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
