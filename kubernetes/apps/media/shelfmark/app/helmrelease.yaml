@@ -35,10 +35,8 @@ spec:
             args:
               - -c
               - |
-                # Disable recursive ownership checks that cause timeouts on large mounts
-                sed -i 's/change_ownership() {/change_ownership() { return 0;/g' /app/entrypoint.sh
-                sed -i 's/fix_misowned() {/fix_misowned() { return 0;/g' /app/entrypoint.sh
-                sed -i 's/make_writable() {/make_writable() { return 0;/g' /app/entrypoint.sh
+                # Limit recursive ownership checks to top-level to prevent timeouts on large mounts
+                sed -i 's/find "$folder"/find "$folder" -maxdepth 1/g' /app/entrypoint.sh
                 exec /usr/bin/dumb-init -- /app/entrypoint.sh
             env:
               TZ: America/Chicago
