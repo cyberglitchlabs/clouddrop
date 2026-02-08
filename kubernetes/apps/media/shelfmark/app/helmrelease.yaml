@@ -35,7 +35,7 @@ spec:
             args:
               - -c
               - |
-                sed -i 's|make_writable ${INGEST_DIR:-/books}|echo "Skipping books check"|g' /app/entrypoint.sh
+                sed -i 's|make_writable \${INGEST_DIR:-/books}|echo "Skipping books check"|g' /app/entrypoint.sh
                 exec /usr/bin/dumb-init -- /app/entrypoint.sh
             env:
               TZ: America/Chicago
