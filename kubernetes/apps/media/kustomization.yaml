@@ -8,20 +8,19 @@ components:
 resources:
   - ./shared
   - ./audiobookshelf/ks.yaml
+  - ./bazarr/ks.yaml
+  - ./booklore/ks.yaml
+  - ./huntarr/ks.yaml
+  - ./immich/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellystat/ks.yaml
-  - ./radarr/ks.yaml
   - ./lidarr/ks.yaml
-  - ./sonarr/ks.yaml
-  - ./prowlarr/ks.yaml
-  - ./profilarr/ks.yaml
-  - ./sabnzbd/ks.yaml
-  - ./slskd/ks.yaml
-  - ./soulsync/ks.yaml
-  - ./seerr/ks.yaml
-  - ./huntarr/ks.yaml
-  - ./bazarr/ks.yaml
   - ./listenarr/ks.yaml
-  - ./booklore/ks.yaml
-  - ./shelfmark/ks.yaml
-  - ./immich/ks.yaml
+  - ./profilarr/ks.yaml
+  - ./prowlarr/ks.yaml
+  - ./radarr/ks.yaml
+  - ./sabnzbd/ks.yaml
+  - ./seerr/ks.yaml
+  - ./slskd/ks.yaml
+  - ./sonarr/ks.yaml
+  - ./soulsync/ks.yaml
