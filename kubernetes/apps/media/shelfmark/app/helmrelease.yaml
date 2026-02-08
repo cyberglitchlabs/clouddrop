@@ -63,7 +63,8 @@ spec:
                   httpGet:
                     path: /api/health
                     port: 8084
-                  failureThreshold: 30
+                  # Increased threshold to allow time for recursive file ownership checks on large SMB/NFS mounts
+                  failureThreshold: 120
                   periodSeconds: 5
             securityContext:
               allowPrivilegeEscalation: true
@@ -79,8 +80,6 @@ spec:
         runAsNonRoot: false
         runAsUser: 0
         runAsGroup: 0
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
     service:
       app:
         controller: shelfmark
