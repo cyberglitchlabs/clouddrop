@@ -23,4 +23,5 @@ resources:
   - ./bazarr/ks.yaml
   - ./listenarr/ks.yaml
   - ./booklore/ks.yaml
+  - ./shelfmark/ks.yaml
   - ./immich/ks.yaml
