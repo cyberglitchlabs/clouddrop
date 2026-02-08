@@ -21,3 +21,4 @@ talosconfig
 Thumbs.db
 etcd-backup-*.db
 opencode.json
+.chunkhound*
