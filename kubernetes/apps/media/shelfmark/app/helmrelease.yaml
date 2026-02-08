@@ -31,8 +31,8 @@ spec:
               tag: latest
             env:
               TZ: America/Chicago
-              PUID: "1000"
-              PGID: "1000"
+              PUID: "568"
+              PGID: "568"
             probes:
               liveness:
                 enabled: true
@@ -80,6 +80,9 @@ spec:
         runAsNonRoot: false
         runAsUser: 0
         runAsGroup: 0
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
+        supplementalGroups: [65539]
     service:
       app:
         controller: shelfmark
