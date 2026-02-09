@@ -24,7 +24,7 @@ spec:
           meshmonitor:
             image:
               repository: ghcr.io/yeraze/meshmonitor
-              tag: "3.4.7"
+              tag: "3.4.10"
             env:
               TZ: America/Chicago
               MESHTASTIC_NODE_IP: "192.168.15.251"
