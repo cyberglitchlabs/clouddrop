@@ -27,7 +27,7 @@ spec:
           bambu-buddy:
             image:
               repository: ghcr.io/maziggy/bambuddy
-              tag: 0.1.9
+              tag: 0.2.0
             env:
               TZ: America/Chicago
               LOG_LEVEL: DEBUG
