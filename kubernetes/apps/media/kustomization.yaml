@@ -10,7 +10,6 @@ resources:
   - ./audiobookshelf/ks.yaml
   - ./bazarr/ks.yaml
   - ./booklore/ks.yaml
-  - ./huntarr/ks.yaml
   - ./immich/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellystat/ks.yaml
