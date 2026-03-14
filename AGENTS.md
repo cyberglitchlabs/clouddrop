@@ -124,6 +124,40 @@ resources:
   - ./app2/ks.yaml
 ```
 
+**Canonical `ks.yaml` pattern** (use this exactly — see `mealie/ks.yaml` as reference):
+
+```yaml
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app app-name
+  namespace: flux-system   # ALWAYS flux-system here, regardless of target namespace
+spec:
+  targetNamespace: &namespace target-namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/target-namespace/app-name/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system   # ALWAYS include this explicitly
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+  dependsOn:
+    - name: other-dependency
+```
+
+**Critical `ks.yaml` rules:**
+- `metadata.namespace` must be `flux-system` — even if the parent `kustomization.yaml` has a `namespace:` transformer that overrides it, Flux Kustomization CRs need to live in `flux-system` to reference the `flux-system` GitRepository
+- `sourceRef.namespace: flux-system` must **always** be set explicitly — if omitted, Flux looks for the GitRepository in the same namespace as the Kustomization CR, causing a "not found" error
+- `app/kustomization.yaml` must **not** have a `namespace:` field — namespace is inherited from `targetNamespace` in `ks.yaml`
+- `helmrelease.yaml` must **not** have `metadata.namespace` — it is inherited via kustomize
+
 ### HelmRelease Pattern
 
 **Standard pattern** (using OCIRepository with chartRef):
@@ -268,6 +302,12 @@ kubectl -n <namespace> get events --sort-by='.metadata.creationTimestamp'
 - Force reconcile: `task reconcile`
 - Check webhook: `kubectl -n flux-system get receiver github-webhook`
 
+**Kustomization error: "GitRepository not found":**
+- Cause: `sourceRef.namespace: flux-system` is missing from `ks.yaml`
+- The namespace transformer in the parent `kustomization.yaml` does NOT add it automatically
+- Fix: always set `sourceRef.namespace: flux-system` explicitly in every `ks.yaml`
+- Note: if a parent `kustomization.yaml` has `namespace: <X>` as a transformer, it will override `metadata.namespace` in child `ks.yaml` files — this is expected and harmless as long as `sourceRef.namespace` is explicit
+
 ## Critical Guidelines
 
 1. **Never commit unencrypted secrets** - Always verify `.sops.yaml` files are encrypted
@@ -278,6 +318,9 @@ kubectl -n <namespace> get events --sort-by='.metadata.creationTimestamp'
 6. **Talos patches**: Use RFC6902 JSON Patch format, create parent paths before using `-` (array append)
 7. **Git workflow**: Edit → `task configure` → `git add` → `git commit` → `git push` → `task reconcile`
 8. **OCIRepository naming**: `chartRef.name` must exactly match `OCIRepository` metadata name
+9. **`ks.yaml` namespace**: `metadata.namespace` must be `flux-system`; `sourceRef.namespace: flux-system` must always be set explicitly — omitting it causes "GitRepository not found" when the Kustomization CR ends up in a non-flux-system namespace
+10. **`app/kustomization.yaml`**: must NOT have a `namespace:` field — inherited from `targetNamespace` in `ks.yaml`
+11. **`helmrelease.yaml`**: must NOT have `metadata.namespace` — inherited via kustomize
 
 ## Environment Setup
 
