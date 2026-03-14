@@ -4,6 +4,8 @@ kind: HTTPRoute
 metadata:
   name: emqx
   namespace: home
+  annotations:
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
 spec:
   hostnames:
     - "emqx.${SECRET_DOMAIN}"
