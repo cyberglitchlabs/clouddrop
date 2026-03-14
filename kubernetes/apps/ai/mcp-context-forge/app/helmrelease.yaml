@@ -82,7 +82,7 @@ spec:
                   httpGet:
                     path: /health
                     port: 4444
-                  initialDelaySeconds: 60
+                  initialDelaySeconds: 120
                   periodSeconds: 30
                   timeoutSeconds: 10
                   failureThreshold: 5
@@ -93,10 +93,10 @@ spec:
                   httpGet:
                     path: /health
                     port: 4444
-                  initialDelaySeconds: 30
+                  initialDelaySeconds: 90
                   periodSeconds: 10
                   timeoutSeconds: 5
-                  failureThreshold: 3
+                  failureThreshold: 6
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
