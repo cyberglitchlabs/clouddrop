@@ -40,10 +40,10 @@ nodes:
         vip:
           ip: "192.168.42.10"
     patches:
-      - |-
-        machine:
-          sysctls:
-            net.core.bpf_jit_harden: "1"
+    - |-
+      machine:
+        sysctls:
+          net.core.bpf_jit_harden: "1"
   - hostname: "skully"
     ipAddress: "192.168.42.253"
     installDisk: "/dev/disk/by-id/nvme-Samsung_SSD_960_EVO_250GB_S3ESNX0J931509B"
@@ -106,10 +106,10 @@ nodes:
         vip:
           ip: "192.168.42.10"
     patches:
-      - |-
-        machine:
-          sysctls:
-            net.core.bpf_jit_harden: "1"
+    - |-
+      machine:
+        sysctls:
+          net.core.bpf_jit_harden: "1"
 
 # Global patches
 patches:
