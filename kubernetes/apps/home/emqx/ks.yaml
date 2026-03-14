@@ -3,24 +3,23 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app emqx
-  namespace: &namespace radio
+  name: emqx
+  namespace: flux-system
 spec:
+  targetNamespace: home
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: emqx
   interval: 1h
-  path: ./kubernetes/apps/radio/emqx/app
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
+  retryInterval: 1m
+  timeout: 5m
   prune: true
-  retryInterval: 2m
+  wait: false
+  path: ./kubernetes/apps/home/emqx/app
   sourceRef:
     kind: GitRepository
     name: flux-system
-    namespace: flux-system
-  targetNamespace: *namespace
-  timeout: 5m
-  wait: false
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
