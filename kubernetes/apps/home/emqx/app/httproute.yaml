@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/httproute-gateway-v1.json
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -14,5 +13,5 @@ spec:
       sectionName: https
   rules:
     - backendRefs:
-        - name: emqx-dashboard
+        - name: emqx
           port: 18083
