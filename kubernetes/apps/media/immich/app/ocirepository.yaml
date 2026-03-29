@@ -8,6 +8,6 @@ metadata:
 spec:
   interval: 1h
   url: oci://ghcr.io/immich-app/immich-charts/immich
-  # renovate: datasource=docker depName=ghcr.io/immich-app/immich-charts/immich
+  # datasource=docker depName=ghcr.io/immich-app/immich-charts/immich
   ref:
     tag: 0.11.0
