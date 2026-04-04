@@ -30,7 +30,7 @@ spec:
           jellyfin:
             image:
               repository: ghcr.io/jellyfin/jellyfin
-              tag: 10.11.6
+              tag: 10.11.7
             env:
               TZ: America/Chicago
               JELLYFIN_PublishedServerUrl: "https://jellyfin.${SECRET_DOMAIN}"
