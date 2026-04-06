@@ -82,7 +82,8 @@ spec:
                     "ollama": {
                       "baseUrl": "http://ollama.ai.svc.cluster.local:11434",
                       "apiKey": "ollama-local",
-                      "api": "ollama"
+                      "api": "ollama",
+                      "models": ["llama3.2:3b"]
                     }
                   }
                 },
