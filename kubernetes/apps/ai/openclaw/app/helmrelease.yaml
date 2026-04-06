@@ -1,0 +1,114 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: openclaw
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: openclaw
+      version: "1.5.12"
+      sourceRef:
+        kind: HelmRepository
+        name: openclaw-helm
+        namespace: ai
+      interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    app-template:
+      # Overwrite config on every start so GitOps values always win
+      configMode: overwrite
+
+      # Disable ClawHub skill installation (requires internet, not needed for Ollama-only)
+      skills: []
+
+      controllers:
+        main:
+          containers:
+            main:
+              envFrom:
+                - secretRef:
+                    name: openclaw-secrets
+
+            # Disable Chromium sidecar — not needed for Ollama-only setup
+            chromium:
+              enabled: false
+
+      configMaps:
+        config:
+          data:
+            openclaw.json: |
+              {
+                "gateway": {
+                  "port": 18789,
+                  "mode": "local",
+                  "trustedProxies": [],
+                  "auth": {
+                    "mode": "token",
+                    "token": "${OPENCLAW_GATEWAY_TOKEN}"
+                  }
+                },
+                "agents": {
+                  "defaults": {
+                    "workspace": "/home/node/.openclaw/workspace",
+                    "model": {
+                      "primary": "ollama/llama3.2:3b"
+                    },
+                    "userTimezone": "UTC",
+                    "timeoutSeconds": 600,
+                    "maxConcurrent": 1
+                  },
+                  "list": [
+                    {
+                      "id": "main",
+                      "default": true,
+                      "identity": {
+                        "name": "OpenClaw",
+                        "emoji": "🦞"
+                      }
+                    }
+                  ]
+                },
+                "models": {
+                  "providers": {
+                    "ollama": {
+                      "baseUrl": "http://ollama.ai.svc.cluster.local:11434",
+                      "apiKey": "ollama-local",
+                      "api": "ollama"
+                    }
+                  }
+                },
+                "session": {
+                  "scope": "per-sender",
+                  "store": "/home/node/.openclaw/sessions",
+                  "reset": {
+                    "mode": "idle",
+                    "idleMinutes": 60
+                  }
+                },
+                "logging": {
+                  "level": "info",
+                  "consoleLevel": "info",
+                  "consoleStyle": "compact",
+                  "redactSensitive": "tools"
+                },
+                "tools": {
+                  "profile": "full",
+                  "web": {
+                    "search": { "enabled": false },
+                    "fetch": { "enabled": true }
+                  }
+                }
+              }
+
+      persistence:
+        data:
+          existingClaim: openclaw-config-nfs

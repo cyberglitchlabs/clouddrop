@@ -12,4 +12,5 @@ resources:
   - ./meilisearch/ks.yaml
   - ./n8n/ks.yaml
   - ./ollama/ks.yaml
+  - ./openclaw/ks.yaml
   - ./open-webui/ks.yaml
