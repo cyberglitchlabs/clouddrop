@@ -111,4 +111,7 @@ spec:
 
       persistence:
         data:
-          existingClaim: openclaw-config-nfs
+          type: custom
+          volumeSpec:
+            persistentVolumeClaim:
+              claimName: openclaw-config-nfs
