@@ -83,7 +83,17 @@ spec:
                       "baseUrl": "http://ollama.ai.svc.cluster.local:11434",
                       "apiKey": "ollama-local",
                       "api": "ollama",
-                      "models": ["llama3.2:3b"]
+                      "models": [
+                        {
+                          "id": "llama3.2:3b",
+                          "name": "Llama 3.2 3B",
+                          "reasoning": false,
+                          "input": ["text"],
+                          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+                          "contextWindow": 131072,
+                          "maxTokens": 131072
+                        }
+                      ]
                     }
                   }
                 },
