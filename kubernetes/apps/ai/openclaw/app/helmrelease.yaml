@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: openclaw-helm
-        namespace: flux-system
+        namespace: ai
       interval: 1h
   install:
     remediation:

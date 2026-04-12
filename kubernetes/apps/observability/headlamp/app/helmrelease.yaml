@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: headlamp
-        namespace: flux-system
+        namespace: observability
       interval: 1h
   install:
     remediation:

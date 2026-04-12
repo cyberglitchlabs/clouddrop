@@ -16,7 +16,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  # Flux repositories under this need flux-system hardcoded as namespace for Renovate lookups
   targetNamespace: *namespace
   wait: true
 ---
