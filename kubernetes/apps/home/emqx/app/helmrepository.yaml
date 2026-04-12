@@ -4,7 +4,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: emqx
-  namespace: home
+  namespace: flux-system
 spec:
   interval: 1h
   url: https://repos.emqx.io/charts

@@ -13,6 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: nvidia-gpu
+        namespace: flux-system
       interval: 1h
   install:
     remediation:

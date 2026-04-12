@@ -14,7 +14,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: authentik
-        namespace: security
+        namespace: flux-system
       interval: 1h
   install:
     remediation:

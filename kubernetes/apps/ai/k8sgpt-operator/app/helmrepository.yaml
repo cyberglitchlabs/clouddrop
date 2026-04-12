@@ -4,7 +4,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: k8sgpt
-  namespace: k8sgpt-operator-system
+  namespace: flux-system
 spec:
   interval: 1h
   url: https://charts.k8sgpt.ai/
