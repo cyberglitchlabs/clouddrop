@@ -18,7 +18,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: backup
-              image: curlimages/curl:8.18.0
+              image: curlimages/curl:8.19.0
               command:
                 - sh
                 - -c
