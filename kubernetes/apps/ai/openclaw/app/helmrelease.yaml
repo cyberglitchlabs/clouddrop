@@ -67,7 +67,10 @@ spec:
                     },
                     "userTimezone": "UTC",
                     "timeoutSeconds": 600,
-                    "maxConcurrent": 1
+                    "maxConcurrent": 1,
+                    "compaction": {
+                      "reserveTokensFloor": 20000
+                    }
                   },
                   "list": [
                     {
