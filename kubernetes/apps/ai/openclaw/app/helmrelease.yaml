@@ -63,7 +63,7 @@ spec:
                   "defaults": {
                     "workspace": "/home/node/.openclaw/workspace",
                     "model": {
-                      "primary": "ollama/phi3.5:latest"
+                      "primary": "ollama/granite4:3b"
                     },
                     "userTimezone": "UTC",
                     "timeoutSeconds": 600,
@@ -91,8 +91,8 @@ spec:
                       "api": "ollama",
                       "models": [
                         {
-                          "id": "phi3.5:latest",
-                          "name": "Phi 3.5 Mini",
+                          "id": "granite4:3b",
+                          "name": "Granite 4 3B",
                           "reasoning": false,
                           "input": ["text"],
                           "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
