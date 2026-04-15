@@ -63,7 +63,7 @@ spec:
                   "defaults": {
                     "workspace": "/home/node/.openclaw/workspace",
                     "model": {
-                      "primary": "ollama/qwen3:4b"
+                      "primary": "ollama/llama3.2:3b"
                     },
                     "userTimezone": "UTC",
                     "timeoutSeconds": 600,
@@ -91,12 +91,12 @@ spec:
                       "api": "ollama",
                       "models": [
                         {
-                          "id": "qwen3:4b",
-                          "name": "Qwen3 4B",
+                          "id": "llama3.2:3b",
+                          "name": "Llama 3.2 3B",
                           "reasoning": false,
                           "input": ["text"],
                           "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
-                          "contextWindow": 262144,
+                          "contextWindow": 131072,
                           "maxTokens": 4096
                         }
                       ]
