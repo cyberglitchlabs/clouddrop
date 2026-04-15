@@ -63,7 +63,7 @@ spec:
                   "defaults": {
                     "workspace": "/home/node/.openclaw/workspace",
                     "model": {
-                      "primary": "ollama/granite4:3b"
+                      "primary": "ollama/qwen3:4b"
                     },
                     "userTimezone": "UTC",
                     "timeoutSeconds": 600,
@@ -91,12 +91,12 @@ spec:
                       "api": "ollama",
                       "models": [
                         {
-                          "id": "granite4:3b",
-                          "name": "Granite 4 3B",
+                          "id": "qwen3:4b",
+                          "name": "Qwen3 4B",
                           "reasoning": false,
                           "input": ["text"],
                           "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
-                          "contextWindow": 131072,
+                          "contextWindow": 262144,
                           "maxTokens": 4096
                         }
                       ]
