@@ -63,13 +63,13 @@ spec:
                   "defaults": {
                     "workspace": "/home/node/.openclaw/workspace",
                     "model": {
-                      "primary": "ollama/qwen3.5:4b"
+                      "primary": "ollama/phi3.5:latest"
                     },
                     "userTimezone": "UTC",
                     "timeoutSeconds": 600,
                     "maxConcurrent": 1,
                     "compaction": {
-                      "reserveTokensFloor": 20000
+                      "reserveTokensFloor": 4096
                     }
                   },
                   "list": [
@@ -91,12 +91,12 @@ spec:
                       "api": "ollama",
                       "models": [
                         {
-                          "id": "qwen3.5:4b",
-                          "name": "Qwen 3.5 4B",
+                          "id": "phi3.5:latest",
+                          "name": "Phi 3.5 Mini",
                           "reasoning": false,
                           "input": ["text"],
                           "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
-                          "contextWindow": 16384,
+                          "contextWindow": 131072,
                           "maxTokens": 4096
                         }
                       ]
