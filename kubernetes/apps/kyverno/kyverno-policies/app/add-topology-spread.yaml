@@ -1,0 +1,34 @@
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-topology-spread
+  annotations:
+    policies.kyverno.io/title: Add Topology Spread to Deployments
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/subject: Deployment
+    policies.kyverno.io/description: >-
+      Injects a soft hostname topology spread constraint into all Deployments
+      that don't already have one, encouraging balanced pod distribution across
+      cluster nodes. Uses matchLabelKeys with pod-template-hash so sibling pods
+      are grouped correctly without a hard-coded labelSelector.
+spec:
+  background: false
+  rules:
+    - name: add-topology-spread
+      match:
+        any:
+          - resources:
+              kinds:
+                - Deployment
+      mutate:
+        patchStrategicMerge:
+          spec:
+            template:
+              spec:
+                +(topologySpreadConstraints):
+                  - maxSkew: 1
+                    topologyKey: kubernetes.io/hostname
+                    whenUnsatisfiable: ScheduleAnyway
+                    matchLabelKeys:
+                      - pod-template-hash

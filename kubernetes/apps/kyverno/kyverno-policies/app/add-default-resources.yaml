@@ -1,0 +1,41 @@
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-default-resources
+  annotations:
+    policies.kyverno.io/title: Add Default Resource Requests
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.7.0
+    policies.kyverno.io/description: >-
+      Adds default cpu and memory resource requests to any container (including
+      init and ephemeral containers) that doesn't already specify them. Uses the
+      +(field) anchor so existing values are never overwritten.
+spec:
+  background: false
+  rules:
+    - name: add-default-requests
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      preconditions:
+        any:
+          - key: "{{request.operation || 'BACKGROUND'}}"
+            operator: AnyIn
+            value:
+              - CREATE
+              - UPDATE
+      mutate:
+        foreach:
+          - list: "request.object.spec.[ephemeralContainers, initContainers, containers][]"
+            patchStrategicMerge:
+              spec:
+                containers:
+                  - (name): "{{element.name}}"
+                    resources:
+                      requests:
+                        +(memory): "128Mi"
+                        +(cpu): "10m"
