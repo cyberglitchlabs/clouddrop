@@ -15,13 +15,6 @@ spec:
         name: openclaw-helm
         namespace: flux-system
       interval: 1h
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   values:
     app-template:
       # Overwrite config on every start so GitOps values always win
