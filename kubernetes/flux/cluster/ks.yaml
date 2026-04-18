@@ -65,6 +65,12 @@ spec:
       target:
         group: kustomize.toolkit.fluxcd.io
         kind: Kustomization
+    - # csi-driver-nfs StorageClass templates use ${pvc.metadata.namespace} which is not a Flux variable
+      patch: '[{"op": "remove", "path": "/spec/postBuild"}]'
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        kind: Kustomization
+        name: csi-driver-nfs
     - # cilium CRD installation needs extra time
       patch: |-
         apiVersion: kustomize.toolkit.fluxcd.io/v1
