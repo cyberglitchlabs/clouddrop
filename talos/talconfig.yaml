@@ -85,6 +85,12 @@ nodes:
       machine:
         sysctls:
           net.core.bpf_jit_harden: "1"
+        kernel:
+          modules:
+            - name: nvidia
+            - name: nvidia_uvm
+            - name: nvidia_drm
+            - name: nvidia_modeset
 
 # Global patches
 patches:
