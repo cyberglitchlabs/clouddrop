@@ -14,15 +14,9 @@ spec:
     - name: cloudnative-pg-operator
       namespace: security
   path: ./kubernetes/apps/security/authentik/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
   wait: false
   interval: 1h
   retryInterval: 1m
-  timeout: 5m
   postBuild:
     substituteFrom:
       - kind: Secret

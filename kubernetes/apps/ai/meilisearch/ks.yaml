@@ -11,14 +11,8 @@ spec:
     labels:
       app.kubernetes.io/name: meilisearch
   path: ./kubernetes/apps/ai/meilisearch/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
   interval: 1h
   retryInterval: 2m
-  timeout: 5m
   wait: true
   decryption:
     provider: sops

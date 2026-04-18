@@ -11,12 +11,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/kyverno/kyverno/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
   interval: 1h
   retryInterval: 2m
-  timeout: 5m
   wait: true

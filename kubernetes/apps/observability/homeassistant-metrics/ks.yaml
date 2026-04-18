@@ -12,11 +12,6 @@ spec:
       app.kubernetes.io/name: *app
   interval: 10m
   path: ./kubernetes/apps/observability/homeassistant-metrics/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
   wait: false
   decryption:
     provider: sops

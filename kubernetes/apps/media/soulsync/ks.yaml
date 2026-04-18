@@ -7,11 +7,6 @@ metadata:
 spec:
   targetNamespace: media
   path: ./kubernetes/apps/media/soulsync/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
   decryption:
     provider: sops
   postBuild:
@@ -22,6 +17,5 @@ spec:
   wait: false
   interval: 30m
   retryInterval: 1m
-  timeout: 5m
   dependsOn:
     - name: slskd

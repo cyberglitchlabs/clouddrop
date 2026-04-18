@@ -11,14 +11,8 @@ spec:
       app.kubernetes.io/name: k8sgpt-operator
   interval: 1h
   path: ./kubernetes/apps/ai/k8sgpt-operator/config
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
   targetNamespace: k8sgpt-operator-system
   retryInterval: 2m
-  timeout: 5m
   wait: true
   dependsOn:
     - name: k8sgpt-operator
