@@ -47,12 +47,12 @@ spec:
             balance:
               enabled:
                 - LowNodeUtilization
+                - RemoveDuplicates
+                - RemovePodsViolatingTopologySpreadConstraint
             deschedule:
               enabled:
                 - RemovePodsViolatingNodeAffinity
                 - RemovePodsViolatingInterPodAntiAffinity
-                - RemoveDuplicates
-                - RemovePodsViolatingTopologySpreadConstraint
     podAnnotations:
       configmap.reloader.stakater.com/reload: "descheduler"
     resources:
