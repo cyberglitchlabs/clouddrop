@@ -11,10 +11,6 @@ spec:
       app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/apps/storage/csi-driver-smb/app
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   retryInterval: 2m
   targetNamespace: *namespace
   wait: false

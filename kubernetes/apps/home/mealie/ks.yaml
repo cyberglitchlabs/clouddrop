@@ -17,7 +17,3 @@ spec:
   wait: false
   interval: 1h
   retryInterval: 1m
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: cluster-secrets

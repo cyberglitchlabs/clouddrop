@@ -14,10 +14,6 @@ spec:
     - name: cilium-gateway
       namespace: kube-system
   path: ./kubernetes/apps/radio/meshmonitor/app
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   wait: false
   interval: 30m
   retryInterval: 1m

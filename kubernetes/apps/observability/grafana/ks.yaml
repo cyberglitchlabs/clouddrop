@@ -17,8 +17,3 @@ spec:
     - name: cloudnative-pg-operator
       namespace: security
     - name: kube-prometheus-stack
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: cluster-secrets
-        optional: false

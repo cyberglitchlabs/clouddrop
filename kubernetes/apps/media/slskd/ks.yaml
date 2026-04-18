@@ -16,10 +16,6 @@ spec:
     - name: csi-driver-smb
       namespace: trident
   path: ./kubernetes/apps/media/slskd/app
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   wait: false
   interval: 30m
   retryInterval: 1m

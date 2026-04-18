@@ -13,10 +13,6 @@ spec:
   path: ./kubernetes/apps/network/cloudflare-tunnel/app
   decryption:
     provider: sops
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   retryInterval: 2m
   targetNamespace: *namespace
   wait: false

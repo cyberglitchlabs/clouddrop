@@ -19,8 +19,3 @@ spec:
       namespace: ai
   decryption:
     provider: sops
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: cluster-secrets
-        optional: false

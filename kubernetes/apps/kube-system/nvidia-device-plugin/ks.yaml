@@ -17,8 +17,3 @@ spec:
   force: false
   decryption:
     provider: sops
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: cluster-secrets
-        optional: false

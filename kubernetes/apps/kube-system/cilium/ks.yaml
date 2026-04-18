@@ -11,10 +11,6 @@ spec:
       app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/apps/kube-system/cilium/app
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   retryInterval: 2m
   targetNamespace: *namespace
   wait: false
@@ -34,10 +30,6 @@ spec:
       namespace: cert-manager
   interval: 1h
   path: ./kubernetes/apps/kube-system/cilium/gateway
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   targetNamespace: *namespace
   timeout: 15m
   wait: true

@@ -9,11 +9,6 @@ spec:
   path: ./kubernetes/apps/media/soulsync/app
   decryption:
     provider: sops
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: cluster-secrets
-        optional: false
   wait: false
   interval: 30m
   retryInterval: 1m

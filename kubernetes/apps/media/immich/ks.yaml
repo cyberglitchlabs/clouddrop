@@ -16,10 +16,6 @@ spec:
     - name: cloudflare-tunnel
       namespace: network
   path: ./kubernetes/apps/media/immich/app
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   wait: false
   interval: 30m
   retryInterval: 1m

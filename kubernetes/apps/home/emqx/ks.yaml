@@ -14,7 +14,3 @@ spec:
   retryInterval: 1m
   wait: false
   path: ./kubernetes/apps/home/emqx/app
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: cluster-secrets
