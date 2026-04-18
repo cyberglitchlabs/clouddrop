@@ -24,33 +24,35 @@ spec:
       retries: 3
   values:
     kind: Deployment
-    deschedulingInterval: 5m
+    deschedulingInterval: 6h
     deschedulerPolicy:
-      strategies:
-        LowNodeUtilization:
-          enabled: true
-          params:
-            nodeResourceUtilizationThresholds:
-              useDeviationThresholds: true
-              thresholds:
-                cpu: 20
-                memory: 20
-                pods: 20
-              targetThresholds:
-                cpu: 80
-                memory: 80
-                pods: 80
-        RemoveDuplicates:
-          enabled: true
-        RemovePodsViolatingNodeAffinity:
-          enabled: true
-          params:
-            nodeAffinityType:
-              - requiredDuringSchedulingIgnoredDuringExecution
-        RemovePodsViolatingInterPodAntiAffinity:
-          enabled: true
-      maxNoOfPodsToEvictPerNode: 20
-      maxNoOfPodsToEvictPerNamespace: 10
+      apiVersion: "descheduler/v1alpha2"
+      profiles:
+        - name: default
+          pluginConfig:
+            - name: DefaultEvictor
+              args:
+                nodeFit: true
+            - name: LowNodeUtilization
+              args:
+                thresholds:
+                  cpu: 40
+                  memory: 40
+                  pods: 40
+                targetThresholds:
+                  cpu: 80
+                  memory: 60
+                  pods: 80
+          plugins:
+            balance:
+              enabled:
+                - LowNodeUtilization
+            deschedule:
+              enabled:
+                - RemovePodsViolatingNodeAffinity
+                - RemovePodsViolatingInterPodAntiAffinity
+                - RemoveDuplicates
+                - RemovePodsViolatingTopologySpreadConstraint
     podAnnotations:
       configmap.reloader.stakater.com/reload: "descheduler"
     resources:
