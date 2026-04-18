@@ -19,38 +19,13 @@ cniConfig:
   name: none
 
 nodes:
-  - hostname: "tuf1"
-    ipAddress: "192.168.42.254"
-    installDisk: "/dev/disk/by-id/ata-Samsung_SSD_860_EVO_M.2_1TB_S415NB0K303452A"
-    machineSpec:
-      secureboot: false
-    # Extensions: amd-ucode, iscsi-tools, nonfree-kmod-nvidia-production, nvidia-container-toolkit-production
-    talosImageURL: factory.talos.dev/installer/7ea205866c6d1ee573d93a4d40a23dfeb20cb38715ade24583eb9ca42cca538d
-    controlPlane: true
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "24:4b:fe:8d:e1:0e"
-        dhcp: false
-        addresses:
-          - "192.168.42.254/24"
-        routes:
-          - network: "0.0.0.0/0"
-            gateway: "192.168.42.1"
-        mtu: 1500
-        vip:
-          ip: "192.168.42.10"
-    patches:
-    - |-
-      machine:
-        sysctls:
-          net.core.bpf_jit_harden: "1"
   - hostname: "skully"
     ipAddress: "192.168.42.253"
     installDisk: "/dev/disk/by-id/nvme-Samsung_SSD_960_EVO_250GB_S3ESNX0J931509B"
     machineSpec:
       secureboot: false
-    # Extensions: i915, intel-ice-firmware, intel-ucode, iscsi-tools, nfsrahead, fuse3, util-linux-tools
-    talosImageURL: factory.talos.dev/installer/0d7b390d8ce7a2d0458bc74d4930dc947a95e457a41216f88adcbad9f8bae696
+    # Extensions: i915, intel-ice-firmware, intel-ucode, iscsi-tools, mei, nfsrahead, fuse3, util-linux-tools
+    talosImageURL: factory.talos.dev/installer/ba9e90ad2f7305412fe2fca931f368d622f6a6c51b43988fdae88667de7f87a4
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -69,8 +44,8 @@ nodes:
     installDisk: "/dev/mmcblk0"
     machineSpec:
       secureboot: false
-    # Extensions: i915, intel-ice-firmware, intel-ucode, iscsi-tools, nfsrahead, fuse3, util-linux-tools
-    talosImageURL: factory.talos.dev/installer/0d7b390d8ce7a2d0458bc74d4930dc947a95e457a41216f88adcbad9f8bae696
+    # Extensions: i915, intel-ice-firmware, intel-ucode, iscsi-tools, mei, nfsrahead, fuse3, util-linux-tools
+    talosImageURL: factory.talos.dev/installer/ba9e90ad2f7305412fe2fca931f368d622f6a6c51b43988fdae88667de7f87a4
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -89,9 +64,9 @@ nodes:
     installDisk: "/dev/disk/by-id/wwn-0x5002538043584d30"
     machineSpec:
       secureboot: false
-    # Extensions: intel-ucode, iscsi-tools, nonfree-kmod-nvidia-production, nvidia-container-toolkit-production
+    # Extensions: intel-ucode, iscsi-tools, mei, nonfree-kmod-nvidia-production, nvidia-container-toolkit-production
     # Note: no intel-ice-firmware (CPU is 1st gen i5-750, predates ice driver)
-    talosImageURL: factory.talos.dev/installer/1eb97da818e7dd07facb9c88fe7f8ebff969eeedfb92f7106e69c0e113d3702a
+    talosImageURL: factory.talos.dev/installer/2ce3ff038812cf619b1637950e0e86d9819f9797f01e2bb8a784ff98346c0240
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
