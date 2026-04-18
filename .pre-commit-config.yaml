@@ -1,0 +1,24 @@
+---
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.27.2
+    hooks:
+      - id: gitleaks
+
+  - repo: local
+    hooks:
+      - id: check-sops-encrypted
+        name: Check SOPS files are encrypted
+        language: script
+        entry: .github/scripts/check-sops-encrypted.sh
+        files: '.+\.sops\.ya?ml$'
+        pass_filenames: true
