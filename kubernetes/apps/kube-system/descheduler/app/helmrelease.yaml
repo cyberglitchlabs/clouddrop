@@ -43,6 +43,16 @@ spec:
                   cpu: 80
                   memory: 60
                   pods: 80
+            - name: RemovePodsViolatingNodeAffinity
+              args:
+                nodeAffinityType:
+                  - requiredDuringSchedulingIgnoredDuringExecution
+            - name: RemovePodsViolatingInterPodAntiAffinity
+              args: {}
+            - name: RemoveDuplicates
+              args: {}
+            - name: RemovePodsViolatingTopologySpreadConstraint
+              args: {}
           plugins:
             balance:
               enabled:
