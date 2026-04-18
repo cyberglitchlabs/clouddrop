@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - helmrelease.yaml
   - httproute.yaml
-  - ocirepository.yaml
   - postgres-cluster.yaml
   - pvc.yaml
   - secret.sops.yaml

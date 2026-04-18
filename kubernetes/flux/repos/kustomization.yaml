@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # OCI Repositories
+  - ./ocirepository-bjw-s-app-template.yaml
+  - ./ocirepository-cert-manager.yaml
+  - ./ocirepository-cilium.yaml
+  - ./ocirepository-cloudflare-dns.yaml
+  - ./ocirepository-coredns.yaml
+  - ./ocirepository-flux-instance.yaml
+  - ./ocirepository-flux-operator.yaml
+  - ./ocirepository-gateway-api-crds.yaml
+  - ./ocirepository-grafana.yaml
+  - ./ocirepository-immich.yaml
+  - ./ocirepository-k8s-gateway.yaml
+  - ./ocirepository-kube-prometheus-stack.yaml
+  - ./ocirepository-kyverno.yaml
+  - ./ocirepository-loki.yaml
+  - ./ocirepository-metrics-server.yaml
+  - ./ocirepository-n8n.yaml
+  - ./ocirepository-reloader.yaml
+  - ./ocirepository-promtail.yaml
+  - ./ocirepository-spegel.yaml
+  # Helm Repositories
+  - ./helmrepository-authentik.yaml
+  - ./helmrepository-cloudnative-pg.yaml
+  - ./helmrepository-csi-driver-nfs.yaml
+  - ./helmrepository-csi-driver-smb.yaml
+  - ./helmrepository-dcgm-exporter.yaml
+  - ./helmrepository-descheduler.yaml
+  - ./helmrepository-emqx.yaml
+  - ./helmrepository-headlamp.yaml
+  - ./helmrepository-k8sgpt.yaml
+  - ./helmrepository-openclaw.yaml

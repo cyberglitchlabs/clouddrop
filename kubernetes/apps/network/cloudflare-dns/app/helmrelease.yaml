@@ -9,6 +9,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: cloudflare-dns
+    namespace: flux-system
   install:
     remediation:
       retries: -1

@@ -5,5 +5,4 @@ kind: Kustomization
 resources:
   - ./gatewayclass.yaml
   - ./helmrelease.yaml
-  - ./ocirepository.yaml
   - ./networks.yaml

@@ -14,7 +14,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: cloudnative-pg
-        namespace: security
+        namespace: flux-system
       interval: 1h
   install:
     crds: CreateReplace

@@ -6,5 +6,4 @@ namespace: radio
 components:
   - ../../components/common
 resources:
-  - ./shared
   - ./meshmonitor/ks.yaml

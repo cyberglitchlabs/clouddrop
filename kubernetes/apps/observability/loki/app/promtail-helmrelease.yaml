@@ -10,6 +10,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: promtail
+    namespace: flux-system
   values:
     # Promtail configuration to collect logs and send to Loki
     config:
