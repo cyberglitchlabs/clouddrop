@@ -1,7 +1,7 @@
 # tuf1 Status Report - 10 Minutes Post-BIOS Update
 
-**Time**: 2026-01-29 19:17 CST  
-**Uptime**: ~7 minutes  
+**Time**: 2026-01-29 19:17 CST
+**Uptime**: ~7 minutes
 **Status**: ✅ All Systems Nominal
 
 ## Executive Summary
@@ -168,5 +168,5 @@ sqlite3 /path/to/library.db "UPDATE MediaItems SET PremiereDate = '2013-01-01 00
 
 ---
 
-**Last Updated**: 2026-01-29 19:17 CST  
+**Last Updated**: 2026-01-29 19:17 CST
 **Next Review**: 2026-01-29 20:10 CST (1 hour checkpoint)

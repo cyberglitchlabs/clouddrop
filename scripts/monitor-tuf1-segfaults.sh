@@ -22,10 +22,10 @@ echo "---"
 PREVIOUS_COUNT="${INITIAL_COUNT}"
 while true; do
     sleep "${CHECK_INTERVAL}"
-    
+
     CURRENT_COUNT=$(talosctl -n "${NODE_IP}" dmesg 2>/dev/null | grep -c "segfault" || echo "0")
     NEW_SEGFAULTS=$((CURRENT_COUNT - PREVIOUS_COUNT))
-    
+
     if [ "${NEW_SEGFAULTS}" -gt 0 ]; then
         echo "⚠️  [$(date)] NEW SEGFAULTS DETECTED: +${NEW_SEGFAULTS} (total: ${CURRENT_COUNT})"
         # Show last 5 segfaults
@@ -35,6 +35,6 @@ while true; do
     else
         echo "✅ [$(date)] No new segfaults (total: ${CURRENT_COUNT})"
     fi
-    
+
     PREVIOUS_COUNT="${CURRENT_COUNT}"
 done

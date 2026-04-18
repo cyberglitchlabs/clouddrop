@@ -91,7 +91,7 @@ if [ "$CORRUPTED_COUNT" -gt 0 ]; then
 
     kubectl exec -n "$NAMESPACE" "$POD" -- sqlite3 "$DB_PATH" \
         "UPDATE MediaItems SET PremiereDate = replace(PremiereDate, ' 00800:', ' 00:00:') WHERE PremiereDate LIKE '%00800:%';"
-    
+
     echo "Fix applied ✅"
     echo ""
 else

@@ -1,6 +1,6 @@
 # tuf1 BIOS Update - Success Report
 
-**Date**: 2026-01-29  
+**Date**: 2026-01-29
 **Status**: ✅ BIOS Update Successful - Monitoring in Progress
 
 ## Update Details
@@ -103,7 +103,7 @@ talosctl -n 192.168.42.254 dmesg | grep -i segfault | wc -l
 ```bash
 kubectl get pods -n media jellyfin-ccb7d7957-d7p5q
 kubectl get pods -A -o json | \
-  jq -r '.items[] | select(.spec.nodeName=="tuf1") | 
+  jq -r '.items[] | select(.spec.nodeName=="tuf1") |
   "\(.metadata.namespace)/\(.metadata.name): restarts=\(.status.containerStatuses[0].restartCount // 0)"'
 ```
 

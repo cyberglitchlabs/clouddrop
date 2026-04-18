@@ -1,6 +1,6 @@
 # TUF1 Node - Current Status Analysis
 
-**Generated**: Thu Jan 29 21:05 CST 2026  
+**Generated**: Thu Jan 29 21:05 CST 2026
 **Last Updated**: After BIOS update 1804 → 3636
 
 ## Executive Summary
@@ -17,12 +17,12 @@ The BIOS update from 1804 to 3636 has **NOT fully resolved** the memory corrupti
 ## Timeline Since BIOS Update
 
 ### Phase 1: Initial Stability ✅
-**Duration**: 01:10 - 02:55 CST (105 minutes)  
-**Failures**: 0  
+**Duration**: 01:10 - 02:55 CST (105 minutes)
+**Failures**: 0
 **Status**: Perfect stability, all pods running normally
 
 ### Phase 2: Failure Burst ❌
-**Duration**: 02:55 - 03:00 CST (5 minutes)  
+**Duration**: 02:55 - 03:00 CST (5 minutes)
 **Failures**: 10 total
 - 8 general protection faults
 - 2 segmentation faults
@@ -35,8 +35,8 @@ The BIOS update from 1804 to 3636 has **NOT fully resolved** the memory corrupti
 **Failure Rate During Burst**: ~2 failures per minute
 
 ### Phase 3: Current Status 🟢
-**Duration**: 03:00 - 03:04+ CST (4+ minutes so far)  
-**Failures**: 0  
+**Duration**: 03:00 - 03:04+ CST (4+ minutes so far)
+**Failures**: 0
 **Status**: All pods recovered, Sonarr running after 3 restarts
 
 ## Failure Analysis
@@ -138,7 +138,7 @@ BIOS update likely re-enabled XMP/DOCP profile, forcing RAM to DDR4-3600. Mixed 
 
 ## Current Pod Status on tuf1
 
-**Total Pods**: 22 (all in media namespace)  
+**Total Pods**: 22 (all in media namespace)
 **Status**: All Running ✅
 
 ### Recent Restart History
@@ -280,9 +280,9 @@ Even if the system appears stable now, the burst pattern indicates underlying in
 
 ## Hardware Configuration
 
-**Motherboard**: ASUS TUF GAMING B550M-PLUS  
-**CPU**: AMD Ryzen 5 5600X (Zen 3 - sensitive to RAM compatibility)  
-**BIOS**: 3636 (January 4, 2026) - **JUST UPDATED**  
+**Motherboard**: ASUS TUF GAMING B550M-PLUS
+**CPU**: AMD Ryzen 5 5600X (Zen 3 - sensitive to RAM compatibility)
+**BIOS**: 3636 (January 4, 2026) - **JUST UPDATED**
 **Previous BIOS**: 1804 (February 2, 2021)
 
 **RAM Configuration**: 48GB DDR4-3600 (MIXED - ROOT CAUSE)

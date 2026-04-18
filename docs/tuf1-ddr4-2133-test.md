@@ -1,7 +1,7 @@
 # TUF1 DDR4-2133 Stability Test
 
-**Started**: Thu Jan 29 21:19 CST 2026  
-**Boot Time**: 03:17 CST (21:17 UTC)  
+**Started**: Thu Jan 29 21:19 CST 2026
+**Boot Time**: 03:17 CST (21:17 UTC)
 **Action Taken**: Changed RAM speed from Auto to Manual DDR4-2133
 
 ## Configuration Change
@@ -29,9 +29,9 @@
 
 ## Current Test Status
 
-**Boot Time**: 21:17 CST (03:17 UTC)  
-**Baseline Failures**: 0  
-**Test Duration**: 3 hours minimum  
+**Boot Time**: 21:17 CST (03:17 UTC)
+**Baseline Failures**: 0
+**Test Duration**: 3 hours minimum
 **Current Status**: 🟢 Monitoring started
 
 ### Timeline
@@ -70,8 +70,8 @@
 
 ## Hardware Configuration
 
-**Motherboard**: ASUS TUF GAMING B550M-PLUS  
-**CPU**: AMD Ryzen 5 5600X (Zen 3)  
+**Motherboard**: ASUS TUF GAMING B550M-PLUS
+**CPU**: AMD Ryzen 5 5600X (Zen 3)
 **BIOS**: 3636 (January 4, 2026)
 
 **RAM Configuration**: 48GB DDR4 (MIXED)
@@ -80,7 +80,7 @@
 - DIMM_B1: Crucial 8GB (BL8G36C16U4BL.M8FE1) - rated 3600MHz
 - DIMM_B2: G-Skill 16GB (F4-3600C16-16GTZNC) - rated 3600MHz, base 2133MHz
 
-**Current Speed**: DDR4-2133 (JEDEC standard, forced in BIOS)  
+**Current Speed**: DDR4-2133 (JEDEC standard, forced in BIOS)
 **Previous Speed**: Auto (was attempting 3600MHz with mixed timings)
 
 ## Expected Outcome

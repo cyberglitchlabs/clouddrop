@@ -1,8 +1,8 @@
 # tuf1 Node Memory Failure - Incident Summary
 
-**Incident Start**: Thu Jan 29 2026 ~18:00 CST  
-**BIOS Update**: Thu Jan 29 2026 18:50 CST  
-**Current Status**: ✅ **STABLE** - 20 minutes post-update, zero segfaults  
+**Incident Start**: Thu Jan 29 2026 ~18:00 CST
+**BIOS Update**: Thu Jan 29 2026 18:50 CST
+**Current Status**: ✅ **STABLE** - 20 minutes post-update, zero segfaults
 **Last Updated**: Thu Jan 29 2026 19:22 CST
 
 ## Quick Status

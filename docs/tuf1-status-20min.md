@@ -1,8 +1,8 @@
 # tuf1 Node Status - 20 Minutes Post-BIOS Update
 
-**Timestamp**: Thu Jan 29 19:20 CST 2026  
-**Node**: tuf1 (192.168.42.254)  
-**Uptime Since Reboot**: 10 minutes  
+**Timestamp**: Thu Jan 29 19:20 CST 2026
+**Node**: tuf1 (192.168.42.254)
+**Uptime Since Reboot**: 10 minutes
 **Time Since BIOS Update**: ~20 minutes
 
 ## Executive Summary
@@ -215,6 +215,6 @@ The BIOS update has **successfully resolved** the catastrophic memory failure on
 
 ---
 
-**Status**: Active Monitoring  
-**Confidence**: 90%  
+**Status**: Active Monitoring
+**Confidence**: 90%
 **Next Update**: After 1-hour checkpoint or if segfaults resume

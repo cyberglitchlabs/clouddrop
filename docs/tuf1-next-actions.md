@@ -1,6 +1,6 @@
 # tuf1 Recovery - Next Actions Guide
 
-**Current Status**: 20 minutes post-BIOS update, zero segfaults, system stable ✅  
+**Current Status**: 20 minutes post-BIOS update, zero segfaults, system stable ✅
 **Last Updated**: Thu Jan 29 19:20 CST 2026
 
 ## Monitoring Schedule
@@ -201,8 +201,8 @@ sqlite3 library.db <<EOF
 SELECT Id, Name, PremiereDate FROM MediaItems WHERE PremiereDate LIKE '%00800:%';
 
 -- Fix corruption (adjust WHERE clause based on above query)
-UPDATE MediaItems 
-SET PremiereDate = '2013-01-01 00:00:00' 
+UPDATE MediaItems
+SET PremiereDate = '2013-01-01 00:00:00'
 WHERE PremiereDate = '2013-01-01 00800:00';
 
 -- Verify fix
@@ -361,6 +361,6 @@ talosctl -n 192.168.42.254 shutdown
 
 ---
 
-**Current Phase**: Active Monitoring (20 minutes elapsed)  
-**Next Milestone**: 30-minute checkpoint at 19:40 CST  
+**Current Phase**: Active Monitoring (20 minutes elapsed)
+**Next Milestone**: 30-minute checkpoint at 19:40 CST
 **Expected Outcome**: Continued stability, confidence → 95%

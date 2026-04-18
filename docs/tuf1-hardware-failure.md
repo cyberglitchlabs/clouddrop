@@ -1,9 +1,9 @@
 # tuf1 Node Hardware Failure - RAM Issue
 
-**Status**: ⚠️ CRITICAL - Active Hardware Failure  
-**Date Identified**: 2026-01-29  
-**Root Cause**: Mixed/Failing RAM Configuration  
-**Impact**: System-wide memory corruption, application crashes, data corruption  
+**Status**: ⚠️ CRITICAL - Active Hardware Failure
+**Date Identified**: 2026-01-29
+**Root Cause**: Mixed/Failing RAM Configuration
+**Impact**: System-wide memory corruption, application crashes, data corruption
 
 ## Executive Summary
 
@@ -282,7 +282,7 @@ watch -n 300 'talosctl -n 192.168.42.254 dmesg | grep -i segfault | wc -l'
 ```bash
 # List all pods on tuf1 with restart counts
 kubectl get pods -A -o json | \
-  jq -r '.items[] | select(.spec.nodeName=="tuf1") | 
+  jq -r '.items[] | select(.spec.nodeName=="tuf1") |
   "\(.metadata.namespace)/\(.metadata.name): \(.status.containerStatuses[0].restartCount) restarts"' | \
   sort -t: -k2 -rn
 ```

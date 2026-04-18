@@ -1,6 +1,6 @@
 # Jellyfin Database Corruption - Analysis and Fix Plan
 
-**Date**: Thu Jan 29 2026 19:55 CST  
+**Date**: Thu Jan 29 2026 19:55 CST
 **Status**: Jellyfin running stable, old corruption persists in database
 
 ## Current Status
@@ -152,8 +152,8 @@ kubectl exec -n media $POD -- sh -c 'cp /config/data/jellyfin.db /config/data/je
 #### 3. Find corrupted records
 ```bash
 kubectl exec -n media $POD -- sqlite3 /config/data/jellyfin.db "
-SELECT Id, Name, PremiereDate, Type 
-FROM MediaItems 
+SELECT Id, Name, PremiereDate, Type
+FROM MediaItems
 WHERE PremiereDate LIKE '%00800:%'
 LIMIT 10;
 "
@@ -163,7 +163,7 @@ LIMIT 10;
 ```bash
 # Update all occurrences of the corrupted datetime
 kubectl exec -n media $POD -- sqlite3 /config/data/jellyfin.db "
-UPDATE MediaItems 
+UPDATE MediaItems
 SET PremiereDate = replace(PremiereDate, ' 00800:', ' 00:00:')
 WHERE PremiereDate LIKE '%00800:%';
 "
@@ -174,7 +174,7 @@ WHERE PremiereDate LIKE '%00800:%';
 # Check if any corruption remains
 kubectl exec -n media $POD -- sqlite3 /config/data/jellyfin.db "
 SELECT COUNT(*) as corrupted_count
-FROM MediaItems 
+FROM MediaItems
 WHERE PremiereDate LIKE '%00800:%';
 "
 
@@ -206,8 +206,8 @@ If the corruption is more widespread than just the time field:
 ```bash
 # Find all potential datetime corruption patterns
 kubectl exec -n media $POD -- sqlite3 /config/data/jellyfin.db "
-SELECT DISTINCT PremiereDate 
-FROM MediaItems 
+SELECT DISTINCT PremiereDate
+FROM MediaItems
 WHERE PremiereDate NOT LIKE '____-__-__ __:__:__%'
    OR PremiereDate LIKE '%00800:%'
    OR PremiereDate LIKE '%00900:%'
