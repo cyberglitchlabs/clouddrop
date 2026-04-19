@@ -49,6 +49,7 @@ spec:
   privateKey:
     algorithm: RSA
     size: 2048
+    encoding: PKCS8
   dnsNames:
     - wazuh-indexer
     - wazuh-indexer.security.svc.cluster.local
@@ -71,6 +72,7 @@ spec:
   privateKey:
     algorithm: RSA
     size: 2048
+    encoding: PKCS8
   issuerRef:
     name: wazuh-ca-issuer
     kind: Issuer
@@ -89,6 +91,7 @@ spec:
   privateKey:
     algorithm: RSA
     size: 2048
+    encoding: PKCS8
   dnsNames:
     - wazuh-manager
     - wazuh-manager.security.svc.cluster.local
@@ -110,6 +113,7 @@ spec:
   privateKey:
     algorithm: RSA
     size: 2048
+    encoding: PKCS8
   dnsNames:
     - wazuh-dashboard
     - wazuh-dashboard.security.svc.cluster.local
