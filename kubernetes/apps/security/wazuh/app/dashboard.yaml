@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
         - name: wazuh-dashboard
-          image: wazuh/wazuh-dashboard:4.9.2
+          image: wazuh/wazuh-dashboard:4.14.4
           resources:
             requests:
               cpu: 100m
