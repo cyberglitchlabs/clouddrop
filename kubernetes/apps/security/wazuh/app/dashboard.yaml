@@ -32,10 +32,6 @@ spec:
       labels:
         app: wazuh-dashboard
     spec:
-      securityContext:
-        fsGroup: 1000
-        runAsUser: 1000
-        runAsGroup: 1000
       volumes:
         - name: dashboard-certs
           secret:
@@ -86,7 +82,7 @@ spec:
               subPath: ca.crt
               readOnly: true
             - name: dashboard-config
-              mountPath: /usr/share/wazuh-dashboard/config/opensearch_dashboards.yml
+              mountPath: /etc/wazuh-dashboard/opensearch_dashboards.yml
               subPath: opensearch_dashboards.yml
               readOnly: true
           readinessProbe:
