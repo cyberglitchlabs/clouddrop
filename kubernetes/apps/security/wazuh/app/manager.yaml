@@ -1,0 +1,220 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wazuh-manager-config
+  namespace: security
+data:
+  ossec.conf: |
+    <ossec_config>
+      <global>
+        <jsonout_output>yes</jsonout_output>
+        <alerts_log>yes</alerts_log>
+        <logall>no</logall>
+        <logall_json>no</logall_json>
+        <email_notification>no</email_notification>
+        <smtp_server>localhost</smtp_server>
+        <email_from>wazuh@localhost</email_from>
+        <email_to>admin@localhost</email_to>
+        <email_maxperhour>12</email_maxperhour>
+        <email_log_source>alerts.log</email_log_source>
+        <queue_size>131072</queue_size>
+      </global>
+
+      <alerts>
+        <log_alert_level>3</log_alert_level>
+        <email_alert_level>12</email_alert_level>
+      </alerts>
+
+      <logging>
+        <log_format>plain</log_format>
+      </logging>
+
+      <remote>
+        <connection>secure</connection>
+        <port>1514</port>
+        <protocol>tcp</protocol>
+        <queue_size>131072</queue_size>
+      </remote>
+
+      <cluster>
+        <name>wazuh</name>
+        <node_name>master-node</node_name>
+        <node_type>master</node_type>
+        <key>CLUSTER_KEY_PLACEHOLDER</key>
+        <port>1516</port>
+        <bind_addr>0.0.0.0</bind_addr>
+        <nodes>
+          <node>localhost</node>
+        </nodes>
+        <hidden>no</hidden>
+        <disabled>yes</disabled>
+      </cluster>
+
+      <indexer>
+        <enabled>yes</enabled>
+        <hosts>
+          <host>https://wazuh-indexer:9200</host>
+        </hosts>
+        <ssl>
+          <certificate_authorities>
+            <ca>/etc/ssl/wazuh/ca.crt</ca>
+          </certificate_authorities>
+          <certificate>/etc/ssl/wazuh/tls.crt</certificate>
+          <key>/etc/ssl/wazuh/tls.key</key>
+        </ssl>
+      </indexer>
+
+      <ruleset>
+        <decoder_dir>ruleset/decoders</decoder_dir>
+        <rule_dir>ruleset/rules</rule_dir>
+        <rule_exclude>0215-policy_rules.xml</rule_exclude>
+        <list>etc/lists/audit-keys</list>
+        <list>etc/lists/security-eventchannel</list>
+        <list>etc/lists/amazon/aws-eventnames</list>
+      </ruleset>
+
+      <rule_test>
+        <enabled>yes</enabled>
+        <threads>1</threads>
+        <max_sessions>64</max_sessions>
+        <session_timeout>15m</session_timeout>
+      </rule_test>
+
+      <auth>
+        <disabled>no</disabled>
+        <port>1515</port>
+        <use_source_ip>no</use_source_ip>
+        <purge>yes</purge>
+        <use_password>no</use_password>
+        <ciphers>HIGH:!ADH:!EXP:!MD5:!RC4:!3DES:!CAMELLIA:@STRENGTH</ciphers>
+        <ssl_verify_host>no</ssl_verify_host>
+        <ssl_manager_cert>/etc/ssl/wazuh/tls.crt</ssl_manager_cert>
+        <ssl_manager_key>/etc/ssl/wazuh/tls.key</ssl_manager_key>
+        <ssl_auto_negotiate>no</ssl_auto_negotiate>
+      </auth>
+
+      <localfile>
+        <log_format>syslog</log_format>
+        <location>/var/ossec/logs/active-responses.log</location>
+      </localfile>
+    </ossec_config>
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: wazuh-manager
+  namespace: security
+spec:
+  serviceName: wazuh-manager
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wazuh-manager
+  template:
+    metadata:
+      labels:
+        app: wazuh-manager
+    spec:
+      containers:
+        - name: wazuh-manager
+          image: wazuh/wazuh-manager:4.9.2
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 512Mi
+          env:
+            - name: INDEXER_URL
+              value: "https://wazuh-indexer:9200"
+            - name: INDEXER_USERNAME
+              value: "admin"
+            - name: INDEXER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wazuh-secret
+                  key: INDEXER_ADMIN_PASSWORD
+            - name: FILEBEAT_SSL_VERIFICATION_MODE
+              value: "full"
+            - name: SSL_CERTIFICATE_AUTHORITIES
+              value: "/etc/ssl/wazuh/ca.crt"
+            - name: SSL_CERTIFICATE
+              value: "/etc/ssl/wazuh/tls.crt"
+            - name: SSL_KEY
+              value: "/etc/ssl/wazuh/tls.key"
+            - name: API_USERNAME
+              value: "wazuh-wui"
+            - name: API_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wazuh-secret
+                  key: WAZUH_API_PASSWORD
+          ports:
+            - containerPort: 1514
+              name: agents
+              protocol: TCP
+            - containerPort: 1515
+              name: enrollment
+              protocol: TCP
+            - containerPort: 55000
+              name: api
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /var/ossec/data
+            - name: logs
+              mountPath: /var/ossec/logs
+            - name: certs
+              mountPath: /etc/ssl/wazuh
+              readOnly: true
+            - name: config
+              mountPath: /wazuh-config-mount/etc/ossec.conf
+              subPath: ossec.conf
+              readOnly: true
+      volumes:
+        - name: certs
+          secret:
+            secretName: wazuh-manager-certs
+        - name: config
+          configMap:
+            name: wazuh-manager-config
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: qnap-nfs
+        resources:
+          requests:
+            storage: 5Gi
+    - metadata:
+        name: logs
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: qnap-nfs
+        resources:
+          requests:
+            storage: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wazuh-manager
+  namespace: security
+spec:
+  selector:
+    app: wazuh-manager
+  ports:
+    - name: agents
+      port: 1514
+      targetPort: 1514
+      protocol: TCP
+    - name: enrollment
+      port: 1515
+      targetPort: 1515
+      protocol: TCP
+    - name: api
+      port: 55000
+      targetPort: 55000
+      protocol: TCP

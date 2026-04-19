@@ -1,0 +1,106 @@
+---
+# Self-signed bootstrap issuer
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: wazuh-selfsigned
+  namespace: security
+spec:
+  selfSigned: {}
+---
+# Internal CA for Wazuh component communication
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wazuh-ca
+  namespace: security
+spec:
+  isCA: true
+  commonName: wazuh-ca
+  secretName: wazuh-ca-secret
+  privateKey:
+    algorithm: RSA
+    size: 4096
+  issuerRef:
+    name: wazuh-selfsigned
+    kind: Issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: wazuh-ca-issuer
+  namespace: security
+spec:
+  ca:
+    secretName: wazuh-ca-secret
+---
+# Wazuh Indexer (OpenSearch) node certificate
+# DN: CN=wazuh-indexer — must match nodes_dn in opensearch.yml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wazuh-indexer-cert
+  namespace: security
+spec:
+  secretName: wazuh-indexer-certs
+  duration: 8760h
+  renewBefore: 720h
+  commonName: wazuh-indexer
+  dnsNames:
+    - wazuh-indexer
+    - wazuh-indexer.security.svc.cluster.local
+  issuerRef:
+    name: wazuh-ca-issuer
+    kind: Issuer
+---
+# Admin certificate for running securityadmin.sh
+# DN: CN=admin — must match authcz.admin_dn in opensearch.yml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wazuh-admin-cert
+  namespace: security
+spec:
+  secretName: wazuh-admin-certs
+  duration: 8760h
+  renewBefore: 720h
+  commonName: admin
+  issuerRef:
+    name: wazuh-ca-issuer
+    kind: Issuer
+---
+# Wazuh Manager certificate (for indexer connection)
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wazuh-manager-cert
+  namespace: security
+spec:
+  secretName: wazuh-manager-certs
+  duration: 8760h
+  renewBefore: 720h
+  commonName: wazuh-manager
+  dnsNames:
+    - wazuh-manager
+    - wazuh-manager.security.svc.cluster.local
+  issuerRef:
+    name: wazuh-ca-issuer
+    kind: Issuer
+---
+# Wazuh Dashboard certificate
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wazuh-dashboard-cert
+  namespace: security
+spec:
+  secretName: wazuh-dashboard-certs
+  duration: 8760h
+  renewBefore: 720h
+  commonName: wazuh-dashboard
+  dnsNames:
+    - wazuh-dashboard
+    - wazuh-dashboard.security.svc.cluster.local
+  issuerRef:
+    name: wazuh-ca-issuer
+    kind: Issuer

@@ -1,0 +1,150 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wazuh-indexer-config
+  namespace: security
+data:
+  opensearch.yml: |
+    network.host: "0.0.0.0"
+    node.name: ${HOSTNAME}
+    cluster.initial_cluster_manager_nodes:
+      - wazuh-indexer-0
+    cluster.name: wazuh-indexer-cluster
+    path.data: /var/lib/wazuh-indexer
+    path.logs: /var/log/wazuh-indexer
+    discovery.type: single-node
+
+    plugins.security.ssl.http.pemcert_filepath: /usr/share/wazuh-indexer/certs/tls.crt
+    plugins.security.ssl.http.pemkey_filepath: /usr/share/wazuh-indexer/certs/tls.key
+    plugins.security.ssl.http.pemtrustedcas_filepath: /usr/share/wazuh-indexer/certs/ca.crt
+    plugins.security.ssl.transport.pemcert_filepath: /usr/share/wazuh-indexer/certs/tls.crt
+    plugins.security.ssl.transport.pemkey_filepath: /usr/share/wazuh-indexer/certs/tls.key
+    plugins.security.ssl.transport.pemtrustedcas_filepath: /usr/share/wazuh-indexer/certs/ca.crt
+    plugins.security.ssl.http.enabled: true
+    plugins.security.ssl.transport.enforce_hostname_verification: false
+    plugins.security.ssl.transport.resolve_hostname: false
+
+    plugins.security.authcz.admin_dn:
+      - "CN=admin"
+    plugins.security.nodes_dn:
+      - "CN=wazuh-indexer"
+    plugins.security.restapi.roles_enabled:
+      - "all_access"
+      - "security_rest_api_access"
+    plugins.security.check_snapshot_restore_write_privileges: true
+    plugins.security.enable_snapshot_restore_privilege: true
+    plugins.security.system_indices.enabled: true
+    plugins.security.system_indices.indices:
+      - ".opendistro_security"
+      - ".opendistro-alerting-config"
+      - ".opendistro-alerting-alert*"
+      - ".opendistro-anomaly-results*"
+      - ".opendistro-anomaly-detector*"
+      - ".opendistro-anomaly-checkpoints"
+      - ".opendistro-anomaly-detection-state"
+      - ".opendistro-reports-*"
+      - ".opensearch-notifications-*"
+      - ".opensearch-notebooks"
+      - ".opensearch-observability"
+      - ".opendistro-asynchronous-search-response*"
+      - ".replication-metadata-store"
+    compatibility.override_main_response_version: true
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: wazuh-indexer
+  namespace: security
+spec:
+  serviceName: wazuh-indexer
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wazuh-indexer
+  template:
+    metadata:
+      labels:
+        app: wazuh-indexer
+    spec:
+      initContainers:
+        - name: volume-permissions
+          image: busybox:1.37.0
+          command: ["sh", "-c", "chown -R 1000:1000 /var/lib/wazuh-indexer"]
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/wazuh-indexer
+          securityContext:
+            runAsUser: 0
+      containers:
+        - name: wazuh-indexer
+          image: wazuh/wazuh-indexer:4.9.2
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              memory: 1Gi
+          env:
+            - name: OPENSEARCH_JAVA_OPTS
+              value: "-Xms512m -Xmx512m"
+            - name: OPENSEARCH_PATH_CONF
+              value: /usr/share/wazuh-indexer/config
+          ports:
+            - containerPort: 9200
+              name: https
+            - containerPort: 9300
+              name: transport
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/wazuh-indexer
+            - name: config
+              mountPath: /usr/share/wazuh-indexer/opensearch.yml
+              subPath: opensearch.yml
+              readOnly: true
+            - name: certs
+              mountPath: /usr/share/wazuh-indexer/certs
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /_cluster/health
+              port: 9200
+              scheme: HTTPS
+              httpHeaders:
+                - name: Authorization
+                  value: Basic YWRtaW46YWRtaW4=
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 6
+      volumes:
+        - name: config
+          configMap:
+            name: wazuh-indexer-config
+        - name: certs
+          secret:
+            secretName: wazuh-indexer-certs
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: qnap-nfs-db
+        resources:
+          requests:
+            storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wazuh-indexer
+  namespace: security
+spec:
+  selector:
+    app: wazuh-indexer
+  ports:
+    - name: https
+      port: 9200
+      targetPort: 9200
+    - name: transport
+      port: 9300
+      targetPort: 9300
