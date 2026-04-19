@@ -8,8 +8,6 @@ data:
   opensearch.yml: |
     network.host: "0.0.0.0"
     node.name: wazuh-indexer-0
-    cluster.initial_cluster_manager_nodes:
-      - wazuh-indexer-0
     cluster.name: wazuh-indexer-cluster
     path.data: /var/lib/wazuh-indexer
     path.logs: /var/log/wazuh-indexer
