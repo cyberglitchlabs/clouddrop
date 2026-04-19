@@ -17,6 +17,9 @@ data:
         address: "0.0.0.0:6514"
         mode: udp
 
+      kubernetes_logs:
+        type: kubernetes_logs
+
     transforms:
       parse_udp:
         type: remap
@@ -34,21 +37,29 @@ data:
         source: |-
           .hostname = to_string!(.hostname)
 
+      k8s_enrich:
+        type: remap
+        inputs: ["kubernetes_logs"]
+        source: |-
+          .hostname = to_string(.kubernetes.pod_name) ?? "unknown"
+          .appname   = to_string(.kubernetes.container_name) ?? "unknown"
+          .message   = to_string(.message) ?? ""
+
       wazuh_format:
         type: remap
-        inputs: ["enrich"]
+        inputs: ["enrich", "k8s_enrich"]
         source: |-
           ts = format_timestamp!(.timestamp, format: "%b %e %H:%M:%S")
-          priority = to_string!(.priority)
+          priority = to_string(.priority) ?? "13"
           host = to_string!(.hostname)
-          app = to_string!(.appname)
+          app = to_string(.appname) ?? "unknown"
           msg = to_string!(.message)
           .message = "<" + priority + ">" + ts + " " + host + " " + app + ": " + msg
 
     sinks:
       loki_out:
         type: loki
-        inputs: ["enrich"]
+        inputs: ["enrich", "k8s_enrich"]
         endpoint: "http://loki-gateway.observability.svc.cluster.local"
         labels:
           job: "syslog"
