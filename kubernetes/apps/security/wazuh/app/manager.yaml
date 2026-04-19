@@ -37,6 +37,20 @@ data:
         <queue_size>131072</queue_size>
       </remote>
 
+      <remote>
+        <connection>syslog</connection>
+        <port>514</port>
+        <protocol>tcp</protocol>
+        <allowed-ips>0.0.0.0/0</allowed-ips>
+      </remote>
+
+      <remote>
+        <connection>syslog</connection>
+        <port>514</port>
+        <protocol>udp</protocol>
+        <allowed-ips>0.0.0.0/0</allowed-ips>
+      </remote>
+
       <cluster>
         <name>wazuh</name>
         <node_name>master-node</node_name>
@@ -160,6 +174,12 @@ spec:
             - containerPort: 55000
               name: api
               protocol: TCP
+            - containerPort: 514
+              name: syslog-tcp
+              protocol: TCP
+            - containerPort: 514
+              name: syslog-udp
+              protocol: UDP
           volumeMounts:
             - name: data
               mountPath: /var/ossec/data
@@ -218,3 +238,11 @@ spec:
       port: 55000
       targetPort: 55000
       protocol: TCP
+    - name: syslog-tcp
+      port: 514
+      targetPort: 514
+      protocol: TCP
+    - name: syslog-udp
+      port: 514
+      targetPort: 514
+      protocol: UDP

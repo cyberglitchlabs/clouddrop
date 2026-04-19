@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vector-config
+  namespace: observability
+data:
+  vector.yaml: |
+    sources:
+      syslog_tcp:
+        type: syslog
+        address: "0.0.0.0:6514"
+        mode: tcp
+
+      syslog_udp:
+        type: syslog
+        address: "0.0.0.0:6514"
+        mode: udp
+
+    transforms:
+      enrich:
+        type: remap
+        inputs: ["syslog_tcp", "syslog_udp"]
+        source: |-
+          if !exists(.hostname) {
+            .hostname = "unknown"
+          }
+
+    sinks:
+      loki_out:
+        type: loki
+        inputs: ["enrich"]
+        endpoint: "http://loki-gateway.observability.svc.cluster.local"
+        labels:
+          job: "syslog"
+          host: "{{ hostname }}"
+        encoding:
+          codec: json
+
+      wazuh_out:
+        type: socket
+        inputs: ["enrich"]
+        address: "wazuh-manager.security.svc.cluster.local:514"
+        mode: tcp
+        encoding:
+          codec: syslog
