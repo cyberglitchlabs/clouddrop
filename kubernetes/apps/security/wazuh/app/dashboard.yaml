@@ -1,36 +1,4 @@
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: wazuh-dashboard-config
-  namespace: security
-data:
-  opensearch_dashboards.yml: |
-    server.host: 0.0.0.0
-    server.port: 5601
-    opensearch.hosts: https://wazuh-indexer:9200
-    opensearch.ssl.verificationMode: certificate
-    opensearch.ssl.certificateAuthorities:
-      - /usr/share/wazuh-dashboard/certs/ca.crt
-    opensearch.ssl.certificate: /usr/share/wazuh-dashboard/certs/tls.crt
-    opensearch.ssl.key: /usr/share/wazuh-dashboard/certs/tls.key
-    opensearch.username: kibanaserver
-    opensearch.password: ${INDEXER_KIBANASERVER_PASSWORD}
-    opensearch_security.multitenancy.enabled: false
-    opensearch_security.readonly_mode.roles:
-      - kibana_read_only
-    server.ssl.enabled: false
-    uiSettings.overrides.defaultRoute: /app/wazuh
-    opensearch_security.cookie.secure: false
-  wazuh.yml: |
-    hosts:
-      - id: default
-        url: https://wazuh-manager
-        port: 55000
-        username: wazuh-wui
-        password: ${WAZUH_API_PASSWORD}
-        run_as: false
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -56,6 +24,8 @@ spec:
             limits:
               memory: 512Mi
           env:
+            - name: INDEXER_URL
+              value: "https://wazuh-indexer:9200"
             - name: INDEXER_USERNAME
               value: "admin"
             - name: INDEXER_PASSWORD
@@ -63,18 +33,18 @@ spec:
                 secretKeyRef:
                   name: wazuh-secret
                   key: INDEXER_ADMIN_PASSWORD
-            - name: WAZUH_API_URL
-              value: "https://wazuh-manager"
             - name: DASHBOARD_USERNAME
               value: "kibanaserver"
-            - name: INDEXER_KIBANASERVER_PASSWORD
+            - name: DASHBOARD_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: wazuh-secret
                   key: INDEXER_KIBANASERVER_PASSWORD
+            - name: WAZUH_API_URL
+              value: "https://wazuh-manager"
             - name: API_USERNAME
               value: "wazuh-wui"
-            - name: WAZUH_API_PASSWORD
+            - name: API_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: wazuh-secret
@@ -85,14 +55,6 @@ spec:
           volumeMounts:
             - name: certs
               mountPath: /usr/share/wazuh-dashboard/certs
-              readOnly: true
-            - name: config
-              mountPath: /usr/share/wazuh-dashboard/config/opensearch_dashboards.yml
-              subPath: opensearch_dashboards.yml
-              readOnly: true
-            - name: config
-              mountPath: /usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml
-              subPath: wazuh.yml
               readOnly: true
           readinessProbe:
             httpGet:
@@ -105,9 +67,6 @@ spec:
         - name: certs
           secret:
             secretName: wazuh-dashboard-certs
-        - name: config
-          configMap:
-            name: wazuh-dashboard-config
 ---
 apiVersion: v1
 kind: Service
