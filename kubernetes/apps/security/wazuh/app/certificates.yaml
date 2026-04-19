@@ -46,6 +46,9 @@ spec:
   duration: 8760h
   renewBefore: 720h
   commonName: wazuh-indexer
+  privateKey:
+    algorithm: RSA
+    size: 2048
   dnsNames:
     - wazuh-indexer
     - wazuh-indexer.security.svc.cluster.local
@@ -65,11 +68,14 @@ spec:
   duration: 8760h
   renewBefore: 720h
   commonName: admin
+  privateKey:
+    algorithm: RSA
+    size: 2048
   issuerRef:
     name: wazuh-ca-issuer
     kind: Issuer
 ---
-# Wazuh Manager certificate (for indexer connection)
+# Wazuh Manager certificate (for indexer connection and agent enrollment)
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -80,6 +86,9 @@ spec:
   duration: 8760h
   renewBefore: 720h
   commonName: wazuh-manager
+  privateKey:
+    algorithm: RSA
+    size: 2048
   dnsNames:
     - wazuh-manager
     - wazuh-manager.security.svc.cluster.local
@@ -98,6 +107,9 @@ spec:
   duration: 8760h
   renewBefore: 720h
   commonName: wazuh-dashboard
+  privateKey:
+    algorithm: RSA
+    size: 2048
   dnsNames:
     - wazuh-dashboard
     - wazuh-dashboard.security.svc.cluster.local
