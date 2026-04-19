@@ -12,15 +12,25 @@ data:
         address: "0.0.0.0:6514"
         mode: tcp
 
-      syslog_udp:
-        type: syslog
+      raw_udp:
+        type: socket
         address: "0.0.0.0:6514"
         mode: udp
 
     transforms:
+      parse_udp:
+        type: remap
+        inputs: ["raw_udp"]
+        source: |-
+          structured = parse_syslog(.message) ?? {}
+          . = merge(., structured)
+          if !exists(.hostname) {
+            .hostname = "unknown"
+          }
+
       enrich:
         type: remap
-        inputs: ["syslog_tcp", "syslog_udp"]
+        inputs: ["syslog_tcp", "parse_udp"]
         source: |-
           .hostname = to_string!(.hostname)
 
