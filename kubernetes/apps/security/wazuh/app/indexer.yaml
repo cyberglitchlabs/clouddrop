@@ -88,6 +88,16 @@ spec:
               value: "-Xms512m -Xmx512m -XX:MaxDirectMemorySize=512m"
             - name: OPENSEARCH_PATH_CONF
               value: /usr/share/wazuh-indexer/config
+            - name: INDEXER_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wazuh-secret
+                  key: INDEXER_ADMIN_PASSWORD
+            - name: INDEXER_KIBANASERVER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wazuh-secret
+                  key: INDEXER_KIBANASERVER_PASSWORD
           ports:
             - containerPort: 9200
               name: https
