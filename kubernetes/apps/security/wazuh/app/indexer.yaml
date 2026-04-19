@@ -84,10 +84,10 @@ spec:
               cpu: 100m
               memory: 512Mi
             limits:
-              memory: 1Gi
+              memory: 1536Mi
           env:
             - name: OPENSEARCH_JAVA_OPTS
-              value: "-Xms512m -Xmx512m"
+              value: "-Xms512m -Xmx512m -XX:MaxDirectMemorySize=512m"
             - name: OPENSEARCH_PATH_CONF
               value: /usr/share/wazuh-indexer/config
           ports:
