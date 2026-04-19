@@ -14,6 +14,14 @@ spec:
       labels:
         app: wazuh-dashboard
     spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
+      volumes:
+        - name: dashboard-certs
+          secret:
+            secretName: wazuh-dashboard-certs
       containers:
         - name: wazuh-dashboard
           image: wazuh/wazuh-dashboard:4.9.2
@@ -24,7 +32,7 @@ spec:
             limits:
               memory: 512Mi
           env:
-            - name: INDEXER_URL
+            - name: OPENSEARCH_HOSTS
               value: "https://wazuh-indexer:9200"
             - name: INDEXER_USERNAME
               value: "admin"
@@ -40,6 +48,10 @@ spec:
                 secretKeyRef:
                   name: wazuh-secret
                   key: INDEXER_KIBANASERVER_PASSWORD
+            - name: SERVER_SSL_ENABLED
+              value: "false"
+            - name: OPENSEARCH_SSL_CERTIFICATE_AUTHORITIES
+              value: /usr/share/wazuh-dashboard/config/certs/root-ca.pem
             - name: WAZUH_API_URL
               value: "https://wazuh-manager"
             - name: API_USERNAME
@@ -53,20 +65,25 @@ spec:
             - containerPort: 5601
               name: http
           volumeMounts:
-            - name: certs
-              mountPath: /usr/share/wazuh-dashboard/certs
+            - name: dashboard-certs
+              mountPath: /usr/share/wazuh-dashboard/config/certs/dashboard.pem
+              subPath: tls.crt
+              readOnly: true
+            - name: dashboard-certs
+              mountPath: /usr/share/wazuh-dashboard/config/certs/dashboard-key.pem
+              subPath: tls.key
+              readOnly: true
+            - name: dashboard-certs
+              mountPath: /usr/share/wazuh-dashboard/config/certs/root-ca.pem
+              subPath: ca.crt
               readOnly: true
           readinessProbe:
             httpGet:
-              path: /app/wazuh
+              path: /
               port: 5601
             initialDelaySeconds: 60
             periodSeconds: 15
             failureThreshold: 6
-      volumes:
-        - name: certs
-          secret:
-            secretName: wazuh-dashboard-certs
 ---
 apiVersion: v1
 kind: Service
