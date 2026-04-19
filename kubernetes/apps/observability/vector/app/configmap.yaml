@@ -30,11 +30,11 @@ data:
         type: remap
         inputs: ["enrich"]
         source: |-
+          ts = format_timestamp!(.timestamp ?? now(), format: "%b %e %H:%M:%S")
           priority = to_string(.priority ?? 13)
-          ts = format_timestamp!(to_timestamp!(.timestamp ?? now()), format: "%b %e %H:%M:%S")
-          host = string!(.hostname)
-          app = string(.appname ?? "-")
-          msg = string(.message ?? "")
+          host = .hostname ?? "unknown"
+          app = .appname ?? "-"
+          msg = .message ?? ""
           .message = "<" + priority + ">" + ts + " " + host + " " + app + ": " + msg
 
     sinks:

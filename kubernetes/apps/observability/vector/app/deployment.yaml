@@ -17,11 +17,15 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: vector
+      annotations:
+        reloader.stakater.com/auto: "true"
     spec:
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
         runAsGroup: 65534
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: vector
           image: timberio/vector:0.42.0-debian
