@@ -9,7 +9,7 @@ data:
     server.host: "0.0.0.0"
     server.port: 5601
     opensearch.hosts: ["https://wazuh-indexer:9200"]
-    opensearch.ssl.verificationMode: certificate
+    opensearch.ssl.verificationMode: none
     opensearch.ssl.certificateAuthorities: ["/etc/wazuh-dashboard/certs/root-ca.pem"]
     opensearch.requestHeadersAllowlist: ["securitytenant", "Authorization"]
     opensearch_security.multitenancy.enabled: false
