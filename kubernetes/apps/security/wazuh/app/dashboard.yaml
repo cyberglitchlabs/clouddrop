@@ -51,7 +51,7 @@ spec:
             - name: SERVER_SSL_ENABLED
               value: "false"
             - name: OPENSEARCH_SSL_CERTIFICATE_AUTHORITIES
-              value: /usr/share/wazuh-dashboard/config/certs/root-ca.pem
+              value: /etc/wazuh-dashboard/certs/root-ca.pem
             - name: WAZUH_API_URL
               value: "https://wazuh-manager"
             - name: API_USERNAME
@@ -66,15 +66,15 @@ spec:
               name: http
           volumeMounts:
             - name: dashboard-certs
-              mountPath: /usr/share/wazuh-dashboard/config/certs/dashboard.pem
+              mountPath: /etc/wazuh-dashboard/certs/dashboard.pem
               subPath: tls.crt
               readOnly: true
             - name: dashboard-certs
-              mountPath: /usr/share/wazuh-dashboard/config/certs/dashboard-key.pem
+              mountPath: /etc/wazuh-dashboard/certs/dashboard-key.pem
               subPath: tls.key
               readOnly: true
             - name: dashboard-certs
-              mountPath: /usr/share/wazuh-dashboard/config/certs/root-ca.pem
+              mountPath: /etc/wazuh-dashboard/certs/root-ca.pem
               subPath: ca.crt
               readOnly: true
           readinessProbe:
