@@ -22,17 +22,17 @@ data:
         type: remap
         inputs: ["syslog_tcp", "syslog_udp"]
         source: |-
-          .hostname = to_string(.hostname)
+          .hostname = to_string!(.hostname)
 
       wazuh_format:
         type: remap
         inputs: ["enrich"]
         source: |-
           ts = format_timestamp!(.timestamp, format: "%b %e %H:%M:%S")
-          priority = to_string(.priority)
-          host = to_string(.hostname)
-          app = to_string(.appname)
-          msg = to_string(.message)
+          priority = to_string!(.priority)
+          host = to_string!(.hostname)
+          app = to_string!(.appname)
+          msg = to_string!(.message)
           .message = "<" + priority + ">" + ts + " " + host + " " + app + ": " + msg
 
     sinks:
