@@ -34,6 +34,11 @@ spec:
           image: timberio/vector:0.42.0-debian
           imagePullPolicy: IfNotPresent
           args: ["--config", "/etc/vector/vector.yaml"]
+          env:
+            - name: VECTOR_SELF_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
           ports:
             - name: syslog-tcp
               containerPort: 6514
