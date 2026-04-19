@@ -117,13 +117,8 @@ spec:
               mountPath: /usr/share/wazuh-indexer/certs/admin
               readOnly: true
           readinessProbe:
-            httpGet:
-              path: /_cluster/health
+            tcpSocket:
               port: 9200
-              scheme: HTTPS
-              httpHeaders:
-                - name: Authorization
-                  value: Basic YWRtaW46YWRtaW4=
             initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 6
