@@ -13,7 +13,28 @@ spec:
   values:
     controllers:
       meilisearch:
-        strategy: RollingUpdate
+        strategy: Recreate
+        initContainers:
+          wipe-on-version-mismatch:
+            image:
+              repository: getmeili/meilisearch
+              tag: v1.42.1
+            command:
+              - sh
+              - -c
+              - |
+                if [ -f /meili_data/VERSION ]; then
+                  DB_VER=$(cat /meili_data/VERSION)
+                  BIN_VER=$(meilisearch --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+                  if [ "$DB_VER" != "$BIN_VER" ]; then
+                    echo "Version mismatch (db=$DB_VER bin=$BIN_VER), wiping data"
+                    rm -rf /meili_data/*
+                  fi
+                fi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
         containers:
           app:
             image:
