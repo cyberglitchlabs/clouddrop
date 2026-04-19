@@ -22,7 +22,7 @@ spec:
           jellystat:
             image:
               repository: cyfershepard/jellystat
-              tag: 1.1.9
+              tag: 1.1.10
             env:
               TZ: America/Chicago
               # PostgreSQL connection (from CloudNativePG auto-generated secret)
