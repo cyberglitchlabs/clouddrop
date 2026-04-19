@@ -103,6 +103,9 @@ spec:
             - name: certs
               mountPath: /usr/share/wazuh-indexer/certs
               readOnly: true
+            - name: admin-certs
+              mountPath: /usr/share/wazuh-indexer/certs/admin
+              readOnly: true
           readinessProbe:
             httpGet:
               path: /_cluster/health
@@ -121,6 +124,9 @@ spec:
         - name: certs
           secret:
             secretName: wazuh-indexer-certs
+        - name: admin-certs
+          secret:
+            secretName: wazuh-admin-certs
   volumeClaimTemplates:
     - metadata:
         name: data
