@@ -76,7 +76,7 @@ spec:
             runAsUser: 0
       containers:
         - name: wazuh-indexer
-          image: wazuh/wazuh-indexer:4.9.2
+          image: wazuh/wazuh-indexer:4.14.4
           resources:
             requests:
               cpu: 100m
