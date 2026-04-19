@@ -26,6 +26,17 @@ data:
             .hostname = "unknown"
           }
 
+      wazuh_format:
+        type: remap
+        inputs: ["enrich"]
+        source: |-
+          priority = to_string(.priority ?? 13)
+          ts = format_timestamp!(to_timestamp!(.timestamp ?? now()), format: "%b %e %H:%M:%S")
+          host = string!(.hostname)
+          app = string(.appname ?? "-")
+          msg = string(.message ?? "")
+          .message = "<" + priority + ">" + ts + " " + host + " " + app + ": " + msg
+
     sinks:
       loki_out:
         type: loki
@@ -39,8 +50,8 @@ data:
 
       wazuh_out:
         type: socket
-        inputs: ["enrich"]
+        inputs: ["wazuh_format"]
         address: "wazuh-manager.security.svc.cluster.local:514"
         mode: tcp
         encoding:
-          codec: syslog
+          codec: text
