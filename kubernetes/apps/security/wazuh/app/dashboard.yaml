@@ -49,6 +49,8 @@ spec:
             limits:
               memory: 512Mi
           env:
+            - name: OPENSEARCH_HOSTS
+              value: "https://wazuh-indexer:9200"
             - name: DASHBOARD_USERNAME
               value: "kibanaserver"
             - name: DASHBOARD_PASSWORD
