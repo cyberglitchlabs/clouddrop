@@ -7,7 +7,7 @@ metadata:
 data:
   opensearch.yml: |
     network.host: "0.0.0.0"
-    node.name: ${HOSTNAME}
+    node.name: wazuh-indexer-0
     cluster.initial_cluster_manager_nodes:
       - wazuh-indexer-0
     cluster.name: wazuh-indexer-cluster
