@@ -39,6 +39,8 @@ spec:
         - name: dashboard-config
           configMap:
             name: wazuh-dashboard-config
+        - name: dashboard-writable
+          emptyDir: {}
       containers:
         - name: wazuh-dashboard
           image: wazuh/wazuh-dashboard:4.9.2
@@ -71,6 +73,8 @@ spec:
             - containerPort: 5601
               name: http
           volumeMounts:
+            - name: dashboard-writable
+              mountPath: /etc/wazuh-dashboard
             - name: dashboard-certs
               mountPath: /etc/wazuh-dashboard/certs/dashboard.pem
               subPath: tls.crt
