@@ -1,4 +1,22 @@
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wazuh-dashboard-config
+  namespace: security
+data:
+  opensearch_dashboards.yml: |
+    server.host: "0.0.0.0"
+    server.port: 5601
+    opensearch.hosts: ["https://wazuh-indexer:9200"]
+    opensearch.ssl.verificationMode: certificate
+    opensearch.ssl.certificateAuthorities: ["/etc/wazuh-dashboard/certs/root-ca.pem"]
+    opensearch.requestHeadersAllowlist: ["securitytenant", "Authorization"]
+    opensearch_security.multitenancy.enabled: false
+    opensearch_security.readonly_mode.roles: ["kibana_read_only"]
+    server.ssl.enabled: false
+    uiSettings.overrides.defaultRoute: /app/wz-home
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,6 +40,9 @@ spec:
         - name: dashboard-certs
           secret:
             secretName: wazuh-dashboard-certs
+        - name: dashboard-config
+          configMap:
+            name: wazuh-dashboard-config
       containers:
         - name: wazuh-dashboard
           image: wazuh/wazuh-dashboard:4.9.2
@@ -32,15 +53,6 @@ spec:
             limits:
               memory: 512Mi
           env:
-            - name: OPENSEARCH_HOSTS
-              value: "https://wazuh-indexer:9200"
-            - name: INDEXER_USERNAME
-              value: "admin"
-            - name: INDEXER_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: wazuh-secret
-                  key: INDEXER_ADMIN_PASSWORD
             - name: DASHBOARD_USERNAME
               value: "kibanaserver"
             - name: DASHBOARD_PASSWORD
@@ -48,10 +60,6 @@ spec:
                 secretKeyRef:
                   name: wazuh-secret
                   key: INDEXER_KIBANASERVER_PASSWORD
-            - name: SERVER_SSL_ENABLED
-              value: "false"
-            - name: OPENSEARCH_SSL_CERTIFICATE_AUTHORITIES
-              value: /etc/wazuh-dashboard/certs/root-ca.pem
             - name: WAZUH_API_URL
               value: "https://wazuh-manager"
             - name: API_USERNAME
@@ -76,6 +84,10 @@ spec:
             - name: dashboard-certs
               mountPath: /etc/wazuh-dashboard/certs/root-ca.pem
               subPath: ca.crt
+              readOnly: true
+            - name: dashboard-config
+              mountPath: /usr/share/wazuh-dashboard/config/opensearch_dashboards.yml
+              subPath: opensearch_dashboards.yml
               readOnly: true
           readinessProbe:
             httpGet:
