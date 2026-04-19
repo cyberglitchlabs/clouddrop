@@ -22,19 +22,17 @@ data:
         type: remap
         inputs: ["syslog_tcp", "syslog_udp"]
         source: |-
-          if !exists(.hostname) {
-            .hostname = "unknown"
-          }
+          .hostname = to_string(.hostname)
 
       wazuh_format:
         type: remap
         inputs: ["enrich"]
         source: |-
-          ts = format_timestamp!(.timestamp ?? now(), format: "%b %e %H:%M:%S")
-          priority = to_string(.priority ?? 13)
-          host = .hostname ?? "unknown"
-          app = .appname ?? "-"
-          msg = .message ?? ""
+          ts = format_timestamp!(.timestamp, format: "%b %e %H:%M:%S")
+          priority = to_string(.priority)
+          host = to_string(.hostname)
+          app = to_string(.appname)
+          msg = to_string(.message)
           .message = "<" + priority + ">" + ts + " " + host + " " + app + ": " + msg
 
     sinks:
