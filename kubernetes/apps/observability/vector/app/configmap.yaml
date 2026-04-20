@@ -31,23 +31,15 @@ data:
             .hostname = "unknown"
           }
 
-      enrich:
+      syslog_enrich:
         type: remap
         inputs: ["syslog_tcp", "parse_udp"]
         source: |-
           .hostname = to_string!(.hostname)
 
-      k8s_enrich:
-        type: remap
-        inputs: ["kubernetes_logs"]
-        source: |-
-          .hostname = to_string(.kubernetes.pod_name) ?? "unknown"
-          .appname   = to_string(.kubernetes.container_name) ?? "unknown"
-          .message   = to_string(.message) ?? ""
-
       wazuh_format:
         type: remap
-        inputs: ["enrich", "k8s_enrich"]
+        inputs: ["syslog_enrich"]
         source: |-
           ts = format_timestamp!(.timestamp, format: "%b %e %H:%M:%S")
           priority = to_string(.priority) ?? "13"
@@ -56,11 +48,39 @@ data:
           msg = to_string!(.message)
           .message = "<" + priority + ">" + ts + " " + host + " " + app + ": " + msg
 
+      k8s_enrich:
+        type: remap
+        inputs: ["kubernetes_logs"]
+        source: |-
+          .pod = to_string(.kubernetes.pod_name) ?? "unknown"
+          .container = to_string(.kubernetes.container_name) ?? "unknown"
+          .namespace = to_string(.kubernetes.pod_namespace) ?? "unknown"
+          .node = to_string(.kubernetes.pod_node_name) ?? "unknown"
+          .message = to_string(.message) ?? ""
+
     sinks:
-      wazuh_out:
+      wazuh_manager:
         type: socket
         inputs: ["wazuh_format"]
         address: "wazuh-manager.security.svc.cluster.local:514"
         mode: tcp
         encoding:
           codec: text
+
+      wazuh_indexer:
+        type: elasticsearch
+        inputs: ["k8s_enrich"]
+        endpoints:
+          - "https://wazuh-indexer.security.svc.cluster.local:9200"
+        api_version: v7
+        mode: bulk
+        bulk:
+          index: "vector-k8s-%Y.%m.%d"
+        compression: none
+        auth:
+          strategy: basic
+          user: admin
+          password: "${INDEXER_ADMIN_PASSWORD}"
+        tls:
+          verify_certificate: false
+          verify_hostname: false

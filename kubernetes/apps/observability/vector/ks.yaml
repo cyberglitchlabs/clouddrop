@@ -13,5 +13,3 @@ spec:
   interval: 10m
   path: ./kubernetes/apps/observability/vector/app
   wait: false
-  dependsOn:
-    - name: loki

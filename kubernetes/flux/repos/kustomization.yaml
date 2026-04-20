@@ -17,11 +17,9 @@ resources:
   - ./ocirepository-k8s-gateway.yaml
   - ./ocirepository-kube-prometheus-stack.yaml
   - ./ocirepository-kyverno.yaml
-  - ./ocirepository-loki.yaml
   - ./ocirepository-metrics-server.yaml
   - ./ocirepository-n8n.yaml
   - ./ocirepository-reloader.yaml
-  - ./ocirepository-promtail.yaml
   - ./ocirepository-spegel.yaml
   # Helm Repositories
   - ./helmrepository-authentik.yaml

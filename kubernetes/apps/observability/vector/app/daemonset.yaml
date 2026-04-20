@@ -39,6 +39,11 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
+            - name: INDEXER_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: vector-indexer-auth
+                  key: INDEXER_ADMIN_PASSWORD
           ports:
             - name: syslog-tcp
               containerPort: 6514
