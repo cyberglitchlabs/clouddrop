@@ -9,3 +9,4 @@ resources:
   - ./dashboard.yaml
   - ./secret.sops.yaml
   - ./httproute.yaml
+  - ./ism-policies.yaml
