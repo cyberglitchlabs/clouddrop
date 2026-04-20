@@ -6,6 +6,12 @@ metadata:
   namespace: observability
 data:
   vector.yaml: |
+    secret:
+      indexer:
+        type: directory
+        path: /etc/vector/secrets
+        remove_trailing_whitespace: true
+
     sources:
       syslog_tcp:
         type: syslog
@@ -80,7 +86,7 @@ data:
         auth:
           strategy: basic
           user: admin
-          password: "${INDEXER_ADMIN_PASSWORD}"
+          password: "SECRET[indexer.INDEXER_ADMIN_PASSWORD]"
         tls:
           verify_certificate: false
           verify_hostname: false

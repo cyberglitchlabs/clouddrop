@@ -39,11 +39,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
-            - name: INDEXER_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: vector-indexer-auth
-                  key: INDEXER_ADMIN_PASSWORD
           ports:
             - name: syslog-tcp
               containerPort: 6514
@@ -54,6 +49,9 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /etc/vector
+              readOnly: true
+            - name: secrets
+              mountPath: /etc/vector/secrets
               readOnly: true
             - name: data
               mountPath: /var/lib/vector
@@ -79,6 +77,9 @@ spec:
         - name: config
           configMap:
             name: vector-config
+        - name: secrets
+          secret:
+            secretName: vector-indexer-auth
         - name: data
           emptyDir: {}
         - name: var-log-pods
