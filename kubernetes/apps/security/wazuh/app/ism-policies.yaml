@@ -145,29 +145,24 @@ spec:
           command:
             - sh
             - -c
+            # NOTE: $$ escapes $ from Flux postBuild envsubst so the shell sees a literal $.
             - |
               set -eu
-              echo "ADMIN_PASSWORD length: ${#ADMIN_PASSWORD}"
               for f in /policies/*.json; do
-                id=$(basename "$f" .json)
-                echo "applying $id"
-                # Use optimistic concurrency: fetch seq_no/primary_term if exists, otherwise create
-                existing=$(curl -sk -u "admin:${ADMIN_PASSWORD}" \
-                  "https://wazuh-indexer.security.svc.cluster.local:9200/_plugins/_ism/policies/${id}")
-                seq=$(echo "$existing" | sed -n 's/.*"_seq_no":\([0-9]*\).*/\1/p')
-                pt=$(echo "$existing" | sed -n 's/.*"_primary_term":\([0-9]*\).*/\1/p')
-                if [ -n "$seq" ] && [ -n "$pt" ]; then
-                  url="https://wazuh-indexer.security.svc.cluster.local:9200/_plugins/_ism/policies/${id}?if_seq_no=${seq}&if_primary_term=${pt}"
+                id=$$(basename "$$f" .json)
+                echo "applying $$id"
+                existing=$$(curl -sk -u "admin:$${ADMIN_PASSWORD}" "https://wazuh-indexer.security.svc.cluster.local:9200/_plugins/_ism/policies/$${id}") # gitleaks:allow
+                seq=$$(echo "$$existing" | sed -n 's/.*"_seq_no":\([0-9]*\).*/\1/p')
+                pt=$$(echo "$$existing" | sed -n 's/.*"_primary_term":\([0-9]*\).*/\1/p')
+                if [ -n "$$seq" ] && [ -n "$$pt" ]; then
+                  url="https://wazuh-indexer.security.svc.cluster.local:9200/_plugins/_ism/policies/$${id}?if_seq_no=$${seq}&if_primary_term=$${pt}"
                 else
-                  url="https://wazuh-indexer.security.svc.cluster.local:9200/_plugins/_ism/policies/${id}"
+                  url="https://wazuh-indexer.security.svc.cluster.local:9200/_plugins/_ism/policies/$${id}"
                 fi
-                code=$(curl -sk -o /tmp/resp -w "%{http_code}" -u "admin:${ADMIN_PASSWORD}" \
-                  -X PUT "$url" \
-                  -H 'Content-Type: application/json' \
-                  --data-binary "@$f")
-                echo "$id -> HTTP $code"
+                code=$$(curl -sk -o /tmp/resp -w "%{http_code}" -u "admin:$${ADMIN_PASSWORD}" -X PUT "$$url" -H 'Content-Type: application/json' --data-binary "@$$f") # gitleaks:allow
+                echo "$$id -> HTTP $$code"
                 cat /tmp/resp; echo
-                case "$code" in
+                case "$$code" in
                   200|201) ;;
                   *) exit 1 ;;
                 esac
