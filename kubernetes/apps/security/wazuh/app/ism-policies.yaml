@@ -147,6 +147,7 @@ spec:
             - -c
             - |
               set -eu
+              echo "ADMIN_PASSWORD length: ${#ADMIN_PASSWORD}"
               for f in /policies/*.json; do
                 id=$(basename "$f" .json)
                 echo "applying $id"
