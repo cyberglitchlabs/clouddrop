@@ -72,6 +72,10 @@ data:
         mode: tcp
         encoding:
           codec: text
+        buffer:
+          type: memory
+          max_events: 5000
+          when_full: drop_newest
 
       wazuh_indexer:
         type: elasticsearch
@@ -90,3 +94,7 @@ data:
         tls:
           verify_certificate: false
           verify_hostname: false
+        buffer:
+          type: memory
+          max_events: 10000
+          when_full: drop_newest
