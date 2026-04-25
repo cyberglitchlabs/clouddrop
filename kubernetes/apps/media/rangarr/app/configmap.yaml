@@ -17,17 +17,17 @@ data:
       Radarr:
         type: radarr
         host: "http://radarr.media.svc.cluster.local:7878"
-        api_key: "${RADARR_API_KEY}"
+        api_key: "$${RADARR_API_KEY}"
         enabled: true
 
       Sonarr:
         type: sonarr
         host: "http://sonarr.media.svc.cluster.local:8989"
-        api_key: "${SONARR_API_KEY}"
+        api_key: "$${SONARR_API_KEY}"
         enabled: true
 
       Lidarr:
         type: lidarr
         host: "http://lidarr.media.svc.cluster.local:8686"
-        api_key: "${LIDARR_API_KEY}"
+        api_key: "$${LIDARR_API_KEY}"
         enabled: true
