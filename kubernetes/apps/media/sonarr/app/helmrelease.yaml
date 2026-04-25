@@ -30,13 +30,8 @@ spec:
             probes:
               liveness:
                 enabled: true
-                custom: true
                 spec:
-                  httpGet:
-                    path: /ping
-                    port: 8989
-                  initialDelaySeconds: 10
-                  periodSeconds: 10
+                  periodSeconds: 30
                   timeoutSeconds: 5
                   failureThreshold: 5
               readiness:
@@ -46,10 +41,14 @@ spec:
                   httpGet:
                     path: /ping
                     port: 8989
-                  initialDelaySeconds: 5
                   periodSeconds: 10
                   timeoutSeconds: 5
-                  failureThreshold: 3
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
