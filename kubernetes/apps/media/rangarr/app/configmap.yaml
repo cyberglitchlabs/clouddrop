@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rangarr-config
+  namespace: media
+data:
+  config.yaml: |
+    global:
+      interval: 3600
+      stagger_interval_seconds: 30
+      missing_batch_size: 20
+      upgrade_batch_size: 10
+      search_order: last_searched_ascending
+
+    instances:
+      Radarr:
+        type: radarr
+        host: "http://radarr.media.svc.cluster.local:7878"
+        api_key: "${RADARR_API_KEY}"
+        enabled: true
+
+      Sonarr:
+        type: sonarr
+        host: "http://sonarr.media.svc.cluster.local:8989"
+        api_key: "${SONARR_API_KEY}"
+        enabled: true
+
+      Lidarr:
+        type: lidarr
+        host: "http://lidarr.media.svc.cluster.local:8686"
+        api_key: "${LIDARR_API_KEY}"
+        enabled: true
