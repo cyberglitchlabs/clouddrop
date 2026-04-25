@@ -6,4 +6,6 @@ components:
   - ../../../../components/helmrelease-defaults
 resources:
   - ./pvc-config-nfs.yaml
+  - ./pv-assets-smb.yaml
+  - ./pvc-assets-smb.yaml
   - ./helmrelease.yaml

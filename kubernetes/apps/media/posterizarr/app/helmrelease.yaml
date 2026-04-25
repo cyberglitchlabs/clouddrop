@@ -78,6 +78,12 @@ spec:
         existingClaim: posterizarr-nfs
         globalMounts:
           - path: /config
+      assets:
+        type: persistentVolumeClaim
+        existingClaim: posterizarr-assets-smb
+        globalMounts:
+          - path: /assets
+            subPath: posterizarr/assets
       tmp:
         type: emptyDir
         globalMounts:
