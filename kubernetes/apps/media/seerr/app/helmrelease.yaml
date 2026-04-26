@@ -82,6 +82,16 @@ spec:
           - path: /app/config
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Jellyseerr"
+          gethomepage.dev/group: "Media"
+          gethomepage.dev/icon: "jellyseerr.png"
+          gethomepage.dev/description: "Media Requests"
+          gethomepage.dev/href: "https://seerr.${SECRET_DOMAIN}"
+          gethomepage.dev/widget.type: "jellyseerr"
+          gethomepage.dev/widget.url: "http://seerr.media.svc.cluster.local:5055"
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}"
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
         parentRefs:
           - name: external
