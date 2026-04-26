@@ -1,0 +1,91 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gatus-config
+  namespace: observability
+data:
+  config.yaml: |
+    storage:
+      type: postgres
+      path: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@gatus-postgres-rw.observability.svc.cluster.local:5432/${POSTGRES_DB}"
+
+    web:
+      port: 8080
+
+    ui:
+      title: "Status | clouddrop"
+      header: "Status"
+
+    alerting:
+      discord:
+        webhook-url: ""  # set via env override if desired
+
+    connectivity:
+      checker:
+        target: 1.1.1.1:53
+        interval: 60s
+
+    endpoints:
+      - name: mealie
+        group: home
+        url: http://mealie.home.svc.cluster.local:9000
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"
+
+      - name: actual-budget
+        group: home
+        url: http://actual-budget.home.svc.cluster.local:5006
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"
+
+      - name: emqx
+        group: home
+        url: http://emqx.home.svc.cluster.local:18083
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"
+
+      - name: open-webui
+        group: ai
+        url: http://open-webui.ai.svc.cluster.local:8080
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"
+
+      - name: n8n
+        group: ai
+        url: http://n8n.ai.svc.cluster.local:5678
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"
+
+      - name: ollama
+        group: ai
+        url: http://ollama.ai.svc.cluster.local:11434
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"
+
+      - name: jellyfin
+        group: media
+        url: http://jellyfin.media.svc.cluster.local:8096/health
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"
+
+      - name: grafana
+        group: observability
+        url: http://grafana.observability.svc.cluster.local:80/api/health
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"
+
+      - name: authentik
+        group: security
+        url: http://authentik.security.svc.cluster.local:80/-/health/ready/
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"

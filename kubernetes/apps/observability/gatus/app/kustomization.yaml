@@ -2,10 +2,10 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: home
+namespace: observability
 components:
-  - ../../components/common
+  - ../../../../components/helmrelease-defaults
 resources:
-  - ./mealie/ks.yaml
-  - ./emqx/ks.yaml
-  - ./actual-budget/ks.yaml
+  - ./configmap.yaml
+  - ./postgres-cluster.yaml
+  - ./helmrelease.yaml
