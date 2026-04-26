@@ -116,6 +116,17 @@ spec:
             readOnly: true
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Jellyfin"
+          gethomepage.dev/group: "Media"
+          gethomepage.dev/icon: "jellyfin.png"
+          gethomepage.dev/description: "Media Server"
+          gethomepage.dev/href: "https://jellyfin.${SECRET_DOMAIN}"
+          gethomepage.dev/widget.type: "jellyfin"
+          gethomepage.dev/widget.url: "http://jellyfin.media.svc.cluster.local:8096"
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
+          gethomepage.dev/widget.enableBlocks: "true"
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
         parentRefs:
           - name: external

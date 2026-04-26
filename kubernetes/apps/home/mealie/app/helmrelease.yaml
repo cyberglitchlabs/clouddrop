@@ -112,6 +112,15 @@ spec:
           - path: /app/data
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Mealie"
+          gethomepage.dev/group: "Home"
+          gethomepage.dev/icon: "mealie.png"
+          gethomepage.dev/description: "Recipe Manager"
+          gethomepage.dev/href: "https://mealie.${SECRET_DOMAIN}"
+          gethomepage.dev/widget.type: "mealie"
+          gethomepage.dev/widget.url: "http://mealie.home.svc.cluster.local:9000"
         hostnames: ["mealie.${SECRET_DOMAIN}"]
         parentRefs:
           - name: external
