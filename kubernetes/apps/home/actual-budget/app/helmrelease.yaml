@@ -73,7 +73,7 @@ spec:
       data:
         existingClaim: actual-budget-data
         globalMounts:
-          - path: /data/server-files
+          - path: /data
     route:
       app:
         annotations:
