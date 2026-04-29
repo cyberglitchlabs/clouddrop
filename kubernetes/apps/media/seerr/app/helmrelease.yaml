@@ -91,7 +91,7 @@ spec:
           gethomepage.dev/href: "https://seerr.${SECRET_DOMAIN}"
           gethomepage.dev/widget.type: "jellyseerr"
           gethomepage.dev/widget.url: "http://seerr.media.svc.cluster.local:5055"
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}"
+          gethomepage.dev/widget.key: "{{`{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}`}}"
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
         parentRefs:
           - name: external
