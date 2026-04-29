@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: home
+components:
+  - ../../../../components/helmrelease-defaults
+configMapGenerator:
+  - name: homepage-config
+    files:
+      - settings.yaml=./config/settings.yaml
+      - services.yaml=./config/services.yaml
+      - widgets.yaml=./config/widgets.yaml
+      - bookmarks.yaml=./config/bookmarks.yaml
+      - kubernetes.yaml=./config/kubernetes.yaml
+      - docker.yaml=./config/docker.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+resources:
+  - ./rbac.yaml
+  - ./secret.sops.yaml
+  - ./helmrelease.yaml

@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: gatus-postgres
+  namespace: observability
+spec:
+  instances: 1
+
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.2
+
+  postgresql:
+    parameters:
+      max_connections: "20"
+      shared_buffers: 64MB
+
+  storage:
+    size: 2Gi
+    storageClass: qnap-nfs-db
+
+  monitoring:
+    enablePodMonitor: true

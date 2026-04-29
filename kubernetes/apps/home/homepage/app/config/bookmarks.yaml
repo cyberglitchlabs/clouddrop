@@ -1,0 +1,13 @@
+- Dev Tools:
+    - GitHub:
+        - abbr: GH
+          href: https://github.com
+    - Flux Docs:
+        - abbr: FL
+          href: https://fluxcd.io/flux/
+    - Talos Docs:
+        - abbr: TA
+          href: https://www.talos.dev/
+    - Kubernetes Docs:
+        - abbr: K8
+          href: https://kubernetes.io/docs/
