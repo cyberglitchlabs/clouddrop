@@ -94,6 +94,10 @@ spec:
             subPath: kubernetes.yaml
           - path: /app/config/docker.yaml
             subPath: docker.yaml
+      config-writable:
+        type: emptyDir
+        globalMounts:
+          - path: /app/config
       logs:
         type: emptyDir
         globalMounts:
