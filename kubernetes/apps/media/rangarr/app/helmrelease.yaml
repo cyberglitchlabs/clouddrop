@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: judochinx/rangarr
-              tag: 0.6.2
+              tag: 0.6.3
             envFrom:
               - secretRef:
                   name: rangarr-secret
