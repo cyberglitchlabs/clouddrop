@@ -11,9 +11,13 @@ spec:
     name: bjw-s-app-template
     namespace: flux-system
   values:
+    serviceAccount:
+      homepage: {}
     controllers:
       homepage:
         strategy: RollingUpdate
+        serviceAccount:
+          identifier: homepage
         containers:
           app:
             image:
@@ -59,7 +63,6 @@ spec:
               limits:
                 memory: 512Mi
     defaultPodOptions:
-      serviceAccountName: homepage
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
