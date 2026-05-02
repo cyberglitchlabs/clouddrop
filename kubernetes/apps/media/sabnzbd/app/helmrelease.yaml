@@ -21,7 +21,7 @@ spec:
           sabnzbd:
             image:
               repository: ghcr.io/home-operations/sabnzbd
-              tag: 4.5.5
+              tag: 5.0.1
             env:
               TZ: America/Chicago
             probes:
