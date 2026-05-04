@@ -21,6 +21,7 @@ spec:
               tag: 26.5.0
             env:
               TZ: America/Chicago
+              ACTUAL_TRUSTED_PROXIES: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7,::1/128"
             probes:
               liveness:
                 enabled: true
