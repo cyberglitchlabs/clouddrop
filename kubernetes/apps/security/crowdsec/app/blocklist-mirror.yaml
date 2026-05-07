@@ -1,0 +1,94 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: crowdsec-blocklist-mirror-config
+  namespace: security
+data:
+  crowdsec-blocklist-mirror.yaml: |
+    config_version: v1.0
+    crowdsec_config:
+      lapi_key: $${API_KEY}
+      lapi_url: http://crowdsec-service.security.svc.cluster.local:8080/
+      update_frequency: 10s
+      insecure_skip_verify: false
+      supported_decisions_types:
+        - ban
+    blocklists:
+      - format: plain_text
+        endpoint: /security/blocklist
+        authentication:
+          type: none
+          trusted_ips:
+            - 127.0.0.1
+            - ::1
+            - 10.0.0.0/8
+            - 192.168.0.0/16
+    listen_uri: 0.0.0.0:8080
+    tls:
+      cert_file:
+      key_file:
+    metrics:
+      enabled: true
+      endpoint: /metrics
+    log_media: stdout
+    log_level: info
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: crowdsec-blocklist-mirror
+  namespace: security
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bjw-s-app-template
+    namespace: flux-system
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+    controllers:
+      blocklist-mirror:
+        containers:
+          app:
+            image:
+              repository: docker.io/crowdsecurity/blocklist-mirror
+              tag: v0.0.6
+            env:
+              API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: crowdsec-bouncer-secrets
+                    key: BLOCKLIST_MIRROR_LAPI_KEY
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: ["ALL"]
+            resources:
+              requests:
+                cpu: 25m
+                memory: 64Mi
+              limits:
+                memory: 128Mi
+    service:
+      app:
+        controller: blocklist-mirror
+        ports:
+          http:
+            port: 8080
+    persistence:
+      config:
+        type: configMap
+        name: crowdsec-blocklist-mirror-config
+        globalMounts:
+          - path: /etc/crowdsec/bouncers/crowdsec-blocklist-mirror.yaml
+            subPath: crowdsec-blocklist-mirror.yaml
+            readOnly: true

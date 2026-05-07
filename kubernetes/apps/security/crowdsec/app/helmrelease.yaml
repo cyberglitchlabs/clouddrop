@@ -1,0 +1,127 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: crowdsec
+  namespace: security
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: crowdsec
+      version: 0.23.0
+      sourceRef:
+        kind: HelmRepository
+        name: crowdsec
+        namespace: flux-system
+      interval: 1h
+  values:
+    agent:
+      acquisition:
+        - namespace: kube-system
+          podName: cilium-*
+          program: cilium
+        - namespace: security
+          podName: authentik-*
+          program: authentik
+        - namespace: security
+          podName: wazuh-manager-*
+          program: wazuh
+        - namespace: media
+          podName: sonarr-*
+          program: sonarr
+        - namespace: media
+          podName: radarr-*
+          program: radarr
+        - namespace: media
+          podName: prowlarr-*
+          program: prowlarr
+      env:
+        - name: COLLECTIONS
+          value: >-
+            crowdsecurity/linux
+            crowdsecurity/http-cve
+            crowdsecurity/whitelist-good-actors
+            crowdsecurity/base-http-scenarios
+            crowdsecurity/iptables
+            crowdsecurity/sshd
+        - name: PARSERS
+          value: crowdsecurity/whitelists
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          additionalLabels:
+            prometheus: kube-prometheus-stack
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          memory: 512Mi
+    lapi:
+      storeCAPICredentialsInSecret: true
+      env:
+        - name: CS_DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: crowdsec-postgres-app
+              key: host
+        - name: CS_DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: crowdsec-postgres-app
+              key: dbname
+        - name: CS_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: crowdsec-postgres-app
+              key: username
+        - name: CS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: crowdsec-postgres-app
+              key: password
+      persistentVolume:
+        data:
+          enabled: true
+          storageClassName: qnap-nfs
+          accessModes:
+            - ReadWriteOnce
+          size: 1Gi
+        config:
+          enabled: false
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          additionalLabels:
+            prometheus: kube-prometheus-stack
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          memory: 1Gi
+    config:
+      config.yaml.local: |
+        db_config:
+          type: postgresql
+          user: $${CS_DB_USER}
+          password: $${CS_DB_PASSWORD}
+          db_name: $${CS_DB_NAME}
+          host: $${CS_DB_HOST}
+          port: 5432
+          sslmode: require
+        api:
+          server:
+            listen_uri: 0.0.0.0:8080
+            auto_registration:
+              enabled: true
+              token: "$${REGISTRATION_TOKEN}"
+              allowed_ranges:
+                - 127.0.0.1/32
+                - 192.168.0.0/16
+                - 10.0.0.0/8
+                - 172.16.0.0/12
