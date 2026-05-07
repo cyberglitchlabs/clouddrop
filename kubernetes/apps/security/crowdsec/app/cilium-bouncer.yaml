@@ -27,20 +27,23 @@ subjects:
     name: crowdsec-cilium-bouncer
     namespace: security
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: crowdsec-cilium-bouncer
   namespace: security
+  labels:
+    app.kubernetes.io/name: crowdsec-cilium-bouncer
 spec:
-  interval: 1h
-  chartRef:
-    kind: OCIRepository
-    name: bjw-s-app-template
-    namespace: flux-system
-  values:
-    defaultPodOptions:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: crowdsec-cilium-bouncer
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: crowdsec-cilium-bouncer
+    spec:
       serviceAccountName: crowdsec-cilium-bouncer
       securityContext:
         runAsNonRoot: true
@@ -48,35 +51,31 @@ spec:
         runAsGroup: 65532
         seccompProfile:
           type: RuntimeDefault
-    controllers:
-      cilium-bouncer:
-        containers:
-          app:
-            image:
-              repository: ghcr.io/hydazz/crowdsec-cilium-bouncer
-              tag: 0.0.4
-            env:
-              CROWDSEC_URL:
-                value: http://crowdsec-service.security.svc.cluster.local:8080
-              CROWDSEC_BOUNCER_API_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: crowdsec-bouncer-secrets
-                    key: CILIUM_BOUNCER_LAPI_KEY
-              SYNC_INTERVAL:
-                value: 30s
-              CROWDSEC_TIMEOUT:
-                value: 1m
-              LOG_LEVEL:
-                value: info
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop: ["ALL"]
-            resources:
-              requests:
-                cpu: 25m
-                memory: 64Mi
-              limits:
-                memory: 256Mi
+      containers:
+        - name: crowdsec-cilium-bouncer
+          image: ghcr.io/hydazz/crowdsec-cilium-bouncer:0.0.4
+          env:
+            - name: CROWDSEC_URL
+              value: http://crowdsec-service.security.svc.cluster.local:8080
+            - name: CROWDSEC_BOUNCER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: crowdsec-bouncer-secrets
+                  key: CILIUM_BOUNCER_LAPI_KEY
+            - name: SYNC_INTERVAL
+              value: 30s
+            - name: CROWDSEC_TIMEOUT
+              value: 1m
+            - name: LOG_LEVEL
+              value: info
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
