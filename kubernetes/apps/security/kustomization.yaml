@@ -18,5 +18,6 @@ resources:
   - ./cloudnative-pg/ks.yaml
   - ./authentik/ks.yaml
   - ./wazuh/ks.yaml
+  - ./crowdsec/ks.yaml
 components:
   - ../../components/common
