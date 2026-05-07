@@ -90,12 +90,6 @@ spec:
           accessModes:
             - ReadWriteOnce
           size: 1Gi
-        config:
-          enabled: true
-          storageClassName: qnap-nfs
-          accessModes:
-            - ReadWriteOnce
-          size: 256Mi
       metrics:
         enabled: true
         serviceMonitor:
