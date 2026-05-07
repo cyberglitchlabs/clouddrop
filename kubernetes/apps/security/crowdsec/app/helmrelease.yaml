@@ -90,6 +90,8 @@ spec:
           accessModes:
             - ReadWriteOnce
           size: 1Gi
+        config:
+          enabled: false
       metrics:
         enabled: true
         serviceMonitor:
