@@ -41,14 +41,6 @@ spec:
       config:
         name: gpu-time-slicing-config
         default: "any"
-        data:
-          any: |-
-            version: v1
-            sharing:
-              timeSlicing:
-                resources:
-                  - name: nvidia.com/gpu
-                    replicas: 4
 
     # dcgm and dcgmExporter are managed separately via dcgm-exporter HelmRelease
     dcgm:
