@@ -12,7 +12,6 @@ resources:
   - ./descheduler/ks.yaml
   - ./etcd-backup/ks.yaml
   - ./metrics-server/ks.yaml
-  - ./nvidia-device-plugin/ks.yaml
   - ./pod-garbage-collector/ks.yaml
   - ./reloader/ks.yaml
   - ./spegel/ks.yaml

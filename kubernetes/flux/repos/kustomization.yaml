@@ -27,6 +27,7 @@ resources:
   - ./helmrepository-csi-driver-nfs.yaml
   - ./helmrepository-csi-driver-smb.yaml
   - ./helmrepository-dcgm-exporter.yaml
+  - ./helmrepository-nvidia-gpu-operator.yaml
   - ./helmrepository-descheduler.yaml
   - ./helmrepository-emqx.yaml
   - ./helmrepository-headlamp.yaml
