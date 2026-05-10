@@ -66,7 +66,10 @@ spec:
         retentionSize: 35GB
         # Thanos sidecar configuration for object storage
         thanos:
-          image: quay.io/thanos/thanos:v0.41.0
+          image:
+            registry: quay.io
+            repository: thanos/thanos
+            tag: v0.41.0
           objectStorageConfig:
             existingSecret:
               name: thanos-objstore-secret
