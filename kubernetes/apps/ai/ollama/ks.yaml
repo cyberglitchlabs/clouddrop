@@ -15,8 +15,8 @@ spec:
   retryInterval: 2m
   wait: true
   dependsOn:
-    - name: nvidia-device-plugin
-      namespace: kube-system
+    - name: gpu-operator
+      namespace: gpu-operator
     - name: cloudflare-tunnel
       namespace: network
   decryption:
