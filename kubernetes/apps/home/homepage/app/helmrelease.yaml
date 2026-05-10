@@ -11,8 +11,6 @@ spec:
     name: bjw-s-app-template
     namespace: flux-system
   values:
-    defaultPodOptions:
-      automountServiceAccountToken: true
     serviceAccount:
       homepage: {}
     controllers:
@@ -65,6 +63,7 @@ spec:
               limits:
                 memory: 512Mi
     defaultPodOptions:
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
