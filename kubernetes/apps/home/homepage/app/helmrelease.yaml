@@ -11,6 +11,8 @@ spec:
     name: bjw-s-app-template
     namespace: flux-system
   values:
+    defaultPodOptions:
+      automountServiceAccountToken: true
     serviceAccount:
       homepage: {}
     controllers:
