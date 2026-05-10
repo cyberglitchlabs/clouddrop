@@ -13,8 +13,6 @@ spec:
   values:
     controllers:
       meilisearch:
-        strategy:
-          type: Recreate
         initContainers:
           wipe-on-version-mismatch:
             image:
