@@ -14,7 +14,7 @@ pages:
         widgets:
           - type: calendar
           - type: weather
-            location: Chicago, US # TODO: set your city/country
+            location: ${GLANCE_LOCATION}
             units: imperial
             hour-format: 12h
       - size: full
