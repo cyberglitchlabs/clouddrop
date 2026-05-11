@@ -16,6 +16,15 @@ layout:
   Media:
     style: row
     columns: 3
+  Home:
+    style: row
+    columns: 2
+  AI:
+    style: row
+    columns: 2
+  Security:
+    style: row
+    columns: 2
   Monitoring:
     style: row
     columns: 2

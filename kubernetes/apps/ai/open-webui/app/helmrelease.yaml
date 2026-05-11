@@ -90,13 +90,6 @@ spec:
           - path: /app/backend/data
     route:
       app:
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/name: "Open WebUI"
-          gethomepage.dev/group: "AI"
-          gethomepage.dev/icon: "open-webui.png"
-          gethomepage.dev/description: "LLM Chat Interface"
-          gethomepage.dev/href: "https://openwebui.${SECRET_DOMAIN}"
         hostnames: ["openwebui.${SECRET_DOMAIN}"]
         parentRefs:
           - name: external

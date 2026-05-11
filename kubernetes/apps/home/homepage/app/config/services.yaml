@@ -72,6 +72,37 @@
           type: seerr
           url: http://seerr.media.svc.cluster.local:5055
           key: "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}"
+    - Immich:
+        icon: immich.png
+        href: https://immich.${SECRET_DOMAIN}
+        description: Photos
+        widget:
+          type: immich
+          url: http://immich-server.media.svc.cluster.local:2283
+          key: "{{HOMEPAGE_VAR_IMMICH_API_KEY}}"
+          version: 2
+
+- Home:
+    - Mealie:
+        icon: mealie.png
+        href: https://mealie.${SECRET_DOMAIN}
+        description: Recipe manager
+        widget:
+          type: mealie
+          url: http://mealie.home.svc.cluster.local:9000
+          key: "{{HOMEPAGE_VAR_MEALIE_API_KEY}}"
+
+- AI:
+    - Open WebUI:
+        icon: open-webui.png
+        href: https://openwebui.${SECRET_DOMAIN}
+        description: LLM chat interface
+
+- Security:
+    - Authentik:
+        icon: authentik.png
+        href: https://auth.${SECRET_DOMAIN}
+        description: Identity provider
 
 - Monitoring:
     - Grafana:
