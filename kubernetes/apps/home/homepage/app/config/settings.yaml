@@ -5,3 +5,17 @@ headerStyle: clean
 language: en
 target: _blank
 hideVersion: false
+
+layout:
+  Downloads:
+    style: row
+    columns: 2
+  Media Management:
+    style: row
+    columns: 4
+  Media:
+    style: row
+    columns: 3
+  Monitoring:
+    style: row
+    columns: 2
