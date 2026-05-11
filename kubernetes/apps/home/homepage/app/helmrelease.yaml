@@ -16,6 +16,8 @@ spec:
     controllers:
       homepage:
         strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
         serviceAccount:
           identifier: homepage
         containers:
