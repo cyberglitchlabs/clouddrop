@@ -63,6 +63,7 @@ data:
           .namespace = to_string(.kubernetes.pod_namespace) ?? "unknown"
           .node = to_string(.kubernetes.pod_node_name) ?? "unknown"
           .message = to_string(.message) ?? ""
+          del(.kubernetes.pod_labels.app)
 
     sinks:
       wazuh_manager:
