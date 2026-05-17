@@ -6,6 +6,10 @@ metadata:
   namespace: observability
 data:
   vector.yaml: |
+    api:
+      enabled: true
+      address: "0.0.0.0:8686"
+
     secret:
       indexer:
         type: directory
