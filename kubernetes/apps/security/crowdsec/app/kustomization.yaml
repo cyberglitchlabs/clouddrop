@@ -8,7 +8,6 @@ resources:
   - ./postgres-cluster.yaml
   - ./secret.sops.yaml
   - ./helmrelease.yaml
-  - ./cilium-bouncer.yaml
   - ./cloudflare-bouncer.yaml
   - ./blocklist-mirror.yaml
   - ./httproute.yaml
