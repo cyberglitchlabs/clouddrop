@@ -22,7 +22,7 @@ spec:
           booklore:
             image:
               repository: grimmory/grimmory
-              tag: v3.0.3
+              tag: v3.1.0
             env:
               TZ: America/Chicago
               USER_ID: "568"
