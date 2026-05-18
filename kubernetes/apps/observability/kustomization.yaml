@@ -22,5 +22,6 @@ resources:
   - ./unpoller/ks.yaml
   - ./homeassistant-metrics/ks.yaml
   - ./thanos/ks.yaml
-  - ./vector/ks.yaml
+  - ./victoria-logs/ks.yaml
+  - ./alloy/ks.yaml
   - ./gatus/ks.yaml

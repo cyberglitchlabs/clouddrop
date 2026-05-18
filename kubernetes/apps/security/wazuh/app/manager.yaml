@@ -246,3 +246,28 @@ spec:
       port: 514
       targetPort: 514
       protocol: UDP
+---
+# External syslog ingress for network devices (UniFi, switches).
+# Direct LB bypasses any cross-namespace network policy that blocked Vector → Wazuh.
+# Point UniFi syslog target to 192.168.42.15 after this is deployed.
+apiVersion: v1
+kind: Service
+metadata:
+  name: wazuh-syslog-lb
+  namespace: security
+  annotations:
+    lbipam.cilium.io/ips: "192.168.42.15"
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster
+  selector:
+    app: wazuh-manager
+  ports:
+    - name: syslog-tcp
+      port: 514
+      targetPort: 514
+      protocol: TCP
+    - name: syslog-udp
+      port: 514
+      targetPort: 514
+      protocol: UDP

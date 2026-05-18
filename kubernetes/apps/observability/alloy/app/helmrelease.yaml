@@ -1,0 +1,98 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: alloy
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: alloy
+    namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+      strategy: rollback
+  values:
+    controller:
+      type: daemonset
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+
+    serviceAccount:
+      create: false
+      name: alloy
+
+    alloy:
+      configMap:
+        content: |
+          // Kubernetes pod log discovery
+          discovery.kubernetes "pods" {
+            role = "pod"
+          }
+
+          discovery.relabel "pod_logs" {
+            targets = discovery.kubernetes.pods.targets
+
+            rule {
+              source_labels = ["__meta_kubernetes_namespace"]
+              target_label  = "namespace"
+            }
+            rule {
+              source_labels = ["__meta_kubernetes_pod_name"]
+              target_label  = "pod"
+            }
+            rule {
+              source_labels = ["__meta_kubernetes_pod_container_name"]
+              target_label  = "container"
+            }
+            rule {
+              source_labels = ["__meta_kubernetes_pod_label_app_kubernetes_io_name"]
+              target_label  = "app"
+            }
+            rule {
+              source_labels = ["__meta_kubernetes_pod_node_name"]
+              target_label  = "node"
+            }
+          }
+
+          loki.source.kubernetes "pods" {
+            targets    = discovery.relabel.pod_logs.output
+            forward_to = [loki.write.victoria.receiver]
+          }
+
+          // Network syslog (replaces Vector)
+          loki.source.syslog "network" {
+            listener {
+              address  = "0.0.0.0:6514"
+              protocol = "tcp"
+              labels   = {job = "syslog"}
+            }
+            listener {
+              address  = "0.0.0.0:6514"
+              protocol = "udp"
+              labels   = {job = "syslog"}
+            }
+            forward_to = [loki.write.victoria.receiver]
+          }
+
+          // Victoria-Logs (Loki-compatible ingest API)
+          loki.write "victoria" {
+            endpoint {
+              url = "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428/insert/loki/api/v1/push"
+            }
+          }
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 512Mi

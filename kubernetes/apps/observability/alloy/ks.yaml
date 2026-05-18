@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app vector
+  name: &app alloy
   namespace: flux-system
 spec:
   targetNamespace: observability
@@ -11,5 +11,5 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 10m
-  path: ./kubernetes/apps/observability/vector/app
+  path: ./kubernetes/apps/observability/alloy/app
   wait: false

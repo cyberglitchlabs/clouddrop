@@ -19,6 +19,7 @@ resources:
   - ./ocirepository-kyverno.yaml
   - ./ocirepository-metrics-server.yaml
   - ./ocirepository-n8n.yaml
+  - ./ocirepository-alloy.yaml
   - ./ocirepository-reloader.yaml
   - ./ocirepository-spegel.yaml
   # Helm Repositories
@@ -34,3 +35,4 @@ resources:
   - ./helmrepository-k8sgpt.yaml
   - ./helmrepository-crowdsec.yaml
   - ./helmrepository-openclaw.yaml
+  - ./helmrepository-victoria-metrics.yaml

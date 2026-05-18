@@ -1,17 +1,18 @@
 ---
+# Applied in Phase 7 after Vector is removed — both services cannot claim 192.168.42.14 simultaneously.
 apiVersion: v1
 kind: Service
 metadata:
-  name: vector-tcp
+  name: alloy-syslog-tcp
   namespace: observability
   annotations:
     lbipam.cilium.io/ips: "192.168.42.14"
-    lbipam.cilium.io/sharing-key: "vector-syslog"
+    lbipam.cilium.io/sharing-key: "alloy-syslog"
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Cluster
   selector:
-    app.kubernetes.io/name: vector
+    app.kubernetes.io/name: alloy
   ports:
     - name: syslog-tcp
       port: 514
@@ -21,16 +22,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: vector-udp
+  name: alloy-syslog-udp
   namespace: observability
   annotations:
     lbipam.cilium.io/ips: "192.168.42.14"
-    lbipam.cilium.io/sharing-key: "vector-syslog"
+    lbipam.cilium.io/sharing-key: "alloy-syslog"
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Cluster
   selector:
-    app.kubernetes.io/name: vector
+    app.kubernetes.io/name: alloy
   ports:
     - name: syslog-udp
       port: 514
