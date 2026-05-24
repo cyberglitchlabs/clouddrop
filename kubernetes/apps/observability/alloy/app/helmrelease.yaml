@@ -56,7 +56,7 @@ spec:
             rule {
               source_labels = ["__meta_kubernetes_pod_node_name"]
               action        = "keep"
-              regex         = env("HOSTNAME")
+              regex         = sys.env("HOSTNAME")
             }
             rule {
               source_labels = ["__meta_kubernetes_namespace"]
