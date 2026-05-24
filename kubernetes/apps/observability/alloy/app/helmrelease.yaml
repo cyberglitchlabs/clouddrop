@@ -88,14 +88,20 @@ spec:
           // Network syslog (replaces Vector)
           loki.source.syslog "network" {
             listener {
-              address  = "0.0.0.0:6514"
-              protocol = "tcp"
-              labels   = {job = "syslog"}
+              address                      = "0.0.0.0:6514"
+              protocol                     = "tcp"
+              syslog_format                = "rfc3164"
+              use_incoming_timestamp       = true
+              rfc3164_default_to_current_year = true
+              labels                       = {job = "syslog"}
             }
             listener {
-              address  = "0.0.0.0:6514"
-              protocol = "udp"
-              labels   = {job = "syslog"}
+              address                      = "0.0.0.0:6514"
+              protocol                     = "udp"
+              syslog_format                = "rfc3164"
+              use_incoming_timestamp       = true
+              rfc3164_default_to_current_year = true
+              labels                       = {job = "syslog"}
             }
             forward_to = [loki.write.victoria.receiver]
           }
