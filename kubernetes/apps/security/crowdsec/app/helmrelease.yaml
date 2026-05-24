@@ -22,11 +22,6 @@ spec:
         - namespace: kube-system
           podName: cilium-*
           program: cilium
-        - source: syslog
-          listen_addr: 0.0.0.0
-          listen_port: 1514
-          labels:
-            type: syslog
         - namespace: security
           podName: authentik-*
           program: authentik
@@ -42,6 +37,12 @@ spec:
         - namespace: media
           podName: prowlarr-*
           program: prowlarr
+      additionalAcquisition:
+        - source: syslog
+          listen_addr: 0.0.0.0
+          listen_port: 1514
+          labels:
+            type: syslog
       env:
         - name: COLLECTIONS
           value: >-
