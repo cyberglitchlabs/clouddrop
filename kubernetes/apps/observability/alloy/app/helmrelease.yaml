@@ -35,6 +35,12 @@ spec:
       create: false
       name: alloy
 
+    extraEnv:
+      - name: HOSTNAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+
     alloy:
       configMap:
         content: |
@@ -46,6 +52,12 @@ spec:
           discovery.relabel "pod_logs" {
             targets = discovery.kubernetes.pods.targets
 
+            // Only collect logs from pods running on this node
+            rule {
+              source_labels = ["__meta_kubernetes_pod_node_name"]
+              action        = "keep"
+              regex         = env("HOSTNAME")
+            }
             rule {
               source_labels = ["__meta_kubernetes_namespace"]
               target_label  = "namespace"
