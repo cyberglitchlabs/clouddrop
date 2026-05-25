@@ -113,9 +113,21 @@ spec:
           loki.process "syslog" {
             forward_to = [loki.write.victoria.receiver]
 
+            // Extract app_name from message body when RFC 3164 TAG is not parsed.
+            // UniFi embeds the process inline: "hostname process[pid]: message"
+            stage.regex {
+              expression = `(?:^|\s)(?P<app_name_extracted>[\w\-]+)\[\d+\]:`
+            }
+            stage.labels {
+              values = {
+                app_name_extracted = "app_name",
+              }
+            }
+
             // Kernel firewall lines: [WAN_IN-DROP-3000]IN=eth4 SRC=... DST=... PROTO=TCP DPT=443
+            // Match on content since app_name may be empty for RFC 3164 messages.
             stage.match {
-              selector = `{app_name="kernel"} |= "SRC=" |= "DST="`
+              selector = `{job="syslog"} |= "]IN=" |= "SRC=" |= "DST="`
 
               stage.regex {
                 expression = `\[(?P<fw_rule>[^\]]+)\].*PROTO=(?P<proto>\S+)`
