@@ -35,9 +35,11 @@ spec:
           podName: prowlarr-*
           program: prowlarr
       additionalAcquisition:
-        - source: syslog
-          listen_addr: 0.0.0.0
-          listen_port: 1514
+        - source: victorialogs
+          url: http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428
+          query: '{job="syslog"}'
+          mode: tail
+          max_failure_duration: 30s
           labels:
             type: syslog
       env:
@@ -49,6 +51,7 @@ spec:
             crowdsecurity/base-http-scenarios
             crowdsecurity/iptables
             crowdsecurity/sshd
+            crowdsecurity/unifi
         - name: PARSERS
           value: crowdsecurity/whitelists
       metrics:
