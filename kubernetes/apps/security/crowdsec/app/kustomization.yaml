@@ -12,3 +12,4 @@ resources:
   - ./blocklist-mirror.yaml
   - ./httproute.yaml
   - ./prometheusrule.yaml
+  - ./cronjob-prune.yaml
