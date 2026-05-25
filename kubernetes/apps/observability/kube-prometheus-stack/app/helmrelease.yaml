@@ -24,25 +24,25 @@ spec:
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
-      enabled: false
-      # config:
-      #   useExistingSecret: true
-      #   existingSecret: alertmanager-secret
-      # alertmanagerSpec:
-      #   externalUrl: https://alertmanager.${SECRET_DOMAIN}
-      #   storage:
-      #     volumeClaimTemplate:
-      #       spec:
-      #         storageClassName: qnap-nfs
-      #         resources:
-      #           requests:
-      #             storage: 1Gi
-      #   resources:
-      #     requests:
-      #       cpu: 10m
-      #       memory: 64Mi
-      #     limits:
-      #       memory: 128Mi
+      enabled: true
+      config:
+        useExistingSecret: true
+        existingSecret: alertmanager-secret
+      alertmanagerSpec:
+        externalUrl: https://alertmanager.${SECRET_DOMAIN}
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: qnap-nfs
+              resources:
+                requests:
+                  storage: 1Gi
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            memory: 128Mi
 
     kubeEtcd:
       service:
