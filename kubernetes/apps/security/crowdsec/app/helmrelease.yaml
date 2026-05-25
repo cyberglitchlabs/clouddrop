@@ -22,18 +22,23 @@ spec:
         - namespace: kube-system
           podName: cilium-*
           program: cilium
+          poll_without_inotify: true
         - namespace: security
           podName: authentik-*
           program: authentik
+          poll_without_inotify: true
         - namespace: media
           podName: sonarr-*
           program: sonarr
+          poll_without_inotify: true
         - namespace: media
           podName: radarr-*
           program: radarr
+          poll_without_inotify: true
         - namespace: media
           podName: prowlarr-*
           program: prowlarr
+          poll_without_inotify: true
       additionalAcquisition:
         - source: victorialogs
           url: http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428
