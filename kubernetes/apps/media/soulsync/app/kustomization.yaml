@@ -6,5 +6,6 @@ components:
 resources:
   - ./secret.sops.yaml
   - ./pvc-config-nfs.yaml
+  - ./pv-media-smb.yaml
   - ./helmrelease.yaml
   - ./httproute.yaml

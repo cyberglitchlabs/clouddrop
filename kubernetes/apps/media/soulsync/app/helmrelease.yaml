@@ -20,8 +20,7 @@ spec:
           app:
             image:
               repository: boulderbadgedad/soulsync
-              tag: latest
-              digest: sha256:c59a84527dc2b366276fb0f864ce34e97b755a538ca717afe816526e558fb01b
+              tag: "2.6.1"
             env:
               TZ: America/Chicago
               PUID: 568
@@ -30,12 +29,6 @@ spec:
               FLASK_ENV: production
               PYTHONPATH: /app
               SOULSYNC_CONFIG_PATH: /config/config.json
-              SLSKD_HOST: slskd.media.svc.cluster.local
-              SLSKD_PORT: "5030"
-              SLSKD_USE_SSL: "false"
-            envFrom:
-              - secretRef:
-                  name: soulsync-secret
             probes:
               liveness:
                 enabled: true
@@ -91,7 +84,7 @@ spec:
       media:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: slskd-media-smb
+        existingClaim: soulsync-media-smb
         globalMounts:
           - path: /media
       tmp:
