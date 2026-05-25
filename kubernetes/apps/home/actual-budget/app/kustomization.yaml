@@ -8,3 +8,4 @@ components:
 resources:
   - ./pvc.yaml
   - ./helmrelease.yaml
+  - ./secret.sops.yaml

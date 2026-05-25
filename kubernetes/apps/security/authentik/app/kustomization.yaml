@@ -5,6 +5,8 @@ kind: Kustomization
 components:
   - ../../../../components/helmrelease-defaults
 resources:
+  - ./blueprints-configmap.yaml
+  - ./authentik-oidc-secrets.sops.yaml
   - ./secret.sops.yaml
   - ./postgres-cluster-instance.yaml
   - ./redis-deployment.yaml

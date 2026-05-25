@@ -30,6 +30,9 @@ spec:
       namespace: network
   values:
     global:
+      envFrom:
+        - secretRef:
+            name: authentik-oidc-secrets
       env:
         - name: AUTHENTIK_SECRET_KEY
           valueFrom:
@@ -101,6 +104,10 @@ spec:
 
     serviceAccount:
       create: true
+
+    blueprints:
+      configMaps:
+        - authentik-blueprints
 
     prometheus:
       rules:

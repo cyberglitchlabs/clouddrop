@@ -22,6 +22,9 @@ spec:
             env:
               TZ: America/Chicago
               ACTUAL_TRUSTED_PROXIES: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7,::1/128"
+            envFrom:
+              - secretRef:
+                  name: actual-budget-secrets
             probes:
               liveness:
                 enabled: true
