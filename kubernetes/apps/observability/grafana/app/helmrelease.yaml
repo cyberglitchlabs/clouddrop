@@ -114,6 +114,22 @@ spec:
             allowUiUpdates: true
             options:
               path: /var/lib/grafana/dashboards/unifi-dashboards
+          - name: 'observability-dashboards'
+            orgId: 1
+            folder: 'Observability'
+            type: file
+            disableDeletion: true
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/observability-dashboards
+          - name: 'security-dashboards'
+            orgId: 1
+            folder: 'Security'
+            type: file
+            disableDeletion: true
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/security-dashboards
 
     # Import dashboards from dotdc/grafana-dashboards-kubernetes via URLs
     dashboards:
