@@ -158,7 +158,7 @@ spec:
     # race condition that causes "connect: operation not permitted" crashes
     extraInitContainers:
       - name: wait-for-postgres
-        image: busybox:1.37
+        image: busybox:1.38
         command:
           - sh
           - -c
