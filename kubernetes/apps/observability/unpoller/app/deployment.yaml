@@ -67,7 +67,7 @@ spec:
                 secretKeyRef:
                   name: unpoller-config
                   key: UP_UNIFI_CONTROLLER_0_PASS
-            - name: UP_UN_UNIFI_CONTROLLER_0_SAVE_DPI
+            - name: UP_UNIFI_CONTROLLER_0_SAVE_DPI
               value: "true"
             - name: UP_UNIFI_CONTROLLER_0_SITES
               value: "all"
