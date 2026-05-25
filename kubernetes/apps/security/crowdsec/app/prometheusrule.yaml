@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/jsonschema/prometheusrule.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: crowdsec-rules
+  namespace: security
+spec:
+  groups:
+    - name: crowdsec
+      rules:
+        - alert: CrowdSecLAPIDown
+          expr: up{job="crowdsec-lapi"} == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "CrowdSec LAPI is down"
+            description: "CrowdSec LAPI has been unreachable for more than 5 minutes — no new decisions will be enforced."
+
+        - alert: CrowdSecHighDecisionRate
+          expr: rate(cs_active_decisions[5m]) > 10
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "CrowdSec high decision rate"
+            description: "CrowdSec is making decisions at {{ $value | humanize }}/min — possible attack in progress."
+
+        - alert: CrowdSecBouncerDisconnected
+          expr: cs_bouncer_last_pull_seconds > 300
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "CrowdSec bouncer {{ $labels.name }} disconnected"
+            description: "Bouncer {{ $labels.name }} has not pulled decisions in over 5 minutes — enforcement may be stale."
+
+        - alert: CrowdSecAgentDown
+          expr: up{job="crowdsec-agent"} == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "CrowdSec agent is down on {{ $labels.instance }}"
+            description: "CrowdSec agent on {{ $labels.instance }} has been unreachable for more than 5 minutes — log parsing stopped."

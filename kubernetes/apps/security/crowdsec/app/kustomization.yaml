@@ -11,3 +11,4 @@ resources:
   - ./cloudflare-bouncer.yaml
   - ./blocklist-mirror.yaml
   - ./httproute.yaml
+  - ./prometheusrule.yaml
