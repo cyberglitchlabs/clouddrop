@@ -1,30 +1,44 @@
 title: Homepage
 theme: dark
 color: slate
-headerStyle: clean
+headerStyle: boxed
 language: en
 target: _blank
 hideVersion: false
+statusStyle: "dot"
+
+background:
+  image: https://images.unsplash.com/photo-1502790671504-542ad42d5189
+  blur: md
+  brightness: 50
+  opacity: 50
 
 layout:
   Downloads:
+    icon: mdi-download-circle-#FFFFFF
     style: row
     columns: 2
   Media Management:
+    icon: mdi-cog-#FFFFFF
     style: row
     columns: 4
   Media:
+    icon: mdi-television-play-#FFFFFF
     style: row
     columns: 3
   Home:
+    icon: mdi-home-#FFFFFF
     style: row
     columns: 2
   AI:
+    icon: mdi-robot-#FFFFFF
     style: row
     columns: 2
   Security:
+    icon: mdi-shield-lock-#FFFFFF
     style: row
     columns: 2
   Monitoring:
+    icon: mdi-chart-line-#FFFFFF
     style: row
     columns: 2
