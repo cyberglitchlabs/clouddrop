@@ -166,9 +166,10 @@ spec:
           }
 
           // Victoria-Logs (Loki-compatible ingest API)
+          // _stream_fields tells VictoriaLogs which labels to index as stream fields
           loki.write "victoria" {
             endpoint {
-              url = "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428/insert/loki/api/v1/push"
+              url = "http://victoria-logs-victoria-logs-single-server.observability.svc.cluster.local:9428/insert/loki/api/v1/push?_stream_fields=job,hostname,app_name,namespace,facility"
             }
           }
 
