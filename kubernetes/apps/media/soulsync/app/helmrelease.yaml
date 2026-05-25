@@ -77,7 +77,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: soulsync-nfs
+        existingClaim: soulsync-config-nfs-v2
         globalMounts:
           - path: /config
           - path: /app/data
