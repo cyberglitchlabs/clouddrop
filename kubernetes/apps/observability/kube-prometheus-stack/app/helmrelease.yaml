@@ -262,4 +262,8 @@ spec:
 
     grafana:
       enabled: false
-      forceDeployDashboards: false
+      forceDeployDashboards: true
+      sidecar:
+        dashboards:
+          annotations:
+            grafana_folder: "Kubernetes"
