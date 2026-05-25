@@ -85,25 +85,70 @@ spec:
             forward_to = [loki.write.victoria.receiver]
           }
 
-          // Network syslog (replaces Vector)
+          // Promote __syslog_* internal labels before they are stripped.
+          // relabel_rules is the only opportunity to access these — they
+          // do not survive into loki.process.
+          loki.relabel "syslog_meta" {
+            forward_to = []
+
+            rule {
+              source_labels = ["__syslog_message_hostname"]
+              target_label  = "hostname"
+            }
+            rule {
+              source_labels = ["__syslog_message_app_name"]
+              target_label  = "app_name"
+            }
+            rule {
+              source_labels = ["__syslog_message_severity"]
+              target_label  = "level"
+            }
+            rule {
+              source_labels = ["__syslog_message_facility"]
+              target_label  = "facility"
+            }
+          }
+
+          // Extract structured fields from syslog message bodies.
+          loki.process "syslog" {
+            forward_to = [loki.write.victoria.receiver]
+
+            // Kernel firewall lines: [WAN_IN-DROP-3000]IN=eth4 SRC=... DST=... PROTO=TCP DPT=443
+            stage.match {
+              selector = `{app_name="kernel"} |= "SRC=" |= "DST="`
+
+              stage.regex {
+                expression = `\[(?P<fw_rule>[^\]]+)\].*PROTO=(?P<proto>\S+)`
+              }
+              stage.labels {
+                values = {
+                  fw_rule = "",
+                  proto   = "",
+                }
+              }
+            }
+          }
+
+          // Network syslog
           loki.source.syslog "network" {
             listener {
-              address                      = "0.0.0.0:6514"
-              protocol                     = "tcp"
-              syslog_format                = "rfc3164"
-              use_incoming_timestamp       = true
+              address                         = "0.0.0.0:6514"
+              protocol                        = "tcp"
+              syslog_format                   = "rfc3164"
+              use_incoming_timestamp          = true
               rfc3164_default_to_current_year = true
-              labels                       = {job = "syslog"}
+              labels                          = {job = "syslog"}
             }
             listener {
-              address                      = "0.0.0.0:6514"
-              protocol                     = "udp"
-              syslog_format                = "rfc3164"
-              use_incoming_timestamp       = true
+              address                         = "0.0.0.0:6514"
+              protocol                        = "udp"
+              syslog_format                   = "rfc3164"
+              use_incoming_timestamp          = true
               rfc3164_default_to_current_year = true
-              labels                       = {job = "syslog"}
+              labels                          = {job = "syslog"}
             }
-            forward_to = [loki.write.victoria.receiver]
+            relabel_rules = loki.relabel.syslog_meta.rules
+            forward_to    = [loki.process.syslog.receiver]
           }
 
           // Victoria-Logs (Loki-compatible ingest API)
