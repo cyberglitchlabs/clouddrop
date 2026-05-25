@@ -22,3 +22,6 @@ Thumbs.db
 etcd-backup-*.db
 opencode.json
 .chunkhound*
+# Claude Code
+.claude/
+CLAUDE.md
