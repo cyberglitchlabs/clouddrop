@@ -25,9 +25,6 @@ spec:
         - namespace: security
           podName: authentik-*
           program: authentik
-        - namespace: security
-          podName: wazuh-manager-*
-          program: wazuh
         - namespace: media
           podName: sonarr-*
           program: sonarr
