@@ -25,10 +25,8 @@ spec:
 
     alertmanager:
       enabled: true
-      config:
-        useExistingSecret: true
-        existingSecret: alertmanager-secret
       alertmanagerSpec:
+        configSecret: alertmanager-secret
         externalUrl: https://alertmanager.${SECRET_DOMAIN}
         storage:
           volumeClaimTemplate:
