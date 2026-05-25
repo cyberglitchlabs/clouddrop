@@ -113,14 +113,16 @@ spec:
           loki.process "syslog" {
             forward_to = [loki.write.victoria.receiver]
 
-            // Extract app_name from message body when RFC 3164 TAG is not parsed.
-            // UniFi embeds the process inline: "hostname process[pid]: message"
+            // Override app_name with the process extracted from message body.
+            // For APs/switches, the RFC 3164 TAG field is "mac,firmware:" so the
+            // relabel_rules stage puts that in app_name. Extract the real process
+            // from the message body instead (e.g. "kernel:" or "hostapd[1234]:").
             stage.regex {
-              expression = `(?:^|\s)(?P<app_name_extracted>[\w\-]+)\[\d+\]:`
+              expression = `^(?P<app_name_extracted>[\w][\w\-]*)(?:\[\d+\])?\s*:`
             }
             stage.labels {
               values = {
-                app_name_extracted = "app_name",
+                app_name = "app_name_extracted",
               }
             }
 
