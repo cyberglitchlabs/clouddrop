@@ -15,6 +15,14 @@
           type: prowlarr
           url: http://prowlarr.media.svc.cluster.local:9696
           key: "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}"
+    - slskd:
+        icon: slskd.png
+        href: https://slskd.${SECRET_DOMAIN}
+        description: Soulseek client
+        widget:
+          type: slskd
+          url: http://slskd.media.svc.cluster.local:5030
+          key: "{{HOMEPAGE_VAR_SLSKD_API_KEY}}"
 
 - Media Management:
     - Sonarr:
@@ -49,6 +57,16 @@
           type: bazarr
           url: http://bazarr.media.svc.cluster.local:6767
           key: "{{HOMEPAGE_VAR_BAZARR_API_KEY}}"
+    - Profilarr:
+        icon: profilarr.png
+        href: https://profilarr.${SECRET_DOMAIN}
+        description: Quality profiles
+        siteMonitor: https://profilarr.${SECRET_DOMAIN}
+    - Listenarr:
+        icon: mdi-music-note-#FFFFFF
+        href: https://listenarr.${SECRET_DOMAIN}
+        description: Music requests
+        siteMonitor: https://listenarr.${SECRET_DOMAIN}
 
 - Media:
     - Jellyfin:
@@ -79,6 +97,24 @@
           url: http://immich-server.media.svc.cluster.local:2283
           key: "{{HOMEPAGE_VAR_IMMICH_API_KEY}}"
           version: 2
+    - Audiobookshelf:
+        icon: audiobookshelf.png
+        href: https://audiobookshelf.${SECRET_DOMAIN}
+        description: Audiobooks & podcasts
+        widget:
+          type: audiobookshelf
+          url: http://audiobookshelf.media.svc.cluster.local:80
+          key: "{{HOMEPAGE_VAR_AUDIOBOOKSHELF_API_KEY}}"
+    - BookLore:
+        icon: booklore.png
+        href: https://booklore.${SECRET_DOMAIN}
+        description: Ebook library
+        siteMonitor: https://booklore.${SECRET_DOMAIN}
+    - Bindery:
+        icon: mdi-bookshelf-#FFFFFF
+        href: https://bindery.${SECRET_DOMAIN}
+        description: Book tracker
+        siteMonitor: https://bindery.${SECRET_DOMAIN}
 
 - Home:
     - Mealie:
@@ -89,12 +125,38 @@
           type: mealie
           url: http://mealie.home.svc.cluster.local:9000
           key: "{{HOMEPAGE_VAR_MEALIE_API_KEY}}"
+    - Actual Budget:
+        icon: actual-budget.png
+        href: https://budget.${SECRET_DOMAIN}
+        description: Budget tracking
+        widget:
+          type: actualbudget
+          url: http://actual-budget.home.svc.cluster.local:5006
+    - EMQX:
+        icon: emqx.png
+        href: https://emqx.${SECRET_DOMAIN}
+        description: MQTT broker
+        widget:
+          type: emqx
+          url: http://emqx.home.svc.cluster.local:18083
+          username: "{{HOMEPAGE_VAR_EMQX_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_EMQX_PASSWORD}}"
 
 - AI:
     - Open WebUI:
         icon: open-webui.png
         href: https://openwebui.${SECRET_DOMAIN}
         description: LLM chat interface
+    - OpenClaw:
+        icon: mdi-robot-outline-#FFFFFF
+        href: https://openclaw.${SECRET_DOMAIN}
+        description: AI agent platform
+        siteMonitor: https://openclaw.${SECRET_DOMAIN}
+    - Meilisearch:
+        icon: meilisearch.png
+        href: https://meilisearch.${SECRET_DOMAIN}
+        description: Search engine
+        siteMonitor: https://meilisearch.${SECRET_DOMAIN}
 
 - Security:
     - Authentik:
@@ -119,3 +181,43 @@
         widget:
           type: gatus
           url: http://gatus.observability.svc.cluster.local:8080
+    - Prometheus:
+        icon: prometheus.png
+        href: https://prometheus.${SECRET_DOMAIN}
+        description: Metrics database
+        siteMonitor: https://prometheus.${SECRET_DOMAIN}
+    - VictoriaLogs:
+        icon: victoriametrics.png
+        href: https://logs.${SECRET_DOMAIN}
+        description: Log storage
+        siteMonitor: https://logs.${SECRET_DOMAIN}
+    - Jellystat:
+        icon: jellystat.png
+        href: https://jellystat.${SECRET_DOMAIN}
+        description: Jellyfin statistics
+        siteMonitor: https://jellystat.${SECRET_DOMAIN}
+
+- Games:
+    - RomM:
+        icon: romm.png
+        href: https://romm.${SECRET_DOMAIN}
+        description: ROM manager
+        widget:
+          type: romm
+          url: http://romm.games.svc.cluster.local:8080
+          username: "{{HOMEPAGE_VAR_ROMM_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_ROMM_PASSWORD}}"
+
+- 3D Printing:
+    - Bambu Buddy:
+        icon: bambulab.png
+        href: https://bambu.${SECRET_DOMAIN}
+        description: 3D printer monitor
+        siteMonitor: https://bambu.${SECRET_DOMAIN}
+
+- Radio:
+    - MeshMonitor:
+        icon: mdi-radio-tower-#FFFFFF
+        href: https://meshmonitor.${SECRET_DOMAIN}
+        description: Meshtastic monitor
+        siteMonitor: https://meshmonitor.${SECRET_DOMAIN}

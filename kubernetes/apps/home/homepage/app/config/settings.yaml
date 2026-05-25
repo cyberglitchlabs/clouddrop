@@ -42,3 +42,15 @@ layout:
     icon: mdi-chart-line-#FFFFFF
     style: row
     columns: 2
+  Games:
+    icon: mdi-controller-#FFFFFF
+    style: row
+    columns: 2
+  3D Printing:
+    icon: mdi-printer-3d-#FFFFFF
+    style: row
+    columns: 2
+  Radio:
+    icon: mdi-radio-tower-#FFFFFF
+    style: row
+    columns: 2
