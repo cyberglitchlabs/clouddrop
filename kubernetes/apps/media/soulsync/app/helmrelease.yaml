@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: boulderbadgedad/soulsync
-              tag: "2.6.1"
+              tag: "2.6.4"
             env:
               TZ: America/Chicago
               PUID: 568
