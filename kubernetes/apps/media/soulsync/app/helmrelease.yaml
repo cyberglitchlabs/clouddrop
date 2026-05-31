@@ -29,7 +29,7 @@ spec:
               FLASK_ENV: production
               PYTHONPATH: /app
               SOULSYNC_CONFIG_PATH: /config/config.json
-              GUNICORN_CMD_ARGS: "--threads=24"
+              GUNICORN_CMD_ARGS: "--workers=2 --threads=24"
             probes:
               liveness:
                 enabled: true
