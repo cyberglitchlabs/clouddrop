@@ -30,7 +30,7 @@ spec:
               SLSKD_INCOMPLETE_DIR: "/media/slskd/incomplete"
               SLSKD_NO_HTTPS: "true"
               SLSKD_NO_VERSION_CHECK: "true"
-              SLSKD_SLSK_DIAG_LEVEL: Debug
+              SLSKD_SLSK_DIAG_LEVEL: Info
               DOTNET_BUNDLE_EXTRACT_BASE_DIR: "/tmp/.net"
             ports:
               - name: http
@@ -99,6 +99,13 @@ spec:
           soulseek:
             port: 50300
             targetPort: 50300
+    serviceMonitor:
+      app:
+        enabled: true
+        endpoints:
+          - port: http
+            path: /metrics
+            interval: 30s
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
