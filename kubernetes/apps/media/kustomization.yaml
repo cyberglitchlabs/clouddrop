@@ -15,7 +15,6 @@ resources:
   - ./jellyfin/ks.yaml
   - ./jellystat/ks.yaml
   - ./lidarr/ks.yaml
-  - ./listenarr/ks.yaml
   - ./profilarr/ks.yaml
   - ./posterizarr/ks.yaml
   - ./prowlarr/ks.yaml
