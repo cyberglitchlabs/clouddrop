@@ -14,7 +14,6 @@ resources:
   - ./immich/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellystat/ks.yaml
-  - ./lidarr/ks.yaml
   - ./profilarr/ks.yaml
   - ./posterizarr/ks.yaml
   - ./prowlarr/ks.yaml
