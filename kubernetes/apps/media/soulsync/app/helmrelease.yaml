@@ -82,6 +82,7 @@ spec:
         globalMounts:
           - path: /config
           - path: /app/data
+          - path: /app/config
       media:
         enabled: true
         type: persistentVolumeClaim
