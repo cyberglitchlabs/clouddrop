@@ -16,7 +16,7 @@ spec:
   values:
     controllers:
       slskd:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           slskd:
             image:
