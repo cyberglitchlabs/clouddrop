@@ -29,7 +29,8 @@ spec:
               FLASK_ENV: production
               PYTHONPATH: /app
               SOULSYNC_CONFIG_PATH: /config/config.json
-              GUNICORN_CMD_ARGS: "--workers=2 --threads=24"
+              GUNICORN_CMD_ARGS: "--workers=2 --threads=24 --forwarded-allow-ips=*"
+              PREFERRED_URL_SCHEME: https
             probes:
               liveness:
                 enabled: true
