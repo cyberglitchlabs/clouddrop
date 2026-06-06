@@ -28,6 +28,8 @@ spec:
                   secretKeyRef:
                     name: litellm-postgres-app
                     key: uri
+              HOME: /tmp
+              PRISMA_BINARY_CACHE_DIR: /tmp/prisma-cache
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
