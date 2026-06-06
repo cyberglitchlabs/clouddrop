@@ -28,8 +28,6 @@ spec:
                   secretKeyRef:
                     name: litellm-postgres-app
                     key: uri
-              HOME: /tmp
-              PRISMA_BINARY_CACHE_DIR: /tmp/prisma-cache
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
@@ -54,8 +52,6 @@ spec:
                     name: litellm-postgres-app
                     key: uri
               STORE_MODEL_IN_DB: "True"
-              HOME: /tmp
-              PRISMA_BINARY_CACHE_DIR: /tmp/prisma-cache
             envFrom:
               - secretRef:
                   name: litellm-secrets
@@ -95,11 +91,10 @@ spec:
                 memory: 4Gi
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
         seccompProfile:
           type: RuntimeDefault
     service:
