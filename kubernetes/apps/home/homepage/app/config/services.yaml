@@ -23,6 +23,11 @@
           type: slskd
           url: http://slskd.media.svc.cluster.local:5030
           key: "{{HOMEPAGE_VAR_SLSKD_API_KEY}}"
+    - Soulsync:
+        icon: mdi-sync-#FFFFFF
+        href: https://soulsync.${SECRET_DOMAIN}
+        description: Soulseek sync
+        siteMonitor: https://soulsync.${SECRET_DOMAIN}
 
 - Media Management:
     - Sonarr:
@@ -41,14 +46,6 @@
           type: radarr
           url: http://radarr.media.svc.cluster.local:7878
           key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
-    - Lidarr:
-        icon: lidarr.png
-        href: https://lidarr.${SECRET_DOMAIN}
-        description: Music
-        widget:
-          type: lidarr
-          url: http://lidarr.media.svc.cluster.local:8686
-          key: "{{HOMEPAGE_VAR_LIDARR_API_KEY}}"
     - Bazarr:
         icon: bazarr.png
         href: https://bazarr.${SECRET_DOMAIN}
@@ -62,11 +59,6 @@
         href: https://profilarr.${SECRET_DOMAIN}
         description: Quality profiles
         siteMonitor: https://profilarr.${SECRET_DOMAIN}
-    - Listenarr:
-        icon: mdi-music-note-#FFFFFF
-        href: https://listenarr.${SECRET_DOMAIN}
-        description: Music requests
-        siteMonitor: https://listenarr.${SECRET_DOMAIN}
 
 - Media:
     - Jellyfin:
