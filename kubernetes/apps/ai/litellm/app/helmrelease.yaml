@@ -54,6 +54,8 @@ spec:
                     name: litellm-postgres-app
                     key: uri
               STORE_MODEL_IN_DB: "True"
+              HOME: /tmp
+              PRISMA_BINARY_CACHE_DIR: /tmp/prisma-cache
             envFrom:
               - secretRef:
                   name: litellm-secrets
