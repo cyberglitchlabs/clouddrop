@@ -13,6 +13,7 @@ litellm_settings:
   json_logs: true
   request_timeout: 600
   callbacks: ["prometheus"]
+  require_auth_for_metrics_endpoint: false
 
 router_settings:
   routing_strategy: simple-shuffle
