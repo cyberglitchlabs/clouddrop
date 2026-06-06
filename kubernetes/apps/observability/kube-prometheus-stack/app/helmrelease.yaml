@@ -23,6 +23,11 @@ spec:
   values:
     cleanPrometheusOperatorObjectNames: true
 
+    defaultRules:
+      disabled:
+        KubePersistentVolumeFillingUp: true
+        KubePersistentVolumeInodesFillingUp: true
+
     alertmanager:
       enabled: true
       alertmanagerSpec:
