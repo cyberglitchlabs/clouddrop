@@ -20,7 +20,6 @@ spec:
       # Overwrite config on every start so GitOps values always win
       configMode: overwrite
 
-      # Disable ClawHub skill installation (requires internet, not needed for Ollama-only)
       skills: []
 
       controllers:
@@ -56,7 +55,7 @@ spec:
                   "defaults": {
                     "workspace": "/home/node/.openclaw/workspace",
                     "model": {
-                      "primary": "ollama/llama3.2:3b"
+                      "primary": "litellm/gemma-4-e2b"
                     },
                     "userTimezone": "UTC",
                     "timeoutSeconds": 600,
@@ -78,19 +77,19 @@ spec:
                 },
                 "models": {
                   "providers": {
-                    "ollama": {
-                      "baseUrl": "http://ollama.ai.svc.cluster.local:11434",
-                      "apiKey": "ollama-local",
-                      "api": "ollama",
+                    "litellm": {
+                      "baseUrl": "http://litellm.ai.svc.cluster.local:4000/v1",
+                      "apiKey": "${LITELLM_API_KEY}",
+                      "api": "openai",
                       "models": [
                         {
-                          "id": "llama3.2:3b",
-                          "name": "Llama 3.2 3B",
+                          "id": "gemma-4-e2b",
+                          "name": "Gemma 4 E2B",
                           "reasoning": false,
-                          "input": ["text"],
+                          "input": ["text", "image"],
                           "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
                           "contextWindow": 131072,
-                          "maxTokens": 4096
+                          "maxTokens": 8192
                         }
                       ]
                     }
