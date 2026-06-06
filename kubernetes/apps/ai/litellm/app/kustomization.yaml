@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+components:
+  - ../../../../components/helmrelease-defaults
+configMapGenerator:
+  - name: litellm-config
+    files:
+      - config.yaml=./config/config.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+resources:
+  - ./postgres-cluster.yaml
+  - ./secret.sops.yaml
+  - ./helmrelease.yaml

@@ -139,6 +139,11 @@
         icon: open-webui.png
         href: https://openwebui.${SECRET_DOMAIN}
         description: LLM chat interface
+    - LiteLLM:
+        icon: litellm.png
+        href: https://litellm.${SECRET_DOMAIN}
+        description: LLM gateway
+        siteMonitor: https://litellm.${SECRET_DOMAIN}
     - OpenClaw:
         icon: mdi-robot-outline-#FFFFFF
         href: https://openclaw.${SECRET_DOMAIN}
