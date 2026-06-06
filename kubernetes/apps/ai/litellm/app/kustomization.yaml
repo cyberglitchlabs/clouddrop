@@ -14,3 +14,4 @@ resources:
   - ./postgres-cluster.yaml
   - ./secret.sops.yaml
   - ./helmrelease.yaml
+  - ./servicemonitor.yaml

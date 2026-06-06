@@ -12,6 +12,7 @@ litellm_settings:
   cache: false
   json_logs: true
   request_timeout: 600
+  callbacks: ["prometheus"]
 
 router_settings:
   routing_strategy: simple-shuffle
