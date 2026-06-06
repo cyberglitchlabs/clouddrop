@@ -59,6 +59,35 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.42.10"
+  - hostname: "bolty"
+    ipAddress: "192.168.42.250"
+    installDisk: "/dev/disk/by-id/nvme-KXG70ZNV512G_NVMe_KIOXIA_512GB_928FC0TLFTB5"
+    machineSpec:
+      secureboot: false
+    # Extensions: i915, intel-ucode, iscsi-tools, mei, nfsrahead, fuse3, util-linux-tools, nonfree-kmod-nvidia-production, nvidia-container-toolkit-production
+    talosImageURL: factory.talos.dev/installer/afc99e225a931f3e06e8a3f624f792f6131deafc2f5aa243b23b622a47178cad
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "cc:96:e5:dc:44:5e"
+        dhcp: false
+        addresses:
+          - "192.168.42.250/24"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "192.168.42.1"
+        mtu: 1500
+    patches:
+    - |-
+      machine:
+        sysctls:
+          net.core.bpf_jit_harden: "1"
+        kernel:
+          modules:
+            - name: nvidia
+            - name: nvidia_uvm
+            - name: nvidia_drm
+            - name: nvidia_modeset
   - hostname: "hpe"
     ipAddress: "192.168.42.251"
     installDisk: "/dev/disk/by-id/wwn-0x5002538043584d30"

@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: intel-device-plugins-gpu
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: intel-device-plugins-gpu
+      # renovate: datasource=helm depName=intel-device-plugins-gpu registryUrl=https://intel.github.io/helm-charts
+      version: "0.36.0"
+      sourceRef:
+        kind: HelmRepository
+        name: intel-device-plugins
+        namespace: flux-system
+      interval: 1h
+  values:
+    sharedDevNum: 2
+    enableMonitoring: true
+    nodeFeatureRule: true
+    # nodeFeatureRule: true creates an NFD rule that labels Intel GPU nodes
+    # with intel.feature.node.kubernetes.io/gpu: 'true' (the default nodeSelector)
+    nodeSelector:
+      intel.feature.node.kubernetes.io/gpu: "true"
