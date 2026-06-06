@@ -80,7 +80,7 @@ spec:
                     "litellm": {
                       "baseUrl": "http://litellm.ai.svc.cluster.local:4000/v1",
                       "apiKey": "${LITELLM_API_KEY}",
-                      "api": "openai",
+                      "api": "openai-completions",
                       "models": [
                         {
                           "id": "gemma-4-e2b",
