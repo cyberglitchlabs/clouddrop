@@ -13,4 +13,3 @@ spec:
   dependsOn:
     - name: radarr
     - name: sonarr
-    - name: lidarr
