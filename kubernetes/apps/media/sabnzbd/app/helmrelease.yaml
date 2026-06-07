@@ -75,7 +75,7 @@ spec:
             protocol: TCP
     serviceMonitor:
       app:
-        enabled: true
+        enabled: false
         endpoints:
           - port: http
     persistence:
