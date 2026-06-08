@@ -49,7 +49,12 @@ spec:
                   initialDelaySeconds: 5
                   periodSeconds: 10
                   timeoutSeconds: 5
-                  failureThreshold: 3
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
