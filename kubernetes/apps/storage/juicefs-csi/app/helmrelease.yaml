@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: juicefs-csi-driver
+  namespace: juicefs
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: juicefs-csi-driver
+      version: 0.31.9
+      sourceRef:
+        kind: HelmRepository
+        name: juicefs
+        namespace: flux-system
+      interval: 1h
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    # Talos kubelet path (default, but explicit for clarity)
+    kubeletDir: /var/lib/kubelet
+
+    controller:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          memory: 256Mi
+
+    node:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          memory: 512Mi
+
+    # Global cache config applied to all mount pods
+    globalConfig:
+      enabled: true
+      mountPodPatch:
+        - mountOptions:
+            # Write to local cache first, flush async to QuObjects — this is
+            # what gives SQLite-friendly local-disk performance
+            - writeback
+            - cache-dir=/var/jfsCache
+            - cache-size=51200
+            - free-space-ratio=0.1

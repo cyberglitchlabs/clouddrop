@@ -2,11 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: trident
-
-components:
-  - ../../components/common
 resources:
-  - ./csi-driver-nfs/ks.yaml
-  - ./csi-driver-smb/ks.yaml
-  - ./juicefs-csi/ks.yaml
+  - ./namespace.yaml
+  - ./postgres-cluster.yaml
+  - ./secret.sops.yaml
+  - ./helmrelease.yaml
+  - ./storageclass.yaml
