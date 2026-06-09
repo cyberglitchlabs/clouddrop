@@ -37,3 +37,4 @@ resources:
   - ./helmrepository-openclaw.yaml
   - ./helmrepository-victoria-metrics.yaml
   - ./helmrepository-grafana.yaml
+  - ./helmrepository-juicefs.yaml
