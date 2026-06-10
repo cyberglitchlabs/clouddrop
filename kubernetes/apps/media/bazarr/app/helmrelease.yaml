@@ -94,7 +94,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: bazarr-nfs-v2
+        existingClaim: bazarr-juicefs
         globalMounts:
           - path: /config
       media:
