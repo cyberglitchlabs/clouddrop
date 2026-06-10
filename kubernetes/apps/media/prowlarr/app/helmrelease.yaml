@@ -94,7 +94,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: prowlarr-nfs-v2
+        existingClaim: prowlarr-juicefs
         globalMounts:
           - path: /config
       media:
