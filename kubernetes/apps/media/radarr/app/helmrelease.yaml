@@ -94,7 +94,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: radarr-nfs-v2
+        existingClaim: radarr-juicefs
         globalMounts:
           - path: /config
       media:
