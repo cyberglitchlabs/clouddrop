@@ -27,6 +27,9 @@ spec:
     # Talos kubelet path (default, but explicit for clarity)
     kubeletDir: /var/lib/kubelet
 
+    # Talos rootfs is read-only; skip host paths the driver can't create (e.g. /etc/updatedb.conf)
+    immutable: true
+
     controller:
       resources:
         requests:
