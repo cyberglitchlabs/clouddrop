@@ -17,7 +17,7 @@ spec:
           wipe-on-version-mismatch:
             image:
               repository: getmeili/meilisearch
-              tag: v1.42.1
+              tag: v1.46.1
             command:
               - sh
               - -c
@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: getmeili/meilisearch
-              tag: v1.42.1
+              tag: v1.46.1
             env:
               TZ: America/Chicago
               MEILI_ENV: production
