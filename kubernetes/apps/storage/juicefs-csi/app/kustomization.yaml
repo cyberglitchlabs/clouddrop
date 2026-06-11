@@ -8,3 +8,4 @@ resources:
   - ./secret.sops.yaml
   - ./helmrelease.yaml
   - ./storageclass.yaml
+  - ./httproute.yaml
