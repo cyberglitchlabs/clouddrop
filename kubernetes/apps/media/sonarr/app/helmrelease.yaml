@@ -84,7 +84,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: sonarr-nfs-v2
+        existingClaim: sonarr-juicefs
         globalMounts:
           - path: /config
       media:
