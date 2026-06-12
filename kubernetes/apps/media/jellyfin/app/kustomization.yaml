@@ -10,6 +10,4 @@ resources:
   - ./pvc-config-nfs-v2.yaml
   - ./pvc-media.yaml
   - ./pv-media.yaml
-  - ./cronjob-backup.yaml
   - ./deployment-xmltv.yaml
-  - ./secret-api-key.sops.yaml
