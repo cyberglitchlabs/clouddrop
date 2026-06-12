@@ -30,6 +30,18 @@ spec:
     # Talos rootfs is read-only; skip host paths the driver can't create (e.g. /etc/updatedb.conf)
     immutable: true
 
+    # Reject eviction of in-use mount pods (works alongside the PDB) and
+    # validate secrets/PVs at admission time. cert-manager (already running
+    # in-cluster) issues the webhook's serving cert so it stays stable across
+    # Flux reconciles, instead of the chart's regenerate-on-every-render
+    # self-signed cert.
+    validatingWebhook:
+      enabled: true
+
+    webhook:
+      certManager:
+        enabled: true
+
     controller:
       resources:
         requests:
@@ -67,3 +79,25 @@ spec:
             limits:
               cpu: "1"
               memory: 1Gi
+          # writeback buffers writes locally before async upload to QuObjects.
+          # The chart's default 10s terminationGracePeriodSeconds isn't enough
+          # to flush a write burst, so wait for the rawstaging dir to drain
+          # before the mount pod is allowed to exit.
+          terminationGracePeriodSeconds: 600
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - sh
+                  - -c
+                  - |
+                    for mp in /jfs/*/; do
+                      cfg="${mp}.config"
+                      [ -f "$cfg" ] || continue
+                      cache_dir=$(grep -o '"CacheDir": *"[^"]*"' "$cfg" | head -1 | cut -d'"' -f4)
+                      [ -n "$cache_dir" ] || continue
+                      staging="$cache_dir/rawstaging"
+                      while [ -d "$staging" ] && [ -n "$(find "$staging" -type f -print -quit 2>/dev/null)" ]; do
+                        sleep 3
+                      done
+                    done

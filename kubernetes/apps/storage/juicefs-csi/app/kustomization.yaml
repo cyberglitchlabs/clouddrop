@@ -9,3 +9,5 @@ resources:
   - ./helmrelease.yaml
   - ./storageclass.yaml
   - ./httproute.yaml
+  - ./podmonitor.yaml
+  - ./pdb.yaml

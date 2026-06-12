@@ -27,6 +27,15 @@ configMapGenerator:
         grafana_dashboard: "1"
       annotations:
         grafana_folder: "Media"
+  - name: grafana-juicefs-dashboard
+    files:
+      - dashboards/juicefs-monitoring.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      annotations:
+        grafana_folder: "JuiceFS"
+        kustomize.toolkit.fluxcd.io/substitute: disabled
   # FluxCD dashboards
   - name: grafana-flux-cluster-dashboard
     files:
