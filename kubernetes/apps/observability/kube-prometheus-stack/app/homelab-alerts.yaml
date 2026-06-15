@@ -61,13 +61,16 @@ spec:
       interval: 30s
       rules:
         - alert: KubePodCrashLooping
-          expr: rate(kube_pod_container_status_restarts_total[15m]) > 0
-          for: 5m
+          # max_over_time + CrashLoopBackOff (rather than rate(restarts_total) > 0)
+          # so a single restart/blip (e.g. sandbox recreation) doesn't fire this -
+          # only pods the kubelet has actually put into backoff do.
+          expr: max_over_time(kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"}[5m]) >= 1
+          for: 15m
           labels:
             severity: warning
           annotations:
             summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is crash looping"
-            description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has restarted {{ $value | humanize }} times in the last 15 minutes"
+            description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is in CrashLoopBackOff"
 
         - alert: KubePodNotReady
           expr: sum by (namespace, pod) (kube_pod_status_phase{phase!~"Running|Succeeded"}) > 0
