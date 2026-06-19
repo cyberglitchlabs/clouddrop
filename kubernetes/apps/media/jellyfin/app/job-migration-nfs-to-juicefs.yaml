@@ -17,11 +17,30 @@ spec:
       securityContext:
         runAsUser: 568
         runAsGroup: 568
+        runAsNonRoot: true
         fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: migrate
-          image: alpine:latest
-          command: ["sh", "-c", "cp -av /source/. /destination/ && echo DONE"]
+          image: alpine:3.21
+          command:
+            - sh
+            - -c
+            - |
+              set -e
+              for f in jellyfin.db library.db playback_reporting.db device.txt splashscreen.png; do
+                [ -f /source/data/$f ] && cp -av /source/data/$f /destination/$f
+              done
+              for d in playlists ScheduledTasks SQLiteBackups; do
+                [ -d /source/data/$d ] && cp -av /source/data/$d/ /destination/$d/
+              done
+              echo DONE
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
           volumeMounts:
             - name: source
               mountPath: /source
