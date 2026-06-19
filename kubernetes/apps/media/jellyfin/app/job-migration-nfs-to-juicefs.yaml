@@ -1,0 +1,36 @@
+---
+# One-off migration job: copy Jellyfin config from NFS to JuiceFS.
+# Apply manually with: kubectl apply -f job-migration-nfs-to-juicefs.yaml
+# Monitor with: kubectl logs -n media -l job-name=jellyfin-config-migration -f
+# Delete after verified: kubectl delete -f job-migration-nfs-to-juicefs.yaml
+# DO NOT add this file to kustomization.yaml — it is not managed by Flux.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jellyfin-config-migration
+  namespace: media
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      restartPolicy: Never
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+      containers:
+        - name: migrate
+          image: alpine:latest
+          command: ["sh", "-c", "cp -av /source/. /destination/ && echo DONE"]
+          volumeMounts:
+            - name: source
+              mountPath: /source
+            - name: destination
+              mountPath: /destination
+      volumes:
+        - name: source
+          persistentVolumeClaim:
+            claimName: jellyfin-nfs-v2
+        - name: destination
+          persistentVolumeClaim:
+            claimName: jellyfin-juicefs
