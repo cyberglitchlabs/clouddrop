@@ -11,10 +11,6 @@ spec:
       app.kubernetes.io/name: *app
   interval: 10m
   path: ./kubernetes/apps/storage/juicefs-csi/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   wait: true
   dependsOn:
     - name: cloudnative-pg-operator

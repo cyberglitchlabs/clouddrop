@@ -82,7 +82,8 @@ spec:
           # writeback buffers writes locally before async upload to QuObjects.
           # The chart's default 10s terminationGracePeriodSeconds isn't enough
           # to flush a write burst, so wait for the rawstaging dir to drain
-          # before the mount pod is allowed to exit.
+          # before the mount pod is allowed to exit. umount after flush so
+          # containerd can kill the sandbox cleanly instead of hanging on FUSE.
           terminationGracePeriodSeconds: 600
           lifecycle:
             preStop:
@@ -91,13 +92,19 @@ spec:
                   - sh
                   - -c
                   - |
-                    for mp in /jfs/*/; do
-                      cfg="${mp}.config"
-                      [ -f "$cfg" ] || continue
-                      cache_dir=$(grep -o '"CacheDir": *"[^"]*"' "$cfg" | head -1 | cut -d'"' -f4)
-                      [ -n "$cache_dir" ] || continue
-                      staging="$cache_dir/rawstaging"
-                      while [ -d "$staging" ] && [ -n "$(find "$staging" -type f -print -quit 2>/dev/null)" ]; do
-                        sleep 3
+                    set +e
+                    staging_dir=$(cat ${MOUNT_POINT}/.config | grep 'CacheDir' | cut -d '"' -f 4)/rawstaging/
+                    if [ -d "$staging_dir" ]; then
+                      while :
+                      do
+                        staging_files=$(find $staging_dir -type f | head -n 1)
+                        if [ -z "$staging_files" ]; then
+                          break
+                        else
+                          sleep 3
+                        fi
                       done
-                    done
+                    fi
+                    umount -l ${MOUNT_POINT}
+                    rmdir ${MOUNT_POINT}
+                    exit 0

@@ -7,6 +7,8 @@ metadata:
 spec:
   instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:17.2
+  primaryUpdateStrategy: supervised
+  enableSuperuserAccess: false
   bootstrap:
     initdb:
       database: juicefs
@@ -15,6 +17,8 @@ spec:
     parameters:
       max_connections: "50"
       shared_buffers: 128MB
+      wal_keep_size: 512MB
+      wal_level: logical
   storage:
     size: 5Gi
     storageClass: qnap-nfs
