@@ -27,6 +27,7 @@ spec:
       disabled:
         KubePersistentVolumeFillingUp: true
         KubePersistentVolumeInodesFillingUp: true
+        Watchdog: true
 
     alertmanager:
       enabled: true
