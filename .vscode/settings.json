@@ -12,11 +12,7 @@
             "/Users/jason/personal/clouddrop/kubeconfig"
         ]
     },
-    "yaml.schemaStore.enable": true,
-    "yaml.schemas": {
-        "kubernetes": "./kubernetes/**/*.yaml"
-    },
-    "chat.tools.terminal.autoApprove": {
+"chat.tools.terminal.autoApprove": {
         "talosctl": true,
         "kubectl get": true
     }

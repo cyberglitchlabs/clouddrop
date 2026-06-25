@@ -21,6 +21,7 @@ resources:
   - ./ocirepository-n8n.yaml
   - ./ocirepository-reloader.yaml
   - ./ocirepository-spegel.yaml
+  - ./ocirepository-tuppr.yaml
   # Helm Repositories
   - ./helmrepository-authentik.yaml
   - ./helmrepository-cloudnative-pg.yaml

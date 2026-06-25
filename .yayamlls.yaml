@@ -1,0 +1,15 @@
+schemas:
+  "https://json.schemastore.org/github-workflow.json":
+    - ".github/workflows/*.yaml"
+    - ".github/workflows/*.yml"
+  "https://json.schemastore.org/github-action.json":
+    - ".github/actions/**/*.yaml"
+  "https://json.schemastore.org/taskfile.json":
+    - "Taskfile.yaml"
+
+catalog: true
+
+renderers:
+  flate:
+    enabled: true
+    path: kubernetes
