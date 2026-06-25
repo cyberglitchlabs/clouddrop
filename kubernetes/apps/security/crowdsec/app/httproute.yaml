@@ -6,13 +6,17 @@ metadata:
   namespace: security
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+    gatus.home-operations.com/endpoint: |-
+      group: security
+      conditions:
+        - "[STATUS] == 200"
 spec:
   parentRefs:
     - name: internal
       namespace: kube-system
       sectionName: https
   hostnames:
-    - crowdsec-mirror.${SECRET_DOMAIN}
+    - crowdsec-mirror.${SECRET_DOMAIN} # yayamlls-disable-line
   rules:
     - backendRefs:
         - name: crowdsec-blocklist-mirror

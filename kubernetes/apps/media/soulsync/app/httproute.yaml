@@ -4,13 +4,18 @@ kind: HTTPRoute
 metadata:
   name: soulsync
   namespace: media
+  annotations:
+    gatus.home-operations.com/endpoint: |-
+      group: media
+      conditions:
+        - "[STATUS] == 200"
 spec:
   parentRefs:
     - name: external
       namespace: kube-system
       sectionName: https
   hostnames:
-    - "soulsync.${SECRET_DOMAIN}"
+    - "soulsync.${SECRET_DOMAIN}" # yayamlls-disable-line
   rules:
     - backendRefs:
         - name: soulsync

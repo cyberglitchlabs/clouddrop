@@ -6,13 +6,18 @@ metadata:
   namespace: observability
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+    gatus.home-operations.com/endpoint: |-
+      group: observability
+      path: /-/healthy
+      conditions:
+        - "[STATUS] == 200"
 spec:
   parentRefs:
     - name: internal
       namespace: kube-system
       sectionName: https
   hostnames:
-    - prometheus.${SECRET_DOMAIN}
+    - prometheus.${SECRET_DOMAIN} # yayamlls-disable-line
   rules:
     - backendRefs:
         - name: kube-prometheus-stack-prometheus

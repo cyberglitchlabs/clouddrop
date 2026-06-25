@@ -5,13 +5,18 @@ metadata:
   name: victoria-logs
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+    gatus.home-operations.com/endpoint: |-
+      group: observability
+      path: /health
+      conditions:
+        - "[STATUS] == 200"
 spec:
   parentRefs:
     - name: internal
       namespace: kube-system
       sectionName: https
   hostnames:
-    - logs.${SECRET_DOMAIN}
+    - logs.${SECRET_DOMAIN} # yayamlls-disable-line
   rules:
     - backendRefs:
         - name: victoria-logs-victoria-logs-single-server

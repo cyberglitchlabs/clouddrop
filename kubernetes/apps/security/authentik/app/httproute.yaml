@@ -4,13 +4,19 @@ kind: HTTPRoute
 metadata:
   name: authentik
   namespace: security
+  annotations:
+    gatus.home-operations.com/endpoint: |-
+      group: security
+      path: /-/health/ready/
+      conditions:
+        - "[STATUS] == 200"
 spec:
   parentRefs:
     - name: external
       namespace: kube-system
       sectionName: https
   hostnames:
-    - "auth.${SECRET_DOMAIN}"
+    - "auth.${SECRET_DOMAIN}" # yayamlls-disable-line
   rules:
     - backendRefs:
         - name: authentik-server

@@ -6,9 +6,13 @@ metadata:
   namespace: juicefs
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+    gatus.home-operations.com/endpoint: |-
+      group: storage
+      conditions:
+        - "[STATUS] == 200"
 spec:
   hostnames:
-    - "juicefs.${SECRET_DOMAIN}"
+    - "juicefs.${SECRET_DOMAIN}" # yayamlls-disable-line
   parentRefs:
     - name: internal
       namespace: kube-system
