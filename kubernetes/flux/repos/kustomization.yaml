@@ -12,6 +12,7 @@ resources:
   - ./ocirepository-flux-instance.yaml
   - ./ocirepository-flux-operator.yaml
   - ./ocirepository-gateway-api-crds.yaml
+  - ./ocirepository-gatus-sidecar.yaml
   - ./ocirepository-grafana.yaml
   - ./ocirepository-immich.yaml
   - ./ocirepository-k8s-gateway.yaml
