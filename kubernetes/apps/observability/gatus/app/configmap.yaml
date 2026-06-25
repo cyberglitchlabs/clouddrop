@@ -26,46 +26,4 @@ data:
         target: 1.1.1.1:53
         interval: 60s
 
-    endpoints:
-      - name: mealie
-        group: home
-        url: http://mealie.home.svc.cluster.local:9000
-        interval: 5m
-        conditions:
-          - "[STATUS] == 200"
-
-      - name: actual-budget
-        group: home
-        url: http://actual-budget.home.svc.cluster.local:5006
-        interval: 5m
-        conditions:
-          - "[STATUS] == 200"
-
-      - name: open-webui
-        group: ai
-        url: http://open-webui.ai.svc.cluster.local:8080
-        interval: 5m
-        conditions:
-          - "[STATUS] == 200"
-
-      - name: n8n
-        group: ai
-        url: http://n8n.ai.svc.cluster.local:5678
-        interval: 5m
-        conditions:
-          - "[STATUS] == 200"
-
-      - name: ollama
-        group: ai
-        url: http://ollama.ai.svc.cluster.local:11434
-        interval: 5m
-        conditions:
-          - "[STATUS] == 200"
-
-      - name: jellyfin
-        group: media
-        url: http://jellyfin.media.svc.cluster.local:8096/health
-        interval: 5m
-        conditions:
-          - "[STATUS] == 200"
 
