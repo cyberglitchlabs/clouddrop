@@ -7,6 +7,7 @@ components:
 resources:
   - ./helmrelease.yaml
   - ./pvc-xmltv.yaml
+  - ./pvc-config-nfs.yaml
   - ./pvc-config-juicefs.yaml
   - ./pvc-media.yaml
   - ./pv-media.yaml

@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-config-nfs
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: qnap-nfs-db-sync
+  volumeName: pvc-6bda2439-d60d-491b-956f-914d04799957
+  resources:
+    requests:
+      storage: 10Gi

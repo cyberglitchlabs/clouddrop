@@ -93,7 +93,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: jellyfin-nfs-v2
+        existingClaim: jellyfin-config-nfs
         globalMounts:
           - path: /config
       config-data:
@@ -102,6 +102,7 @@ spec:
         existingClaim: jellyfin-juicefs
         globalMounts:
           - path: /config/data
+            mountPropagation: HostToContainer
       media:
         enabled: true
         type: persistentVolumeClaim
