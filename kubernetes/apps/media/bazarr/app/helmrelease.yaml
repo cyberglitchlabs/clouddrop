@@ -97,6 +97,7 @@ spec:
         existingClaim: bazarr-juicefs
         globalMounts:
           - path: /config
+            mountPropagation: HostToContainer
       media:
         enabled: true
         type: persistentVolumeClaim
