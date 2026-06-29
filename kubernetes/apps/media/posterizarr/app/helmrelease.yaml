@@ -22,7 +22,7 @@ spec:
           app:
             image:
               repository: ghcr.io/fscorrupt/posterizarr
-              tag: 2.2.51
+              tag: 2.2.52
             env:
               TZ: America/Chicago
             probes:
