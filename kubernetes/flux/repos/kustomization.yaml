@@ -23,6 +23,7 @@ resources:
   - ./ocirepository-reloader.yaml
   - ./ocirepository-spegel.yaml
   - ./ocirepository-tuppr.yaml
+  - ./ocirepository-drm-exporter.yaml
   - ./ocirepository-konflate.yaml
   # Helm Repositories
   - ./helmrepository-authentik.yaml

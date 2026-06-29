@@ -9,6 +9,7 @@ resources:
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
   - ./dcgm-exporter/ks.yaml
+  - ./drm-exporter/ks.yaml
   - ./descheduler/ks.yaml
   - ./etcd-backup/ks.yaml
   - ./metrics-server/ks.yaml
