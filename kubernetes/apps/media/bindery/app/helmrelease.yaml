@@ -21,7 +21,7 @@ spec:
           bindery:
             image:
               repository: ghcr.io/vavallee/bindery
-              tag: "v1.21.0"
+              tag: "v1.23.2"
             env:
               TZ: America/Chicago
               BINDERY_PUID: "568"
