@@ -16,10 +16,7 @@ spec:
     nodeSelector:
       intel.feature.node.kubernetes.io/gpu: "true"
     securityContext:
-      capabilities:
-        add:
-          - PERFMON
-          - SYS_RAWIO
+      privileged: true
     monitoring:
       serviceMonitor:
         enabled: true
