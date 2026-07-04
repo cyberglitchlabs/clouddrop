@@ -33,7 +33,7 @@ metadata:
   name: pod-garbage-collector
   namespace: kube-system
 spec:
-  schedule: "*/30 * * * *"  # Run every 30 minutes
+  schedule: "*/10 * * * *"  # Run every 10 minutes (tight enough to catch stuck-terminating pods promptly)
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2
   concurrencyPolicy: Forbid
@@ -94,6 +94,29 @@ spec:
                     done
                   else
                     echo "No Succeeded pods found older than 1 hour"
+                  fi
+
+                  # Force-delete pods stuck Terminating for more than 10 minutes.
+                  # Root cause is usually a hung FUSE/NFS mount putting the container
+                  # process in uninterruptible (D) sleep, which kubelet can't kill via
+                  # SIGTERM/SIGKILL - it just retries KillContainer forever. Waiting
+                  # this long avoids force-deleting pods still in a normal shutdown.
+                  STUCK_TERMINATING_PODS=$(kubectl get pods --all-namespaces \
+                    -o json | \
+                    jq -r '.items[] |
+                      select(.metadata.deletionTimestamp != null) |
+                      select((now - (.metadata.deletionTimestamp | fromdateiso8601)) > 600) |
+                      "\(.metadata.namespace) \(.metadata.name)"')
+
+                  if [ -n "$STUCK_TERMINATING_PODS" ]; then
+                    echo "Found pods stuck Terminating for more than 10 minutes:"
+                    echo "$STUCK_TERMINATING_PODS"
+                    echo "$STUCK_TERMINATING_PODS" | while read namespace pod; do
+                      echo "Force deleting $namespace/$pod"
+                      kubectl delete pod "$pod" -n "$namespace" --grace-period=0 --force --ignore-not-found=true
+                    done
+                  else
+                    echo "No pods stuck Terminating for more than 10 minutes"
                   fi
 
                   echo "Cleanup complete!"
