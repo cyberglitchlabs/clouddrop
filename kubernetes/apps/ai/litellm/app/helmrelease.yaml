@@ -18,7 +18,7 @@ spec:
           prisma-migrate:
             image:
               repository: ghcr.io/berriai/litellm
-              tag: v1.88.0
+              tag: v1.91.0
             command: ["/bin/sh", "-c"]
             args:
               - cd /app && prisma migrate deploy --schema=schema.prisma
@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: ghcr.io/berriai/litellm
-              tag: v1.88.0
+              tag: v1.91.0
             args:
               - "--config"
               - "/app/config.yaml"
