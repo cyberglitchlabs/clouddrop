@@ -22,8 +22,8 @@ spec:
               - sh
               - -c
               - |
-                if [ -f /meili_data/VERSION ]; then
-                  DB_VER=$(cat /meili_data/VERSION)
+                if [ -f /meili_data/data.ms/VERSION ]; then
+                  DB_VER=$(cat /meili_data/data.ms/VERSION)
                   BIN_VER=$(meilisearch --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
                   if [ "$DB_VER" != "$BIN_VER" ]; then
                     echo "Version mismatch (db=$DB_VER bin=$BIN_VER), wiping data"
