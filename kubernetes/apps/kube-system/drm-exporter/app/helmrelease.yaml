@@ -11,6 +11,10 @@ spec:
     namespace: flux-system
   interval: 1h
   values:
+    hostAccess:
+      devDri: /dev/dri
+    nodeSelector:
+      intel.feature.node.kubernetes.io/gpu: "true"
     securityContext:
       capabilities:
         add:
