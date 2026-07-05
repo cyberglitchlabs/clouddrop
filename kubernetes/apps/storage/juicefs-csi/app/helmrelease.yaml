@@ -93,7 +93,7 @@ spec:
                   - -c
                   - |
                     set +e
-                    staging_dir=$(cat ${MOUNT_POINT}/.config | grep 'CacheDir' | cut -d '"' -f 4)/rawstaging/
+                    staging_dir=$(cat $${MOUNT_POINT}/.config | grep 'CacheDir' | cut -d '"' -f 4)/rawstaging/
                     if [ -d "$staging_dir" ]; then
                       while :
                       do
@@ -105,6 +105,6 @@ spec:
                         fi
                       done
                     fi
-                    umount -l ${MOUNT_POINT}
-                    rmdir ${MOUNT_POINT}
+                    umount -l $${MOUNT_POINT}
+                    rmdir $${MOUNT_POINT}
                     exit 0
