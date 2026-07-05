@@ -9,10 +9,16 @@ spec:
     # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
     version: v1.13.5
   policy:
-    rebootMode: default
+    # default (kexec) silently fails to reboot on this hardware: the upgrade
+    # step reports success but the node never boots the new kernel. powercycle
+    # bypasses kexec for a real hardware reboot through firmware/bootloader.
+    # Ref: https://github.com/home-operations/tuppr (README: "Use powercycle
+    # reboot for problematic nodes")
+    rebootMode: powercycle
   healthChecks:
     - apiVersion: v1
       kind: Node
       expr: |
         status.conditions.filter(c, c.type == "Ready").all(c, c.status == "True")
-      timeout: 10m
+      # powercycle goes through full BIOS POST (~10-15m extra vs kexec's default)
+      timeout: 25m
