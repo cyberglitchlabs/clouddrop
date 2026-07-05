@@ -102,7 +102,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "$${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -152,7 +152,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -170,7 +170,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "$${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -222,7 +222,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -240,7 +240,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "$${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -291,7 +291,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -308,7 +308,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "$${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -359,7 +359,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -376,7 +376,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "$${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -427,7 +427,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -444,7 +444,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "$${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -495,7 +495,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -512,7 +512,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "$${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -563,7 +563,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -580,7 +580,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "$${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -631,7 +631,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -648,7 +648,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "$${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -710,7 +710,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -738,7 +738,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -836,7 +836,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -851,7 +851,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -866,7 +866,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -881,7 +881,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -896,7 +896,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -977,7 +977,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -1043,7 +1043,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -1057,7 +1057,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -1104,7 +1104,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -1158,7 +1158,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -1206,7 +1206,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -1259,7 +1259,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -1294,7 +1294,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "fieldConfig": {
             "defaults": {
@@ -1367,7 +1367,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -1409,7 +1409,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "fieldConfig": {
             "defaults": {
@@ -1472,7 +1472,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -1513,7 +1513,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -1566,7 +1566,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -1609,7 +1609,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -1663,7 +1663,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -1678,7 +1678,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -1729,7 +1729,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -1794,7 +1794,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -1857,7 +1857,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -1933,7 +1933,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -1948,7 +1948,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -1964,7 +1964,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -2023,7 +2023,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -2109,7 +2109,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -2124,7 +2124,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -2139,7 +2139,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -2154,7 +2154,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -2169,7 +2169,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -2246,7 +2246,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -2322,7 +2322,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -2337,7 +2337,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -2422,7 +2422,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -2511,7 +2511,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "expr": "rate(process_cpu_seconds_total{instance=\"$instance\"}[$__interval])*100",
@@ -2527,7 +2527,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -2616,7 +2616,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "expr": "process_resident_memory_bytes{instance=\"$instance\"}",
@@ -2632,7 +2632,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$${datasource}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2752,7 +2752,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -2766,7 +2766,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "expr": "sum(rate(cs_parser_hits_ok_total{instance=\"$instance\"} [$__interval]))",
@@ -2779,7 +2779,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "expr": "sum(rate(cs_parser_hits_ko_total{instance=\"$instance\"} [$__interval]))",
@@ -2792,7 +2792,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "expr": "sum(rate(cs_node_wl_hits_ok_total{instance=\"$instance\"} [$__interval]))",
@@ -2805,7 +2805,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$${datasource}"
               },
               "editorMode": "code",
               "expr": "sum(rate(cs_bucket_poured_total{instance=\"$instance\"} [$__interval]))",
@@ -2849,7 +2849,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${datasource}"
+          "uid": "$${datasource}"
         },
         "definition": "label_values(cs_appsec_reqs_total,appsec_engine)",
         "hide": 2,
@@ -2869,7 +2869,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${datasource}"
+          "uid": "$${datasource}"
         },
         "definition": "label_values(cs_info,instance)",
         "includeAll": false,
