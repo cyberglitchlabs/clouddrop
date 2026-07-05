@@ -6,6 +6,10 @@ metadata:
   namespace: juicefs
 spec:
   instances: 1
+  # Single-instance: no replica to fail over to, so the default PDB would
+  # permanently block draining this node. CNPG's official replacement for
+  # nodeMaintenanceWindow: https://cloudnative-pg.io/documentation/current/kubernetes_upgrade/
+  enablePDB: false
   imageName: ghcr.io/cloudnative-pg/postgresql:17.2
   enableSuperuserAccess: false
   bootstrap:

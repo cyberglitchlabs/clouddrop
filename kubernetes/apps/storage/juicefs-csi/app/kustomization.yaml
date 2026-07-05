@@ -12,4 +12,3 @@ resources:
   - ./storageclass.yaml
   - ./httproute.yaml
   - ./podmonitor.yaml
-  - ./pdb.yaml
