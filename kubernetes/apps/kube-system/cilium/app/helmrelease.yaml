@@ -76,6 +76,10 @@ spec:
       prometheus:
         serviceMonitor:
           enabled: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
     gatewayAPI:
       enabled: true
     hubble:
@@ -132,6 +136,14 @@ spec:
       serviceMonitor:
         enabled: true
         trustCRDsExist: true
+    # No memory limit: Cilium's eBPF maps can legitimately grow and a hard
+    # limit would cause a self-inflicted cgroup OOM-kill. A request alone
+    # moves the agent out of BestEffort QoS, which Talos's OOM controller
+    # (strictCgroupClassOrdering) always kills first during memory pressure.
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
     rollOutCiliumPods: true
     routingMode: native
     securityContext:
