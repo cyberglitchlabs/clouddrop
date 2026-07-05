@@ -7771,7 +7771,7 @@
       {
         "current": {
           "text": "",
-          "value": "${DS_PROMETHEUS}",
+          "value": "$${DS_PROMETHEUS}",
           "selected": true
         },
         "includeAll": false,
