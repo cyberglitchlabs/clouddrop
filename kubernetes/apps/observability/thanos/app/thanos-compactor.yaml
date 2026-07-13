@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: quay.io/thanos/thanos
-              tag: v0.41.0
+              tag: v0.42.0
             command: ["/bin/thanos"]
             args:
               - compact
