@@ -21,14 +21,15 @@ spec:
           bindery:
             image:
               repository: ghcr.io/vavallee/bindery
-              tag: "v1.25.0"
+              tag: "v1.26.0"
             env:
               TZ: America/Chicago
               BINDERY_PUID: "568"
               BINDERY_PGID: "568"
               BINDERY_DATA_DIR: /config
               BINDERY_LIBRARY_DIR: /media/books
-              BINDERY_DOWNLOAD_DIR: /media/downloads
+              BINDERY_AUDIOBOOK_DIR: /media/audiobooks
+              BINDERY_DOWNLOAD_DIR: /media/sabnzbd/done
             probes:
               liveness:
                 enabled: true

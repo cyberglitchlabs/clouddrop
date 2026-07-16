@@ -109,7 +109,7 @@ spec:
         globalMounts:
           - path: /media
           - path: /bookdrop
-            subPath: booklore/bookdrop
+            subPath: booklore/inbox
 
     route:
       app:
