@@ -11,3 +11,4 @@ resources:
   - ./actual-budget/ks.yaml
   - ./homepage/ks.yaml
   - ./glance/ks.yaml
+  - ./esphome-builder/ks.yaml
