@@ -13,7 +13,7 @@ spec:
   enablePDB: false
 
   # Use PostgreSQL 17
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.2
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4
 
   postgresql:
     parameters:

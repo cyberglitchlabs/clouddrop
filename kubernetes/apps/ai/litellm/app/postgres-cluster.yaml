@@ -11,7 +11,7 @@ spec:
   # permanently block draining this node. CNPG's official replacement for
   # nodeMaintenanceWindow: https://cloudnative-pg.io/documentation/current/kubernetes_upgrade/
   enablePDB: false
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.2
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4
   postgresql:
     parameters:
       max_connections: "50"
