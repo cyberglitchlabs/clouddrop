@@ -74,6 +74,92 @@ spec:
             port: 8000
             targetPort: 8000
             protocol: TCP
+      vp:
+        controller: bambu-buddy
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: "192.168.42.16"
+        ports:
+          bind:
+            port: 3000
+            targetPort: 3000
+            protocol: TCP
+          detect:
+            port: 3002
+            targetPort: 3002
+            protocol: TCP
+          ssdp:
+            port: 2021
+            targetPort: 2021
+            protocol: UDP
+          mqtt:
+            port: 8883
+            targetPort: 8883
+            protocol: TCP
+          ftps:
+            port: 990
+            targetPort: 990
+            protocol: TCP
+          tunnel:
+            port: 6000
+            targetPort: 6000
+            protocol: TCP
+          rtsp:
+            port: 322
+            targetPort: 322
+            protocol: TCP
+          a1p1s-1:
+            port: 2024
+            targetPort: 2024
+            protocol: TCP
+          a1p1s-2:
+            port: 2025
+            targetPort: 2025
+            protocol: TCP
+          a1p1s-3:
+            port: 2026
+            targetPort: 2026
+            protocol: TCP
+          ftp-passive-0:
+            port: 50000
+            targetPort: 50000
+            protocol: TCP
+          ftp-passive-1:
+            port: 50001
+            targetPort: 50001
+            protocol: TCP
+          ftp-passive-2:
+            port: 50002
+            targetPort: 50002
+            protocol: TCP
+          ftp-passive-3:
+            port: 50003
+            targetPort: 50003
+            protocol: TCP
+          ftp-passive-4:
+            port: 50004
+            targetPort: 50004
+            protocol: TCP
+          ftp-passive-5:
+            port: 50005
+            targetPort: 50005
+            protocol: TCP
+          ftp-passive-6:
+            port: 50006
+            targetPort: 50006
+            protocol: TCP
+          ftp-passive-7:
+            port: 50007
+            targetPort: 50007
+            protocol: TCP
+          ftp-passive-8:
+            port: 50008
+            targetPort: 50008
+            protocol: TCP
+          ftp-passive-9:
+            port: 50009
+            targetPort: 50009
+            protocol: TCP
     persistence:
       data:
         enabled: true
