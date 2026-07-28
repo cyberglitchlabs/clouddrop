@@ -429,7 +429,9 @@ No commit for this task — it's pure verification of what's already committed.
 
 - [ ] **Step 1: Open the UI**
 
-Browse to `https://posterpilot.${SECRET_DOMAIN}` (substitute your real domain). Expected: PosterPilot's first-run wizard appears (language → server → TMDB → providers → libraries → first sync), or a login prompt first if `AUTH_MODE=enabled` already locked it — set up an admin login here.
+Browse to `https://posterpilot.${SECRET_DOMAIN}` (substitute your real domain). Expected: PosterPilot's first-run wizard appears (language → server → TMDB → providers → libraries → first sync) with **no login prompt**, even though `AUTH_MODE=enabled` is set — PosterPilot fails open when `AUTH_MODE=enabled` but no username/hash has been stored yet (`src/lib/server/config/index.ts:612` upstream), so on a fresh install the app is reachable without authentication until credentials are set.
+
+**Before doing anything else in the UI** (including the wizard itself), go to Settings → Security and set an admin username and password. This is the very first action to take on first boot, not an incidental step of the wizard — until it's done, the app (including Settings, holding the Jellyfin API key, TMDB token, and Fanart key) is unauthenticated.
 
 - [ ] **Step 2: Confirm Jellyfin connection in the wizard**
 
