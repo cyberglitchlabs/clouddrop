@@ -12,7 +12,7 @@ spec:
   # nodeMaintenanceWindow: https://cloudnative-pg.io/documentation/current/kubernetes_upgrade/
   enablePDB: false
 
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.2
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.10
 
   postgresql:
     parameters:
