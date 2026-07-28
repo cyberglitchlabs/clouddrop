@@ -5,7 +5,7 @@ kind: Kustomization
 metadata:
   name: &app posterpilot
   namespace: media
-spec:  # yayamlls-disable-line
+spec:
   targetNamespace: media
   commonMetadata:
     labels:
