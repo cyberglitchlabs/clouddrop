@@ -12,8 +12,8 @@ spec:
   # nodeMaintenanceWindow: https://cloudnative-pg.io/documentation/current/kubernetes_upgrade/
   enablePDB: false
 
-  # Use PostgreSQL 17 (18 not yet available in CloudNativePG images)
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.10
+  # Use PostgreSQL 18
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4
 
   postgresql:
     parameters:
