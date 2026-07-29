@@ -131,6 +131,7 @@ data:
           name: Provider for Immich
         attrs:
           authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-implicit-consent]]
+          invalidation_flow: !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
           client_id: !Env IMMICH_CLIENT_ID
           client_secret: !Env IMMICH_CLIENT_SECRET
           redirect_uris:
@@ -159,6 +160,7 @@ data:
           name: Provider for Open-WebUI
         attrs:
           authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-implicit-consent]]
+          invalidation_flow: !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
           client_id: !Env OPEN_WEBUI_CLIENT_ID
           client_secret: !Env OPEN_WEBUI_CLIENT_SECRET
           redirect_uris:
@@ -183,6 +185,7 @@ data:
           name: Provider for Actual Budget
         attrs:
           authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-implicit-consent]]
+          invalidation_flow: !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
           client_id: !Env ACTUAL_BUDGET_CLIENT_ID
           client_secret: !Env ACTUAL_BUDGET_CLIENT_SECRET
           redirect_uris:
