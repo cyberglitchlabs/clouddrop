@@ -35,8 +35,8 @@ data:
           name: Romm OIDC Provider
         attrs:
           authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-implicit-consent]]
-          client_id: !Env [ROMM_CLIENT_ID]
-          client_secret: !Env [ROMM_CLIENT_SECRET]
+          client_id: !Env ROMM_CLIENT_ID
+          client_secret: !Env ROMM_CLIENT_SECRET
           redirect_uris:
             - matching_mode: strict
               url: "https://romm.cyberglitch.systems/api/oauth/openid"
@@ -59,8 +59,8 @@ data:
           name: Provider for audiobookshelf
         attrs:
           authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-implicit-consent]]
-          client_id: !Env [AUDIOBOOKSHELF_CLIENT_ID]
-          client_secret: !Env [AUDIOBOOKSHELF_CLIENT_SECRET]
+          client_id: !Env AUDIOBOOKSHELF_CLIENT_ID
+          client_secret: !Env AUDIOBOOKSHELF_CLIENT_SECRET
           redirect_uris:
             - matching_mode: strict
               url: "https://audiobooks.cyberglitch.systems/audiobookshelf/auth/openid/callback"
@@ -83,8 +83,8 @@ data:
           name: Provider for Grafana
         attrs:
           authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-implicit-consent]]
-          client_id: !Env [GRAFANA_CLIENT_ID]
-          client_secret: !Env [GRAFANA_CLIENT_SECRET]
+          client_id: !Env GRAFANA_CLIENT_ID
+          client_secret: !Env GRAFANA_CLIENT_SECRET
           redirect_uris:
             - matching_mode: strict
               url: "https://grafana.cyberglitch.systems/login/generic_oauth"
@@ -107,8 +107,8 @@ data:
           name: Provider for Mealie
         attrs:
           authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-implicit-consent]]
-          client_id: !Env [MEALIE_CLIENT_ID]
-          client_secret: !Env [MEALIE_CLIENT_SECRET]
+          client_id: !Env MEALIE_CLIENT_ID
+          client_secret: !Env MEALIE_CLIENT_SECRET
           redirect_uris:
             - matching_mode: strict
               url: "https://mealie.cyberglitch.systems/login"
@@ -131,8 +131,8 @@ data:
           name: Provider for Immich
         attrs:
           authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-implicit-consent]]
-          client_id: !Env [IMMICH_CLIENT_ID]
-          client_secret: !Env [IMMICH_CLIENT_SECRET]
+          client_id: !Env IMMICH_CLIENT_ID
+          client_secret: !Env IMMICH_CLIENT_SECRET
           redirect_uris:
             - matching_mode: strict
               url: "https://immich.cyberglitch.systems/auth/login"
@@ -159,8 +159,8 @@ data:
           name: Provider for Open-WebUI
         attrs:
           authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-implicit-consent]]
-          client_id: !Env [OPEN_WEBUI_CLIENT_ID]
-          client_secret: !Env [OPEN_WEBUI_CLIENT_SECRET]
+          client_id: !Env OPEN_WEBUI_CLIENT_ID
+          client_secret: !Env OPEN_WEBUI_CLIENT_SECRET
           redirect_uris:
             - matching_mode: strict
               url: "https://openwebui.cyberglitch.systems/oauth/oidc/callback"
@@ -183,8 +183,8 @@ data:
           name: Provider for Actual Budget
         attrs:
           authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-implicit-consent]]
-          client_id: !Env [ACTUAL_BUDGET_CLIENT_ID]
-          client_secret: !Env [ACTUAL_BUDGET_CLIENT_SECRET]
+          client_id: !Env ACTUAL_BUDGET_CLIENT_ID
+          client_secret: !Env ACTUAL_BUDGET_CLIENT_SECRET
           redirect_uris:
             - matching_mode: strict
               url: "https://budget.cyberglitch.systems/openid/callback"
