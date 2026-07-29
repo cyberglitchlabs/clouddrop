@@ -91,7 +91,7 @@
           version: 2
     - Audiobookshelf:
         icon: audiobookshelf.png
-        href: https://audiobookshelf.${SECRET_DOMAIN}
+        href: https://audiobooks.${SECRET_DOMAIN}
         description: Audiobooks & podcasts
         widget:
           type: audiobookshelf
@@ -99,9 +99,9 @@
           key: "{{HOMEPAGE_VAR_AUDIOBOOKSHELF_API_KEY}}"
     - BookLore:
         icon: booklore.png
-        href: https://booklore.${SECRET_DOMAIN}
+        href: https://ebooks.${SECRET_DOMAIN}
         description: Ebook library
-        siteMonitor: https://booklore.${SECRET_DOMAIN}
+        siteMonitor: https://ebooks.${SECRET_DOMAIN}
     - Bindery:
         icon: mdi-bookshelf-#FFFFFF
         href: https://bindery.${SECRET_DOMAIN}
