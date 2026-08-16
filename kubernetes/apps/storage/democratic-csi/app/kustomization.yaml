@@ -2,12 +2,8 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: trident
-
 components:
-  - ../../components/common
+  - ../../../../components/helmrelease-defaults
 resources:
-  - ./csi-driver-nfs/ks.yaml
-  - ./csi-driver-smb/ks.yaml
-  - ./juicefs-csi/ks.yaml
-  - ./democratic-csi/ks.yaml
+  - ./namespace.yaml
+  - ./helmrelease.yaml

@@ -1,0 +1,30 @@
+---
+# Statically provisioned iSCSI LUN on the QNAP (target "khal-drogo", pool 1 —
+# same Qtier-managed pool as everything else, so this gets auto-tiered to
+# SSD like any other hot data). Replaces jellyfin-juicefs: JuiceFS's FUSE
+# layer doesn't support OFD locks and the mount pod is an extra failure
+# point (see jellyfin-juicefs-mount-oom-corruption memory) — this LUN is a
+# real local block device to the node once attached, giving SQLite genuine
+# POSIX filesystem semantics.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-config-data-iscsi
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  csi:
+    driver: org.democratic-csi.node-manual
+    readOnly: false
+    fsType: ext4
+    volumeHandle: jellyfin-config-data-iscsi
+    volumeAttributes:
+      portal: "192.168.100.180:3260"
+      iqn: "iqn.2004-04.com.qnap:ts-873:iscsi.target-0.2d0e53"
+      lun: "0"
+      node_attach_driver: iscsi
+      provisioner_driver: node-manual
