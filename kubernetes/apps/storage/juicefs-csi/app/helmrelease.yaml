@@ -108,3 +108,21 @@ spec:
                     umount -l $${MOUNT_POINT}
                     rmdir $${MOUNT_POINT}
                     exit 0
+
+        # Jellyfin's config-data volume holds its SQLite DB (160MB+, nightly
+        # VACUUM, writeback caching) — heavier than the small arr-app config
+        # volumes the global 1Gi/1 CPU cap above is sized for. Under load the
+        # mount pod was OOMKilled, and the app pod kept a stale FUSE handle
+        # to the dead session (SQLite "disk I/O error" -> DB corruption,
+        # 2026-08-12 and 2026-08-16 incidents). Give it more headroom.
+        # (List order matters: this entry must come after the global one
+        # above so it overwrites resources for just this PVC.)
+        - pvcSelector:
+            matchName: jellyfin-juicefs
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "2"
+              memory: 4Gi
