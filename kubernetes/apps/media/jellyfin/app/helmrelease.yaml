@@ -99,10 +99,9 @@ spec:
       config-data:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: jellyfin-juicefs
+        existingClaim: jellyfin-config-data-iscsi
         globalMounts:
           - path: /config/data
-            mountPropagation: HostToContainer
       media:
         enabled: true
         type: persistentVolumeClaim
