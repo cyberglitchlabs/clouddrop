@@ -24,6 +24,11 @@ spec:
       # dynamic-provisioning driver overloaded this same NAS's API and was
       # removed. node-manual sidesteps that entire failure class by design.)
       name: org.democratic-csi.node-manual
+      # node-manual advertises no controller service at all (confirmed live:
+      # GetPluginCapabilities returns {}) -- there's nothing for a
+      # ControllerPublishVolume call to reach, so don't make Kubernetes wait
+      # on one.
+      attachRequired: false
 
     driver:
       config:
@@ -37,31 +42,12 @@ spec:
         limits:
           memory: 256Mi
 
+    # node-manual has no controller service (verified: external-resizer
+    # crash-looped with "CSI driver does not support controller service").
+    # Nothing for attacher/provisioner/resizer to call -- the whole
+    # controller deployment is dead weight for this driver mode.
     controller:
-      replicaCount: 1
-      externalAttacher:
-        resources:
-          requests:
-            cpu: 10m
-            memory: 32Mi
-          limits:
-            memory: 128Mi
-      externalProvisioner:
-        resources:
-          requests:
-            cpu: 10m
-            memory: 32Mi
-          limits:
-            memory: 128Mi
-      externalResizer:
-        resources:
-          requests:
-            cpu: 10m
-            memory: 32Mi
-          limits:
-            memory: 128Mi
-      externalSnapshotter:
-        enabled: false
+      enabled: false
 
     node:
       # Talos: iscsiadm lives on the host via the iscsi-tools system

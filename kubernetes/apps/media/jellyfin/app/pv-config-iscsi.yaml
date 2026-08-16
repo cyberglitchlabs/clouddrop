@@ -20,7 +20,12 @@ spec:
   csi:
     driver: org.democratic-csi.node-manual
     readOnly: false
-    fsType: ext4
+    # xfs benchmarks faster than ext4 specifically for SQLite writes/random
+    # reads; btrfs's copy-on-write is a known-bad fit (write amplification
+    # on SQLite's small frequently-rewritten pages). Both Talos (kernel
+    # module built in, quota support since 1.5+) and democratic-csi's node
+    # image (bundles xfsprogs) support it natively.
+    fsType: xfs
     volumeHandle: jellyfin-config-data-iscsi
     volumeAttributes:
       portal: "192.168.100.180:3260"
