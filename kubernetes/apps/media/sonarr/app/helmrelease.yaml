@@ -84,10 +84,9 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: sonarr-juicefs
+        existingClaim: sonarr-config-iscsi
         globalMounts:
           - path: /config
-            mountPropagation: HostToContainer
       media:
         enabled: true
         type: persistentVolumeClaim
