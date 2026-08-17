@@ -94,10 +94,9 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: radarr-juicefs
+        existingClaim: radarr-config-iscsi
         globalMounts:
           - path: /config
-            mountPropagation: HostToContainer
       media:
         enabled: true
         type: persistentVolumeClaim
