@@ -94,10 +94,9 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: bazarr-juicefs
+        existingClaim: bazarr-config-iscsi
         globalMounts:
           - path: /config
-            mountPropagation: HostToContainer
       media:
         enabled: true
         type: persistentVolumeClaim
