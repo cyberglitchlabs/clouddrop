@@ -17,6 +17,24 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
+  # node-manual has no controller service, so attachRequired is false and
+  # Kubernetes does zero cross-node attach/detach coordination for this
+  # volume (no VolumeAttachment safety net -- confirmed via k8s docs: with
+  # attachRequired false "the attach operation will be skipped" entirely).
+  # A single iSCSI session/XFS mount only exists safely on one node at a
+  # time; without this, a pod reschedule to a different node could double-
+  # mount the same LUN with no fencing, which is real corruption risk on
+  # XFS (no cluster awareness). nodeAffinity makes that constraint explicit
+  # and enforced by the scheduler: if this node is down, the pod goes
+  # Pending instead of silently mounting elsewhere.
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - bolty
   csi:
     driver: org.democratic-csi.node-manual
     readOnly: false

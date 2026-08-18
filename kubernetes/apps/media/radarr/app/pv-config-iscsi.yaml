@@ -17,6 +17,18 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
+  # node-manual has no controller service / attach coordination -- pin to
+  # the node the iSCSI session actually lives on (see jellyfin's
+  # pv-config-iscsi.yaml for the full rationale). Without this, a pod
+  # reschedule to a different node risks double-mounting the same LUN.
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - bolty
   csi:
     driver: org.democratic-csi.node-manual
     readOnly: false
