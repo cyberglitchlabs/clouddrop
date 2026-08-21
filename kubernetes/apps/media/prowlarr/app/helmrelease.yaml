@@ -16,7 +16,6 @@ spec:
   values:
     controllers:
       prowlarr:
-        replicas: 0
         strategy: Recreate
         containers:
           prowlarr:
@@ -30,8 +29,8 @@ spec:
               PROWLARR__APP__THEME: dark
               PROWLARR__POSTGRES__HOST: prowlarr-postgres-rw.media.svc.cluster.local
               PROWLARR__POSTGRES__PORT: "5432"
-              PROWLARR__POSTGRES__MAINDB: prowlarr_new
-              PROWLARR__POSTGRES__LOGDB: prowlarr_logs_new
+              PROWLARR__POSTGRES__MAINDB: prowlarr
+              PROWLARR__POSTGRES__LOGDB: prowlarr_logs
               PROWLARR__POSTGRES__USER:
                 valueFrom:
                   secretKeyRef:
