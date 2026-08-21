@@ -99,7 +99,7 @@ spec:
       config-data:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: jellyfin-config-data-iscsi
+        existingClaim: jellyfin-config-data-local
         globalMounts:
           - path: /config/data
       media:

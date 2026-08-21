@@ -11,6 +11,8 @@ resources:
   - ./pvc-config-juicefs.yaml
   - ./pv-config-iscsi.yaml
   - ./pvc-config-iscsi.yaml
+  - ./pv-config-data-local.yaml
+  - ./pvc-config-data-local.yaml
   - ./pvc-media.yaml
   - ./pv-media.yaml
   - ./deployment-xmltv.yaml

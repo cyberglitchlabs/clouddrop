@@ -1,0 +1,38 @@
+---
+# Statically provisioned local hostPath volume on bolty's own disk
+# (/var/mnt is the persistent EPHEMERAL partition -- Talos's documented
+# pattern for local storage, see
+# https://docs.siderolabs.com/talos/v1.13/configure-your-talos-cluster/storage-and-disk-management/disk-management/user).
+# Replaces jellyfin-config-data-iscsi: the QNAP's "General" storage pool is
+# critically low on real free space (~1.8TB free of 23.4TB), which was
+# causing iSCSI writes for this LUN (and several others on the same pool) to
+# fail and the LUN to drop off the host entirely under load. A real local
+# disk sidesteps that pool entirely and gives SQLite genuine POSIX
+# filesystem semantics with no network/CSI layer in between.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-config-data-local
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  # hostPath ties this volume to whatever node it happens to be mounted on;
+  # nodeAffinity makes the tie to bolty explicit and scheduler-enforced (see
+  # jellyfin's old pv-config-iscsi.yaml for the fuller rationale on why an
+  # unpinned node-local volume is dangerous). If bolty is down, the pod goes
+  # Pending instead of silently creating an empty directory elsewhere.
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - bolty
+  hostPath:
+    path: /var/mnt/jellyfin-config-data
+    type: DirectoryOrCreate
