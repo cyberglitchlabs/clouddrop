@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/config/crd/bases/postgresql.cnpg.io_clusters.yaml
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: prowlarr-postgres
+  namespace: media
+spec:
+  instances: 1
+  # Single-instance: no replica to fail over to, so the default PDB would
+  # permanently block draining this node. CNPG's official replacement for
+  # nodeMaintenanceWindow: https://cloudnative-pg.io/documentation/current/kubernetes_upgrade/
+  enablePDB: false
+
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4
+
+  enableSuperuserAccess: true
+
+  bootstrap:
+    initdb:
+      database: prowlarr
+      owner: prowlarr
+      postInitSQL:
+        - CREATE DATABASE prowlarr_logs;
+        - ALTER DATABASE prowlarr_logs OWNER TO prowlarr;
+
+  postgresql:
+    parameters:
+      max_connections: "50"
+      shared_buffers: 128MB
+
+  storage:
+    size: 5Gi
+    storageClass: qnap-nfs
+
+  monitoring:
+    enablePodMonitor: true
