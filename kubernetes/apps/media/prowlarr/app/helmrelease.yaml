@@ -27,6 +27,20 @@ spec:
               PROWLARR__AUTH__METHOD: Forms
               PROWLARR__LOG__LEVEL: info
               PROWLARR__APP__THEME: dark
+              PROWLARR__POSTGRES__HOST: prowlarr-postgres-rw.media.svc.cluster.local
+              PROWLARR__POSTGRES__PORT: "5432"
+              PROWLARR__POSTGRES__MAINDB: prowlarr_new
+              PROWLARR__POSTGRES__LOGDB: prowlarr_logs_new
+              PROWLARR__POSTGRES__USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: prowlarr-postgres-app
+                    key: username
+              PROWLARR__POSTGRES__PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: prowlarr-postgres-app
+                    key: password
             probes:
               liveness:
                 enabled: true
