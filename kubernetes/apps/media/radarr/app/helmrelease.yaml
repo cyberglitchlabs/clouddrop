@@ -17,7 +17,6 @@ spec:
     controllers:
       radarr:
         strategy: Recreate
-        replicas: 0
         containers:
           radarr:
             image:
@@ -109,7 +108,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: radarr-config-iscsi
+        existingClaim: radarr-config-nfs
         globalMounts:
           - path: /config
       media:
