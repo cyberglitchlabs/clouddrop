@@ -16,6 +16,7 @@ spec:
   values:
     controllers:
       bazarr:
+        replicas: 0
         strategy: Recreate
         containers:
           bazarr:
