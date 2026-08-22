@@ -27,6 +27,20 @@ spec:
               SONARR__AUTH__METHOD: Forms
               SONARR__LOG__LEVEL: info
               SONARR__APP__THEME: dark
+              SONARR__POSTGRES__HOST: sonarr-postgres-rw.media.svc.cluster.local
+              SONARR__POSTGRES__PORT: "5432"
+              SONARR__POSTGRES__MAINDB: sonarr_new
+              SONARR__POSTGRES__LOGDB: sonarr_logs_new
+              SONARR__POSTGRES__USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: sonarr-postgres-app
+                    key: username
+              SONARR__POSTGRES__PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: sonarr-postgres-app
+                    key: password
             probes:
               liveness:
                 enabled: true
