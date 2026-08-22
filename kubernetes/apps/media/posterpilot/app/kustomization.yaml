@@ -6,8 +6,6 @@ components:
   - ../../../../components/helmrelease-defaults
 resources:
   - ./pvc-config-juicefs.yaml
-  - ./pv-config-iscsi.yaml
-  - ./pvc-config-iscsi.yaml
   - ./pv-data-local.yaml
   - ./pvc-data-local.yaml
   - ./secret.sops.yaml
