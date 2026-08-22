@@ -17,6 +17,7 @@ spec:
     controllers:
       prowlarr:
         strategy: Recreate
+        replicas: 0
         containers:
           prowlarr:
             image:
