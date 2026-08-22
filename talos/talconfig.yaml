@@ -90,6 +90,11 @@ nodes:
             - name: nvidia_uvm
             - name: nvidia_drm
             - name: nvidia_modeset
+    - |-
+      apiVersion: v1alpha1
+      kind: UserVolumeConfig
+      name: posterpilot-data
+      volumeType: directory
 
 # Global patches
 patches:
