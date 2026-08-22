@@ -27,6 +27,20 @@ spec:
               RADARR__AUTH__METHOD: Forms
               RADARR__LOG__LEVEL: info
               RADARR__APP__THEME: dark
+              RADARR__POSTGRES__HOST: radarr-postgres-rw.media.svc.cluster.local
+              RADARR__POSTGRES__PORT: "5432"
+              RADARR__POSTGRES__MAINDB: radarr_new
+              RADARR__POSTGRES__LOGDB: radarr_logs_new
+              RADARR__POSTGRES__USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: radarr-postgres-app
+                    key: username
+              RADARR__POSTGRES__PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: radarr-postgres-app
+                    key: password
             probes:
               liveness:
                 enabled: true
