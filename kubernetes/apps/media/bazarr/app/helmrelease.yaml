@@ -16,7 +16,6 @@ spec:
   values:
     controllers:
       bazarr:
-        replicas: 0
         strategy: Recreate
         containers:
           bazarr:
@@ -109,7 +108,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: bazarr-config-iscsi
+        existingClaim: bazarr-config-nfs
         globalMounts:
           - path: /config
       media:
