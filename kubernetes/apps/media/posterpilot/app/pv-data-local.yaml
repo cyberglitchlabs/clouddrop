@@ -1,0 +1,39 @@
+---
+# Statically provisioned local hostPath volume on bolty's own disk
+# (/var/mnt is the persistent EPHEMERAL partition -- Talos's documented
+# pattern for local storage, see
+# https://docs.siderolabs.com/talos/v1.13/configure-your-talos-cluster/storage-and-disk-management/disk-management/user).
+# Replaces posterpilot-config-iscsi: the QNAP's "General" storage pool is
+# critically low on real free space, which was causing iSCSI writes for
+# LUNs on that pool (including this one) to fail and drop off the host
+# under load. A real local disk sidesteps that pool entirely and gives
+# SQLite genuine POSIX filesystem semantics with no network/CSI layer in
+# between. See jellyfin's pv-config-data-local.yaml, which hit the exact
+# same problem earlier tonight.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: posterpilot-data-local
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  # hostPath ties this volume to whatever node it happens to be mounted on;
+  # nodeAffinity makes the tie to bolty explicit and scheduler-enforced (see
+  # posterpilot's old pv-config-iscsi.yaml for the fuller rationale on why
+  # an unpinned node-local volume is dangerous). If bolty is down, the pod
+  # goes Pending instead of silently creating an empty directory elsewhere.
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - bolty
+  hostPath:
+    path: /var/mnt/posterpilot-data
+    type: DirectoryOrCreate
