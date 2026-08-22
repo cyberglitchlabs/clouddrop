@@ -6,6 +6,11 @@
 # corrupted jellyfin's DB (see jellyfin-juicefs-mount-oom-corruption
 # memory). Real local block device once attached, giving SQLite genuine
 # POSIX filesystem semantics.
+#
+# UPDATE (2026-08-22): as of the CNPG migration, sonarr's database lives
+# in Postgres, not here. This volume no longer holds the app's database --
+# it's kept temporarily only as a rollback path and for config.xml,
+# backups, and cache, pending decommission.
 apiVersion: v1
 kind: PersistentVolume
 metadata:

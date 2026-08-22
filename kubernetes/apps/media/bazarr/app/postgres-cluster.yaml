@@ -5,6 +5,14 @@ kind: Cluster
 metadata:
   name: bazarr-postgres
   namespace: media
+# KNOWN BUG (tested and reproduced on this cluster 2026-08-22): Bazarr does
+# not reconnect to Postgres after the Postgres server restarts --
+# morpheus65535/bazarr#2161. Verified during the CNPG migration by deleting
+# bazarr-postgres-1: Bazarr's connections dropped and stayed dropped, and
+# only came back after a manual `kubectl rollout restart deployment/bazarr
+# -n media`. Any future restart/maintenance of this cluster (failover,
+# image bump, node drain, etc.) requires that same manual rollout restart
+# afterward -- Bazarr will not recover on its own.
 spec:
   instances: 1
   enablePDB: false
