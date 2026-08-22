@@ -17,6 +17,7 @@ spec:
     controllers:
       radarr:
         strategy: Recreate
+        replicas: 0
         containers:
           radarr:
             image:
