@@ -27,6 +27,20 @@ spec:
               bazarr__AUTH__METHOD: Forms
               bazarr__LOG__LEVEL: info
               bazarr__APP__THEME: dark
+              POSTGRES_ENABLED: "True"
+              POSTGRES_HOST: bazarr-postgres-rw.media.svc.cluster.local
+              POSTGRES_PORT: "5432"
+              POSTGRES_DATABASE: bazarr_new
+              POSTGRES_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: bazarr-postgres-app
+                    key: username
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: bazarr-postgres-app
+                    key: password
             probes:
               liveness:
                 enabled: true
