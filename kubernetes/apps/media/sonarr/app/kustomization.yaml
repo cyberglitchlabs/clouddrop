@@ -10,4 +10,5 @@ resources:
   - ./pvc-config-juicefs.yaml
   - ./pv-config-iscsi.yaml
   - ./pvc-config-iscsi.yaml
+  - ./postgres-cluster.yaml
   - ./helmrelease.yaml
