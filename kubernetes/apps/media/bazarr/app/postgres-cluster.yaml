@@ -17,7 +17,7 @@ spec:
   instances: 1
   enablePDB: false
   imageName: ghcr.io/cloudnative-pg/postgresql:18.4
-  enableSuperuserAccess: true
+  enableSuperuserAccess: false
   bootstrap:
     initdb:
       database: bazarr
