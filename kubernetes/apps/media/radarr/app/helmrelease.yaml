@@ -16,7 +16,6 @@ spec:
   values:
     controllers:
       radarr:
-        replicas: 0
         strategy: Recreate
         containers:
           radarr:
@@ -30,8 +29,8 @@ spec:
               RADARR__APP__THEME: dark
               RADARR__POSTGRES__HOST: radarr-postgres-rw.media.svc.cluster.local
               RADARR__POSTGRES__PORT: "5432"
-              RADARR__POSTGRES__MAINDB: radarr_new
-              RADARR__POSTGRES__LOGDB: radarr_logs_new
+              RADARR__POSTGRES__MAINDB: radarr
+              RADARR__POSTGRES__LOGDB: radarr_logs
               RADARR__POSTGRES__USER:
                 valueFrom:
                   secretKeyRef:
