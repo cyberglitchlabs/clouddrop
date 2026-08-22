@@ -97,7 +97,7 @@ spec:
     persistence:
       data:
         type: persistentVolumeClaim
-        existingClaim: posterpilot-config-iscsi
+        existingClaim: posterpilot-data-local
         globalMounts:
           - path: /data
       kometa:
