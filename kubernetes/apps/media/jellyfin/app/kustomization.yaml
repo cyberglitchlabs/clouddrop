@@ -9,8 +9,6 @@ resources:
   - ./pvc-xmltv.yaml
   - ./pvc-config-nfs.yaml
   - ./pvc-config-juicefs.yaml
-  - ./pv-config-iscsi.yaml
-  - ./pvc-config-iscsi.yaml
   - ./pv-config-data-local.yaml
   - ./pvc-config-data-local.yaml
   - ./pvc-media.yaml
