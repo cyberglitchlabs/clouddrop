@@ -98,7 +98,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: sonarr-config-iscsi
+        existingClaim: sonarr-config-nfs
         globalMounts:
           - path: /config
       media:
