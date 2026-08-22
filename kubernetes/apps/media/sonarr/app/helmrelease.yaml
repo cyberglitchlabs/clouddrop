@@ -16,7 +16,6 @@ spec:
   values:
     controllers:
       sonarr:
-        replicas: 0
         strategy: Recreate
         containers:
           sonarr:
@@ -30,8 +29,8 @@ spec:
               SONARR__APP__THEME: dark
               SONARR__POSTGRES__HOST: sonarr-postgres-rw.media.svc.cluster.local
               SONARR__POSTGRES__PORT: "5432"
-              SONARR__POSTGRES__MAINDB: sonarr_new
-              SONARR__POSTGRES__LOGDB: sonarr_logs_new
+              SONARR__POSTGRES__MAINDB: sonarr
+              SONARR__POSTGRES__LOGDB: sonarr_logs
               SONARR__POSTGRES__USER:
                 valueFrom:
                   secretKeyRef:
