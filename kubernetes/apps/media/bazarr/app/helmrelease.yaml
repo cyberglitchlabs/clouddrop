@@ -16,7 +16,6 @@ spec:
   values:
     controllers:
       bazarr:
-        replicas: 0
         strategy: Recreate
         containers:
           bazarr:
@@ -31,7 +30,7 @@ spec:
               POSTGRES_ENABLED: "True"
               POSTGRES_HOST: bazarr-postgres-rw.media.svc.cluster.local
               POSTGRES_PORT: "5432"
-              POSTGRES_DATABASE: bazarr_new
+              POSTGRES_DATABASE: bazarr
               POSTGRES_USERNAME:
                 valueFrom:
                   secretKeyRef:
