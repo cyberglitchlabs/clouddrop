@@ -17,7 +17,6 @@ spec:
     controllers:
       prowlarr:
         strategy: Recreate
-        replicas: 0
         containers:
           prowlarr:
             image:
@@ -109,7 +108,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: prowlarr-config-iscsi
+        existingClaim: prowlarr-config-nfs
         globalMounts:
           - path: /config
       media:
