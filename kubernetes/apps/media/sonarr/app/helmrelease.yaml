@@ -17,7 +17,6 @@ spec:
     controllers:
       sonarr:
         strategy: Recreate
-        replicas: 0
         containers:
           sonarr:
             image:
