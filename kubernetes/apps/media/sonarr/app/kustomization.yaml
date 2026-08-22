@@ -8,8 +8,6 @@ resources:
   - ./pv-media.yaml
   - ./pvc-media.yaml
   - ./pvc-config-juicefs.yaml
-  - ./pv-config-iscsi.yaml
-  - ./pvc-config-iscsi.yaml
   - ./pvc-config-nfs.yaml
   - ./postgres-cluster.yaml
   - ./helmrelease.yaml
