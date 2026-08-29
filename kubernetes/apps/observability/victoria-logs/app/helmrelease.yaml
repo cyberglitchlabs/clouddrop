@@ -8,8 +8,16 @@ spec:
   interval: 1h
   chart:
     spec:
+      # Pinned below latest (0.13.9 / v1.52.0) - that app version fatally
+      # panics on startup on duplicate stream tag keys (e.g. two "namespace"
+      # entries from a single Loki push), which VictoriaLogs itself writes
+      # without deduplicating on ingest. Fixed by PR #1606, merged
+      # 2026-07-20 - 4 days after v1.52.0 was built, so no released chart
+      # has the fix yet. Bump back to latest once one does.
+      # https://github.com/VictoriaMetrics/VictoriaLogs/issues/1628
+      # https://github.com/VictoriaMetrics/VictoriaLogs/pull/1606
       chart: victoria-logs-single
-      version: "0.13.9"
+      version: "0.13.8"
       sourceRef:
         kind: HelmRepository
         name: victoria-metrics
