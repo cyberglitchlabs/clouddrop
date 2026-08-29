@@ -27,6 +27,7 @@ spec:
               PUID: "568"
               PGID: "568"
               UMASK: "022"
+              ORIGIN: "https://profilarr.${SECRET_DOMAIN}"
               PARSER_HOST: localhost
               PARSER_PORT: "5000"
             probes:
