@@ -17,7 +17,7 @@ spec:
       # https://github.com/VictoriaMetrics/VictoriaLogs/issues/1628
       # https://github.com/VictoriaMetrics/VictoriaLogs/pull/1606
       chart: victoria-logs-single
-      version: "0.13.8"
+      version: "0.13.9"
       sourceRef:
         kind: HelmRepository
         name: victoria-metrics
