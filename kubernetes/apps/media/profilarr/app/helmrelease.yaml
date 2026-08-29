@@ -20,19 +20,22 @@ spec:
         containers:
           profilarr:
             image:
-              repository: santiagosayshey/profilarr
-              tag: v1.1.5
+              repository: ghcr.io/dictionarry-hub/profilarr
+              tag: "2.2.0"
             env:
               TZ: America/Chicago
               PUID: "568"
               PGID: "568"
+              UMASK: "022"
+              PARSER_HOST: localhost
+              PARSER_PORT: "5000"
             probes:
               liveness:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /ping
+                    path: /api/v1/health
                     port: 6868
                   initialDelaySeconds: 10
                   periodSeconds: 10
@@ -43,7 +46,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /ping
+                    path: /api/v1/health
                     port: 6868
                   initialDelaySeconds: 5
                   periodSeconds: 10
@@ -61,6 +64,49 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1024Mi
+          parser:
+            image:
+              repository: ghcr.io/dictionarry-hub/profilarr-parser
+              tag: "2.2.0"
+            env:
+              ASPNETCORE_URLS: http://+:5000
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 5000
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  timeoutSeconds: 2
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 5000
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  timeoutSeconds: 2
+                  failureThreshold: 3
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              runAsGroup: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop: ["ALL"]
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: false
@@ -86,7 +132,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: profilarr-nfs
+        existingClaim: profilarr-juicefs
         globalMounts:
           - path: /config
       media:
