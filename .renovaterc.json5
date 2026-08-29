@@ -18,6 +18,12 @@
       },
     },
     {
+      description: "Talos Group",
+      groupName: "talos",
+      matchPackageNames: ["ghcr.io/siderolabs/installer", "siderolabs/talos", "talosctl"],
+      minimumGroupSize: 3,
+    },
+    {
       description: "Auto-merge GitHub Actions",
       matchManagers: ["github-actions"],
       automerge: true,
@@ -53,6 +59,10 @@
     {
       matchUpdateTypes: ["patch"],
       addLabels: ["type/patch"],
+    },
+    {
+      matchUpdateTypes: ["digest"],
+      addLabels: ["type/digest"],
     },
     {
       matchDatasources: ["docker"],
