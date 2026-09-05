@@ -33,6 +33,24 @@ spec:
       strategy: rollback
   values:
     server:
+      # Workaround for lib/filestream panicking on any fsync error, including
+      # transient EIO from the juicefs-backed PVC. Upstream tracked this as
+      # a sub-issue of the object storage support epic, but the actual code
+      # (unconditional logger.Panicf on fsync failure) hasn't shipped a fix -
+      # any fsync error still hard-crashes the process, and since VictoriaLogs
+      # retries the same merge on every restart, one transient EIO becomes a
+      # permanent crash loop. DISABLE_FSYNC_FOR_TESTING=true (despite the
+      # name, it's a real runtime env var, not test-only) skips all fsync
+      # calls in lib/fs and lib/filestream. Trade-off: recent writes are no
+      # longer fsync'd to the backing store, so a hard pod kill / node crash
+      # could lose the last few seconds of buffered log data - acceptable
+      # here since this is a log store, not a source of truth. Revert once
+      # fsync errors are handled gracefully instead of panicking.
+      # https://github.com/VictoriaMetrics/VictoriaLogs/issues/747
+      # https://github.com/VictoriaMetrics/VictoriaLogs/issues/48
+      env:
+        - name: DISABLE_FSYNC_FOR_TESTING
+          value: "true"
       persistentVolume:
         enabled: true
         storageClassName: juicefs
