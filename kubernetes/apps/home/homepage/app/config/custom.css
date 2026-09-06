@@ -1,4 +1,32 @@
 /* Night-console theme. Requires 'color: gray' in settings.yaml to activate (.theme-gray). */
+
+/* One deliberate typeface for the whole console, not the default system-ui stack. */
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+html, body {
+  font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+
+.service-group-name, .bookmark-group-name {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* One orchestrated load-in, not scattered per-card motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .services-group {
+    animation: nc-rise 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .services-group:nth-of-type(2) { animation-delay: 40ms; }
+  .services-group:nth-of-type(3) { animation-delay: 80ms; }
+  .services-group:nth-of-type(4) { animation-delay: 120ms; }
+  .services-group:nth-of-type(n+5) { animation-delay: 160ms; }
+  @keyframes nc-rise {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
 .theme-gray {
   /* Base palette */
   --nc-ink: #12151c;
@@ -89,9 +117,17 @@
   .service-card {
     background-color: var(--card-color);
     border-radius: 8px;
+    border-top: 1px solid transparent;
+    transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
   }
   .service-card:hover {
     background-color: var(--card-color-hover);
+    border-top-color: var(--nc-current);
+    transform: translateY(-1px);
+  }
+  .service-card:has(a:focus-visible) {
+    outline: 1px solid var(--nc-current);
+    outline-offset: 2px;
   }
   .service-name.text-sm {
     color: var(--service-name);
