@@ -131,18 +131,16 @@
         icon: actual-budget.png
         href: https://budget.${SECRET_DOMAIN}
         description: Budget tracking
-        widget:
-          type: actualbudget
-          url: http://actual-budget.home.svc.cluster.local:5006
+        # TODO: no official "actualbudget" widget exists in gethomepage — rebuild as
+        # a customapi widget once an Actual Budget API token is available.
+        siteMonitor: https://budget.${SECRET_DOMAIN}
     - EMQX:
         icon: emqx.png
         href: https://emqx.${SECRET_DOMAIN}
         description: MQTT broker
-        widget:
-          type: emqx
-          url: http://emqx.home.svc.cluster.local:18083
-          username: "{{HOMEPAGE_VAR_EMQX_USERNAME}}"
-          password: "{{HOMEPAGE_VAR_EMQX_PASSWORD}}"
+        # TODO: no official "emqx" widget exists in gethomepage — rebuild as a
+        # customapi widget once an EMQX API key/secret (not the dashboard login) exists.
+        siteMonitor: https://emqx.${SECRET_DOMAIN}
 
 - AI:
     - Open WebUI:
