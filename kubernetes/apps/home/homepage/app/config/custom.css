@@ -101,12 +101,13 @@ html, body {
    *       SERVICES STYLES        *
    *******************************/
   /* group header reads as a manifest divider, not a colored label */
-  .services-group {
+  .services-group, .bookmark-group {
     border-left: 2px solid var(--nc-current);
     padding-left: 0.6rem;
   }
   .service-group-icon > div {
     background: var(--service-group) !important;
+    box-shadow: 0 0 6px 1px color-mix(in srgb, var(--nc-current) 55%, transparent);
   }
   .service-group-name {
     color: var(--service-group);
@@ -218,7 +219,20 @@ html, body {
    *******************************/
   .bg-emerald-500, .bg-green-500, .bg-lime-500 { background-color: var(--nc-ok); }
   .bg-amber-500, .bg-orange-400, .bg-orange-500 { background-color: var(--nc-warn); }
-  .bg-red-500, .bg-rose-500, .bg-rose-900\/80 { background-color: var(--nc-danger); }
+  .bg-red-500, .bg-rose-500 { background-color: var(--nc-danger); }
+  /* error banner: slim console alert instead of a solid block */
+  summary.bg-rose-900\/80 {
+    background-color: color-mix(in srgb, var(--nc-danger) 12%, transparent) !important;
+    border-left: 2px solid var(--nc-danger);
+    border-radius: 4px;
+    color: var(--nc-danger) !important;
+    text-align: left;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  summary.bg-rose-900\/80:hover {
+    background-color: color-mix(in srgb, var(--nc-danger) 20%, transparent) !important;
+  }
   .text-emerald-300, .text-green-500 { color: var(--nc-ok); }
   .text-amber-800 { color: var(--nc-warn); }
   .text-red-400, .text-red-500, .text-rose-300, .text-rose-500, .text-rose-900 { color: var(--nc-danger); }

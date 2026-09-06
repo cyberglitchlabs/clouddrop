@@ -107,6 +107,16 @@
         href: https://bindery.${SECRET_DOMAIN}
         description: Book tracker
         siteMonitor: https://bindery.${SECRET_DOMAIN}
+    - PosterPilot:
+        icon: mdi-image-frame-#FFFFFF
+        href: https://posterpilot.${SECRET_DOMAIN}
+        description: Poster curation
+        siteMonitor: https://posterpilot.${SECRET_DOMAIN}
+    - Posterizarr:
+        icon: posterizarr.png
+        href: https://posterizarr.${SECRET_DOMAIN}
+        description: Poster generation
+        siteMonitor: https://posterizarr.${SECRET_DOMAIN}
 
 - Home:
     - Mealie:
