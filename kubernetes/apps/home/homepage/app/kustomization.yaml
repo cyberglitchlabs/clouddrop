@@ -14,6 +14,7 @@ configMapGenerator:
       - bookmarks.yaml=./config/bookmarks.yaml
       - kubernetes.yaml=./config/kubernetes.yaml
       - docker.yaml=./config/docker.yaml
+      - custom.css=./config/custom.css
 generatorOptions:
   disableNameSuffixHash: true
 resources:

@@ -1,0 +1,197 @@
+/* Night-console theme. Requires 'color: gray' in settings.yaml to activate (.theme-gray). */
+.theme-gray {
+  /* Base palette */
+  --nc-ink: #12151c;
+  --nc-ink-deep: #0a0c11;
+  --nc-steel: #2b3040;
+  --nc-fog: #c7ccd6;
+  --nc-haze: #8b90a0;
+  --nc-current: #5fb3b3;
+
+  /* Status (real widget states only — never decorative) */
+  --nc-ok: #6bcf8f;
+  --nc-warn: #e3a857;
+  --nc-danger: #e0616b;
+
+  /* Homepage theme preset slots */
+  --color-50: 199 204 214;
+  --color-100: 199 204 214;
+  --color-200: 199 204 214; /* body text */
+  --color-300: 139 144 160;
+  --color-400: 139 144 160;
+  --color-500: 43 48 64;
+  --color-600: 43 48 64;
+  --color-700: 18 21 28;
+  --color-800: 18 21 28; /* card/background base */
+  --color-900: 10 12 17;
+  --color-logo-start: 95 179 179;
+  --color-logo-stop: 43 48 64;
+
+  --nc-glass: #12151c73;
+  --nc-glass-hover: #12151ca8;
+
+  --info-widgets: var(--nc-current);
+  --resource-bar-bg: #2b304066;
+  --resource-bar-fg: var(--nc-current);
+  --widget-border: var(--nc-steel);
+
+  --service-group: var(--nc-current);
+  --service-name: var(--nc-fog);
+  --service-description: var(--nc-haze);
+  --service-block-bg: #171a22;
+  --service-block-text: var(--nc-current);
+
+  --bookmark-group: var(--nc-current);
+  --bookmark-icon-bg: #2b304050;
+  --bookmark-icon: var(--nc-current);
+  --bookmark-name: var(--nc-fog);
+
+  --card-color: var(--nc-glass);
+  --card-color-hover: var(--nc-glass-hover);
+
+  --footer-items: var(--nc-haze);
+  --scrollbar-fg: var(--nc-current);
+  --scrollbar-bg: #2b304066;
+
+  /*******************************
+   *  INFORMATION WIDGETS STYLES  *
+   *******************************/
+  #information-widgets {
+    border-color: var(--widget-border);
+  }
+  #information-widgets * {
+    color: var(--info-widgets);
+  }
+  .resource-usage {
+    background-color: var(--resource-bar-bg);
+  }
+  .resource-usage > div {
+    background-color: var(--resource-bar-fg);
+  }
+
+  /*******************************
+   *       SERVICES STYLES        *
+   *******************************/
+  /* group header reads as a manifest divider, not a colored label */
+  .services-group {
+    border-left: 2px solid var(--nc-current);
+    padding-left: 0.6rem;
+  }
+  .service-group-icon > div {
+    background: var(--service-group) !important;
+  }
+  .service-group-name {
+    color: var(--service-group);
+  }
+  .services-group > button > svg {
+    color: var(--service-group);
+  }
+  .service-card {
+    background-color: var(--card-color);
+    border-radius: 8px;
+  }
+  .service-card:hover {
+    background-color: var(--card-color-hover);
+  }
+  .service-name.text-sm {
+    color: var(--service-name);
+  }
+  .service-description.text-xs {
+    color: var(--service-description);
+  }
+  /* squared instrument-plate icons, not circular badges */
+  .service img {
+    border-radius: 6px;
+  }
+  .service-block {
+    background: var(--service-block-bg);
+  }
+  .service-block .uppercase {
+    color: var(--service-block-text);
+  }
+  .service-block .font-thin {
+    color: var(--nc-fog);
+  }
+
+  /*******************************
+   *       BOOKMARK STYLES        *
+   *******************************/
+  .bookmark-group-name {
+    color: var(--bookmark-group);
+  }
+  .bookmark-icon {
+    background-color: var(--bookmark-icon-bg) !important;
+  }
+  .bookmark-icon > div > div {
+    background: var(--bookmark-icon) !important;
+  }
+  .bookmark-name.text-xs {
+    color: var(--bookmark-name);
+  }
+  li.bookmark > a {
+    background-color: var(--card-color);
+    border-radius: 8px;
+  }
+  li.bookmark > a:hover {
+    background-color: var(--card-color-hover);
+  }
+
+  /*******************************
+   *        FOOTER STYLES         *
+   *******************************/
+  #footer svg {
+    color: var(--footer-items);
+  }
+
+  /*******************************
+   *      SCROLLBAR STYLES        *
+   *******************************/
+  * {
+    --scrollbar-thumb: var(--scrollbar-fg);
+    --scrollbar-track: var(--scrollbar-bg);
+  }
+
+  /*******************************
+   *       GLANCES STYLES         *
+   *******************************/
+  li[id^="glances-"] .recharts-surface > g:nth-of-type(1) path:nth-child(1) {
+    fill: var(--nc-current);
+    fill-opacity: 0.15;
+  }
+  li[id^="glances-"] .recharts-surface g:nth-of-type(1) path:nth-child(2) {
+    stroke: var(--nc-current);
+    stroke-opacity: 0.5;
+  }
+  li[id^="glances-"] .bottom-3.left-3 {
+    color: var(--nc-fog);
+  }
+  li[id^="glances-"] .bottom-3.right-3 .opacity-75 {
+    color: var(--nc-haze);
+    opacity: 1;
+    font-size: 0.8rem;
+  }
+  li[id^="glances-"] .top-3.right-3 .opacity-50 {
+    color: var(--nc-haze);
+    opacity: 1;
+    font-size: 0.8rem;
+  }
+
+  /*******************************
+   *  STATUS COLORS (real states) *
+   *  — only saturated color left on the page —
+   *******************************/
+  .bg-emerald-500, .bg-green-500, .bg-lime-500 { background-color: var(--nc-ok); }
+  .bg-amber-500, .bg-orange-400, .bg-orange-500 { background-color: var(--nc-warn); }
+  .bg-red-500, .bg-rose-500, .bg-rose-900\/80 { background-color: var(--nc-danger); }
+  .text-emerald-300, .text-green-500 { color: var(--nc-ok); }
+  .text-amber-800 { color: var(--nc-warn); }
+  .text-red-400, .text-red-500, .text-rose-300, .text-rose-500, .text-rose-900 { color: var(--nc-danger); }
+
+  /* everything else (blue/cyan/sky/indigo/violet/purple/fuchsia/pink/slate/zinc/stone/neutral)
+     collapses to the single accent or neutral steel — no rainbow of decorative hues */
+  .bg-blue-500, .bg-cyan-500, .bg-sky-500, .bg-indigo-500, .bg-violet-500,
+  .bg-purple-500, .bg-fuchsia-500, .bg-pink-500 { background-color: var(--nc-current); }
+  .bg-slate-500, .bg-zinc-500, .bg-stone-500, .bg-neutral-500, .bg-gray-500 { background-color: var(--nc-steel); }
+  .bg-white { background-color: var(--nc-fog); }
+  .text-white { color: var(--nc-fog); }
+}
