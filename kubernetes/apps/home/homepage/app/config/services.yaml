@@ -125,6 +125,7 @@
         description: Recipe manager
         widget:
           type: mealie
+          version: 2
           url: http://mealie.home.svc.cluster.local:9000
           key: "{{HOMEPAGE_VAR_MEALIE_API_KEY}}"
     - Actual Budget:
@@ -181,8 +182,9 @@
         description: Metrics dashboards
         widget:
           type: grafana
+          version: 2
           url: http://grafana.observability.svc.cluster.local:80
-          username: ""
+          username: api_key
           password: "{{HOMEPAGE_VAR_GRAFANA_TOKEN}}"
     - Gatus:
         icon: gatus.png
@@ -190,7 +192,7 @@
         description: Uptime monitoring
         widget:
           type: gatus
-          url: http://gatus.observability.svc.cluster.local:8080
+          url: http://gatus-gatus-sidecar.observability.svc.cluster.local:8080
     - Prometheus:
         icon: prometheus.png
         href: https://prometheus.${SECRET_DOMAIN}
