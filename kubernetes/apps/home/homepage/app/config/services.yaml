@@ -168,6 +168,11 @@
         icon: authentik.png
         href: https://auth.${SECRET_DOMAIN}
         description: Identity provider
+        widget:
+          type: authentik
+          url: http://authentik-server.security.svc.cluster.local:80
+          key: "{{HOMEPAGE_VAR_AUTHENTIK_API_KEY}}"
+          version: 2
 
 - Monitoring:
     - Grafana:
@@ -200,7 +205,10 @@
         icon: jellystat.png
         href: https://jellystat.${SECRET_DOMAIN}
         description: Jellyfin statistics
-        siteMonitor: https://jellystat.${SECRET_DOMAIN}
+        widget:
+          type: jellystat
+          url: http://jellystat.media.svc.cluster.local:3000
+          key: "{{HOMEPAGE_VAR_JELLYSTAT_API_KEY}}"
 
 - Games:
     - RomM:
@@ -210,8 +218,6 @@
         widget:
           type: romm
           url: http://romm.games.svc.cluster.local:8080
-          username: "{{HOMEPAGE_VAR_ROMM_USERNAME}}"
-          password: "{{HOMEPAGE_VAR_ROMM_PASSWORD}}"
 
 - 3D Printing:
     - Bambu Buddy:
