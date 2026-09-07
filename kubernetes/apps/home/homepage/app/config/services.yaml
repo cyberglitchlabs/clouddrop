@@ -149,7 +149,7 @@
         href: https://openwebui.${SECRET_DOMAIN}
         description: LLM chat interface
     - LiteLLM:
-        icon: litellm.png
+        icon: litlellm.png
         href: https://litellm.${SECRET_DOMAIN}
         description: LLM gateway
         siteMonitor: https://litellm.${SECRET_DOMAIN}
@@ -223,7 +223,7 @@
 
 - 3D Printing:
     - Bambu Buddy:
-        icon: bambulab.png
+        icon: bambu-lab.png
         href: https://bambu.${SECRET_DOMAIN}
         description: 3D printer monitor
         siteMonitor: https://bambu.${SECRET_DOMAIN}
