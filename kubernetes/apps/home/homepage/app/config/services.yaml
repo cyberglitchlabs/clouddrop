@@ -180,12 +180,12 @@
         icon: grafana.png
         href: https://grafana.${SECRET_DOMAIN}
         description: Metrics dashboards
-        widget:
-          type: grafana
-          version: 2
-          url: http://grafana.observability.svc.cluster.local:80
-          username: api_key
-          password: "{{HOMEPAGE_VAR_GRAFANA_TOKEN}}"
+        # TODO: gethomepage's grafana widget unconditionally calls /api/admin/stats,
+        # which requires the isGrafanaAdmin instance flag - unavailable to service
+        # accounts on Grafana OSS (no RBAC API to grant server.stats:read either).
+        # Revisit if that ever changes, or if a real admin user's credentials become
+        # acceptable to store here.
+        siteMonitor: https://grafana.${SECRET_DOMAIN}
     - Gatus:
         icon: gatus.png
         href: https://gatus.${SECRET_DOMAIN}
