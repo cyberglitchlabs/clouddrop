@@ -41,26 +41,36 @@ spec:
 
                   echo "Creating snapshot: /backups/$FILENAME"
 
-                  # Take snapshot mapping to one of the control plane nodes
-                  # We use a loop or just target the VIP/one node if available.
-                  # For now targeting both just in case one is down, or just the first one.
-                  # Better approach: Try one, if fails try other.
-
-                  # Attempt backup on tuf1
-                  if talosctl -n 192.168.42.254 etcd snapshot "/backups/$FILENAME" --talosconfig=/var/secrets/talosconfig; then
-                      echo "Backup successful on tuf1!"
-                  else
-                      echo "Backup failed on tuf1, trying skully..."
-                      if talosctl -n 192.168.42.253 etcd snapshot "/backups/$FILENAME" --talosconfig=/var/secrets/talosconfig; then
-                          echo "Backup successful on skully!"
-                      else
-                          echo "Backup failed on skully too!"
-                          exit 1
+                  # Take the snapshot against each control plane node in turn,
+                  # stopping at the first success. Keep this list in sync with
+                  # the controlPlane nodes declared in talos/talconfig.yaml.
+                  SUCCEEDED=""
+                  for NODE in 192.168.42.253 192.168.42.252 192.168.42.250; do
+                      echo "Attempting backup on $NODE..."
+                      if talosctl -n "$NODE" etcd snapshot "/backups/$FILENAME" --talosconfig=/var/secrets/talosconfig; then
+                          echo "Backup successful on $NODE!"
+                          SUCCEEDED="$NODE"
+                          break
                       fi
+                      echo "Backup failed on $NODE."
+                  done
+
+                  if [ -z "$SUCCEEDED" ]; then
+                      echo "Backup failed on every control plane node!"
+                      exit 1
                   fi
 
-                  # Cleanup old backups (keep last 10)
-                  find /backups -name "etcd-snapshot-*.snapshot" -type f -printf '%T@ %p\n' | sort -n | head -n -10 | cut -d' ' -f2- | xargs -r rm
+                  # Cleanup old backups (keep last 10).
+                  # Snapshot names embed a zero-padded epoch, so a reverse
+                  # lexical sort is newest-first. Avoid GNU-only find -printf
+                  # and xargs -r; this image ships BusyBox.
+                  ls -1 /backups/etcd-snapshot-*.snapshot 2>/dev/null \
+                      | sort -r \
+                      | tail -n +11 \
+                      | while read -r OLD; do
+                          echo "Pruning old snapshot: $OLD"
+                          rm -f "$OLD"
+                      done
               volumeMounts:
                 - name: backup-storage
                   mountPath: /backups
