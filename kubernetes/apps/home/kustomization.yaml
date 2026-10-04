@@ -12,3 +12,4 @@ resources:
   - ./homepage/ks.yaml
   - ./glance/ks.yaml
   - ./esphome-builder/ks.yaml
+  - ./wyoming-piper/ks.yaml

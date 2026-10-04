@@ -1,0 +1,159 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: wyoming-piper
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bjw-s-app-template
+    namespace: flux-system
+  values:
+    controllers:
+      wyoming-piper:
+        strategy: Recreate
+        initContainers:
+          # Fetches the GLaDOS Piper voice into /data under the file name Piper
+          # advertises it by (the file stem), and rewrites the metadata fields
+          # Home Assistant / wyoming-piper read. Reuses the Piper image's own
+          # python so no extra image is needed. Idempotent: skips the download
+          # when the model is already present with the expected sha256.
+          # Source: https://huggingface.co/DavesArmoury/GLaDOS_TTS (CC-BY-4.0),
+          # pinned to a commit; the model is verified against a sha256.
+          fetch-voice:
+            image:
+              repository: docker.io/rhasspy/wyoming-piper
+              tag: 2.5.2
+            command: ["/usr/src/.venv/bin/python3", "-c"]
+            args:
+              - |
+                import hashlib, json, os, urllib.request
+                base = "https://huggingface.co/DavesArmoury/GLaDOS_TTS/resolve/b64622ad52f15804249f7f08a4c268b5e82c6969"
+                name = "en_US-glados-medium"
+                onnx_sha256 = "b35a07fa6fc788ec4ad637ec98b74d66f06e664bbb4366b4035d1deaac3308d3"
+                json_sha256 = "77a103377c971e87bfac6a839beb0de95433f38acf1fb92c201dcdc72862f422"
+                onnx_path = "/data/" + name + ".onnx"
+                json_path = onnx_path + ".json"
+
+                def sha256(path):
+                    h = hashlib.sha256()
+                    with open(path, "rb") as f:
+                        for chunk in iter(lambda: f.read(1 << 20), b""):
+                            h.update(chunk)
+                    return h.hexdigest()
+
+                if not (os.path.exists(onnx_path) and sha256(onnx_path) == onnx_sha256):
+                    urllib.request.urlretrieve(base + "/glados_piper_medium.onnx", onnx_path + ".part")
+                    if sha256(onnx_path + ".part") != onnx_sha256:
+                        raise SystemExit("onnx sha256 mismatch")
+                    os.replace(onnx_path + ".part", onnx_path)
+
+                urllib.request.urlretrieve(base + "/glados_piper_medium.onnx.json", json_path + ".part")
+                if sha256(json_path + ".part") != json_sha256:
+                    raise SystemExit("onnx.json sha256 mismatch")
+                with open(json_path + ".part") as f:
+                    cfg = json.load(f)
+                # Upstream ships dataset "", quality "training_dir", language "en-us".
+                cfg["dataset"] = "glados"
+                cfg["audio"]["quality"] = "medium"
+                cfg["language"]["code"] = "en_US"
+                with open(json_path + ".part", "w") as f:
+                    json.dump(cfg, f)
+                os.replace(json_path + ".part", json_path)
+                print("voice ready:", name)
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
+        containers:
+          app:
+            image:
+              repository: docker.io/rhasspy/wyoming-piper
+              tag: 2.5.2
+            # The image entrypoint already sets --uri tcp://0.0.0.0:10200 and
+            # --data-dir /data; only the default voice and offline mode are added.
+            # --local-files-only stops startup from fetching voices.json.
+            args:
+              - --voice
+              - en_US-glados-medium
+              - --local-files-only
+            env:
+              TZ: America/Chicago
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 10200
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 10200
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            # CPU only. Deliberately no nvidia.com/gpu request: those slots belong to ollama.
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+        fsGroupChangePolicy: "OnRootMismatch"
+        seccompProfile:
+          type: RuntimeDefault
+    service:
+      app:
+        controller: wyoming-piper
+        type: LoadBalancer
+        annotations:
+          # Static LAN IP from the cluster's CiliumLoadBalancerIPPool so Home
+          # Assistant (outside the cluster) can point its Wyoming integration at
+          # a stable address. In use: .11 k8s-gateway, .12/.13 gateways, .14 alloy,
+          # .15 esphome-builder, .16 bambu-buddy. Check router DHCP reservations
+          # for .17 before merging.
+          lbipam.cilium.io/ips: "192.168.42.17"
+        externalTrafficPolicy: Cluster
+        ports:
+          wyoming:
+            port: 10200
+            targetPort: 10200
+            protocol: TCP
+    persistence:
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        storageClass: qnap-nfs
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        globalMounts:
+          - path: /data
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
