@@ -100,6 +100,11 @@ nodes:
       kind: UserVolumeConfig
       name: soulsync-data
       volumeType: directory
+    - |-
+      apiVersion: v1alpha1
+      kind: UserVolumeConfig
+      name: beets-data
+      volumeType: directory
 
 # Global patches
 patches:
