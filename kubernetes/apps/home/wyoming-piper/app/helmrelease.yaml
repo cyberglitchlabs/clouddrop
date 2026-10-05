@@ -86,6 +86,38 @@ spec:
               - --local-files-only
             env:
               TZ: America/Chicago
+            # Piper loads the voice lazily on the first synthesize request (~1.5s
+            # cold vs ~0.1s warm). Warm it at start; the pod is not Ready until
+            # this hook returns, so no client sees the cold request. Always
+            # exits 0 so a failed warm-up never kills the container.
+            lifecycle:
+              postStart:
+                exec:
+                  command:
+                    - /usr/src/.venv/bin/python3
+                    - -c
+                    - |
+                      import json, socket, time
+                      msg = {"type": "synthesize", "data": {"text": "Warming up.", "voice": {"name": "en_US-glados-medium"}}}
+                      for _ in range(60):
+                          try:
+                              s = socket.create_connection(("127.0.0.1", 10200), 5)
+                              s.settimeout(30)
+                              s.sendall((json.dumps(msg) + "\n").encode())
+                              f = s.makefile("rb")
+                              while True:
+                                  h = json.loads(f.readline())
+                                  for k in ("data_length", "payload_length"):
+                                      if h.get(k):
+                                          f.read(h[k])
+                                  if h["type"] == "audio-stop":
+                                      print("model warmed")
+                                      raise SystemExit(0)
+                          except SystemExit:
+                              raise
+                          except Exception:
+                              time.sleep(1)
+                      print("warm-up gave up; continuing")
             probes:
               liveness:
                 enabled: true
