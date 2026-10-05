@@ -23,6 +23,7 @@ import:
   write: yes                       # trial passes -W (import into DB, write nothing); nightly writes
   resume: yes                      # default is 'ask'
   incremental: yes                 # default is no; remember imported dirs
+  incremental_skip_later: yes      # DEFAULT no records skipped dirs as done, so they would never be retried
   quiet: yes                       # never prompt
   quiet_fallback: skip             # not a strong match -> skip, never asis
   timid: no
