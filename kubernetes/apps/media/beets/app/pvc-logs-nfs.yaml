@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim          # logs + DB backups, plain files, fine on NFS
+metadata: { name: beets-logs-nfs, namespace: media }
+spec:
+  accessModes: [ReadWriteMany]
+  storageClassName: qnap-nfs
+  resources: { requests: { storage: 5Gi } }

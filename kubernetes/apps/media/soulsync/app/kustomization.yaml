@@ -11,3 +11,4 @@ resources:
   - ./pv-media-smb.yaml
   - ./helmrelease.yaml
   - ./httproute.yaml
+  - ./cronjob-db-backup.yaml

@@ -1,0 +1,19 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./pv-data-local.yaml
+  - ./pvc-data-local.yaml
+  - ./pv-music-smb.yaml
+  - ./pvc-music-smb.yaml
+  - ./pvc-logs-nfs.yaml
+  - ./cronjob-beets-tag.yaml
+configMapGenerator:
+  - name: beets-config
+    files:
+      - config.yaml
+  - name: beets-scripts
+    files:
+      - run.sh
+generatorOptions:
+  disableNameSuffixHash: true

@@ -1,0 +1,56 @@
+---
+# ConfigMaps beets-config (config.yaml) and beets-scripts (run.sh) via kustomize configMapGenerator from the two files.
+apiVersion: batch/v1
+kind: CronJob
+metadata: { name: beets-tag, namespace: media }
+spec:
+  suspend: true                        # stays suspended until the trial is verified in Music Assistant
+  schedule: "30 4 * * *"
+  timeZone: America/Chicago
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 600
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 14400     # 4h hard stop
+      ttlSecondsAfterFinished: 604800
+      template:
+        spec:
+          restartPolicy: Never
+          securityContext: { runAsNonRoot: true, runAsUser: 568, runAsGroup: 568, fsGroup: 568, seccompProfile: { type: RuntimeDefault } }
+          initContainers:
+            - name: install-beets          # pinned wheel install into an emptyDir; swap for a prebuilt image digest later
+              image: python:3.13.16-slim-trixie
+              command: ["sh","-c","pip install --no-cache-dir --target=/tools 'beets==2.14.1'"]
+              env: [{ name: HOME, value: /tmp }]
+              securityContext: { allowPrivilegeEscalation: false, capabilities: { drop: [ALL] } }
+              resources: { requests: { cpu: 50m }, limits: { memory: 512Mi } }
+              volumeMounts: [{ name: tools, mountPath: /tools }, { name: tmp, mountPath: /tmp }]
+          containers:
+            - name: beets
+              image: python:3.13.16-slim-trixie
+              command: ["sh","/scripts/run.sh"]
+              env:
+                - { name: MODE, value: nightly }
+                - { name: TARGET_PATH, value: /media/Music }
+                - { name: MIN_AGE_MIN, value: "120" }
+              securityContext: { allowPrivilegeEscalation: false, readOnlyRootFilesystem: false, capabilities: { drop: [ALL] } }
+              resources: { requests: { cpu: 100m }, limits: { memory: 1Gi } }
+              volumeMounts:
+                - { name: tools, mountPath: /tools, readOnly: true }
+                - { name: tmp, mountPath: /tmp }
+                - { name: config, mountPath: /etc/beets, readOnly: true }
+                - { name: scripts, mountPath: /scripts, readOnly: true }
+                - { name: state, mountPath: /state }
+                - { name: logs, mountPath: /logs }
+                - { name: music, mountPath: /media/Music }
+          volumes:
+            - { name: tools, emptyDir: {} }
+            - { name: tmp, emptyDir: {} }
+            - { name: config, configMap: { name: beets-config } }
+            - { name: scripts, configMap: { name: beets-scripts } }
+            - { name: state, persistentVolumeClaim: { claimName: beets-data-local } }   # PV affinity => bolty, never skully
+            - { name: logs, persistentVolumeClaim: { claimName: beets-logs-nfs } }
+            - { name: music, persistentVolumeClaim: { claimName: beets-music-smb } }

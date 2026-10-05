@@ -1,0 +1,51 @@
+# beets 2.14.1 - TAGS ONLY, IN PLACE. SoulSync owns the folder layout.
+directory: /media/Music            # required by beets; nothing is ever moved/copied into it
+library: /state/library.db         # SQLite on LOCAL storage (bolty UserVolume), never NFS
+statefile: /state/state.pickle     # resume/incremental state, also local
+plugins: []                        # musicbrainz autotagger is built in; no fetchart/embedart/lyrics/scrub/zero
+threaded: no
+ui:
+  color: no
+
+# --- tag semantics (verified in beets 2.14.1 source: autotag/hooks.py, mediafile 0.17) ---
+artist_credit: no                  # use canonical MB artist names (merge-friendly), not per-release credit spellings
+per_disc_numbering: yes            # matches SoulSync: per-disc TRACKNUMBER + DISCNUMBER/DISCTOTAL
+id3v23: no                         # ID3v2.4 multi-value frames (MA only splits on ';', not '/')
+asciify_paths: no                  # irrelevant (no moves) but explicit
+
+import:
+  copy: no                         # DEFAULT IS YES: must be explicit
+  move: no
+  link: no
+  hardlink: no
+  reflink: no
+  delete: no
+  write: yes                       # trial passes -W (import into DB, write nothing); nightly writes
+  resume: yes                      # default is 'ask'
+  incremental: yes                 # default is no; remember imported dirs
+  quiet: yes                       # never prompt
+  quiet_fallback: skip             # not a strong match -> skip, never asis
+  timid: no
+  autotag: yes
+  from_scratch: no                 # keep SoulSync's other tags (art, ISRC, QUALITY, source IDs)
+  duplicate_action: skip
+  group_albums: no
+  singletons: no
+  languages: ['en']
+  log: /logs/beets-import.log      # NFS, reviewable (skips are logged as 'skip <dir>')
+
+match:
+  strong_rec_thresh: 0.04          # explicit (upstream default); stricter than most community configs (0.10)
+  medium_rec_thresh: 0.25
+  rec_gap_thresh: 0.25
+  max_rec:
+    missing_tracks: medium         # partial albums are never auto-applied (skipped)
+    unmatched_tracks: medium
+
+musicbrainz:
+  https: yes
+  ratelimit: 1                     # be a good MB citizen
+  search_limit: 5
+  extra_tags: [year, catalognum, country, media, label]   # better release matching from existing tags
+  genres: no                       # SoulSync owns genres
+  aliases_as_credits: no

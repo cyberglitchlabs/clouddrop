@@ -1,0 +1,30 @@
+---
+# Music only (not the whole Media share): blast radius of a bug is /Media/Music.
+apiVersion: v1
+kind: PersistentVolume
+metadata: { name: beets-music-smb }
+spec:
+  capacity: { storage: 1Ti }
+  accessModes: [ReadWriteMany]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=568
+    - gid=568
+    - forceuid
+    - forcegid
+    - noperm
+    - nobrl
+    - mfsymlinks
+    - cache=strict        # others use cache=loose; strict keeps mtimes honest for the "recently modified" guard
+    - actimeo=5
+    - noatime
+    - noserverino
+  csi:
+    driver: smb.csi.k8s.io
+    readOnly: false
+    volumeHandle: beets-music-smb
+    volumeAttributes: { source: //192.168.100.180/Media/Music }
+    nodeStageSecretRef: { name: smb-creds, namespace: kube-system }

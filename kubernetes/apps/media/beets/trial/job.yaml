@@ -1,0 +1,6 @@
+# TRIAL JOB TEMPLATE - NOT part of Flux (no kustomization references this directory). Apply by hand:
+#   MODE=import   TARGET_PATH=/media/Music/<Artist>   (match + record in library.db, writes NOTHING)
+#   MODE=preview  (beet write -p, writes nothing)
+#   MODE=apply    (beet write for that path only)
+# Copy the pod spec from ../app/cronjob-beets-tag.yaml (jobTemplate.spec.template) and set kind: Job,
+# name beets-trial-<mode>-<artist>, ttlSecondsAfterFinished: 86400, env MODE/TARGET_PATH.

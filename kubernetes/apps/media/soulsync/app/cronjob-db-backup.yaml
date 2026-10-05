@@ -1,0 +1,47 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata: { name: soulsync-db-backup, namespace: media }
+spec:
+  schedule: "15 2 * * *"
+  timeZone: America/Chicago
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 1800
+      template:
+        spec:
+          restartPolicy: Never
+          securityContext: { runAsNonRoot: true, runAsUser: 568, runAsGroup: 568, fsGroup: 568, seccompProfile: { type: RuntimeDefault } }
+          containers:
+            - name: backup
+              image: python:3.13.16-slim-trixie     # stdlib sqlite3 backup API: consistent online copy, no extra image
+              securityContext: { allowPrivilegeEscalation: false, capabilities: { drop: [ALL] } }
+              resources: { requests: { cpu: 20m }, limits: { memory: 256Mi } }
+              command: ["python3","-c"]
+              args:
+                - |
+                  import sqlite3, os, time, glob
+                  src, dst, keep = "/data", "/backups", 7
+                  os.makedirs(dst, exist_ok=True)
+                  stamp = time.strftime("%Y%m%d")
+                  for name in ("music_library.db", "video_library.db", "audiobooks.db"):
+                      p = os.path.join(src, name)
+                      if not os.path.exists(p): continue
+                      out = os.path.join(dst, f"{name}.{stamp}.tmp")
+                      a = sqlite3.connect(f"file:{p}?mode=ro", uri=True); b = sqlite3.connect(out)
+                      a.backup(b); b.close(); a.close()
+                      c = sqlite3.connect(out); ok = c.execute("PRAGMA integrity_check").fetchone()[0]; c.close()
+                      if ok != "ok": os.remove(out); raise SystemExit(f"{name}: integrity_check {ok}")
+                      os.replace(out, os.path.join(dst, f"{name}.{stamp}.bak"))
+                      for old in sorted(glob.glob(os.path.join(dst, f"{name}.*.bak")))[:-keep]: os.remove(old)
+                      print("backed up", name)
+              volumeMounts:
+                - { name: data, mountPath: /data }          # RW: WAL read needs the -shm file
+                - { name: backups, mountPath: /backups, subPath: db-backups }
+          volumes:
+            - { name: data, persistentVolumeClaim: { claimName: soulsync-data-local } }
+            - { name: backups, persistentVolumeClaim: { claimName: soulsync-config-nfs-v2 } }
