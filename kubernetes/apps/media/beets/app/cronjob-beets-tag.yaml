@@ -21,6 +21,12 @@ spec:
           restartPolicy: Never
           securityContext: { runAsNonRoot: true, runAsUser: 568, runAsGroup: 568, fsGroup: 568, seccompProfile: { type: RuntimeDefault } }
           initContainers:
+            - name: fix-state-perms          # Talos creates /var/mnt/<volume> as root:755 (and can reset it on a config apply)
+              image: busybox:1.37.0
+              command: ["sh","-c","chown 568:568 /state && chmod 775 /state"]
+              securityContext: { runAsUser: 0, runAsNonRoot: false, allowPrivilegeEscalation: false, capabilities: { drop: [ALL], add: [CHOWN, FOWNER] } }
+              resources: { requests: { cpu: 10m }, limits: { memory: 64Mi } }
+              volumeMounts: [{ name: state, mountPath: /state }]
             - name: install-beets          # pinned wheel install into an emptyDir; swap for a prebuilt image digest later
               image: python:3.13.16-slim-trixie
               command: ["sh","-c","pip install --no-cache-dir --target=/tools 'beets==2.14.1'"]
