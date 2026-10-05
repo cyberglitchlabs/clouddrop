@@ -32,7 +32,7 @@ spec:
                       p = os.path.join(src, name)
                       if not os.path.exists(p): continue
                       out = os.path.join(dst, f"{name}.{stamp}.tmp")
-                      a = sqlite3.connect(f"file:{p}?mode=ro", uri=True); b = sqlite3.connect(out)
+                      a = sqlite3.connect(p, timeout=60); b = sqlite3.connect(out)   # backup API only reads the source
                       a.backup(b); b.close(); a.close()
                       c = sqlite3.connect(out); ok = c.execute("PRAGMA integrity_check").fetchone()[0]; c.close()
                       if ok != "ok": os.remove(out); raise SystemExit(f"{name}: integrity_check {ok}")
