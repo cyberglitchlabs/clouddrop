@@ -2,7 +2,7 @@
 directory: /media/Music            # required by beets; nothing is ever moved/copied into it
 library: /state/library.db         # SQLite on LOCAL storage (bolty UserVolume), never NFS
 statefile: /state/state.pickle     # resume/incremental state, also local
-plugins: []                        # musicbrainz autotagger is built in; no fetchart/embedart/lyrics/scrub/zero
+plugins: [musicbrainz]            # the MusicBrainz autotagger IS a plugin in 2.x (plugins: [] disables matching); nothing that writes files
 threaded: no
 ui:
   color: no
