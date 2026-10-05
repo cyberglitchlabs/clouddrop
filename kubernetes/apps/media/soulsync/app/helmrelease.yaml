@@ -15,7 +15,7 @@ spec:
   values:
     controllers:
       soulsync:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           app:
             image:
@@ -82,8 +82,13 @@ spec:
         existingClaim: soulsync-config-nfs-v2
         globalMounts:
           - path: /config
-          - path: /app/data
           - path: /app/config
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: soulsync-data-local
+        globalMounts:
+          - path: /app/data
       media:
         enabled: true
         type: persistentVolumeClaim

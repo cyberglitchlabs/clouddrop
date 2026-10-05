@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: soulsync-data-local
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - bolty
+  hostPath:
+    path: /var/mnt/soulsync-data
+    type: DirectoryOrCreate
