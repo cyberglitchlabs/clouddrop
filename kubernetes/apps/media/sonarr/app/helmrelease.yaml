@@ -21,7 +21,7 @@ spec:
           sonarr:
             image:
               repository: ghcr.io/home-operations/sonarr
-              tag: 4.0.19.3011
+              tag: 4.0.20.3012
             env:
               TZ: America/Chicago
               SONARR__AUTH__METHOD: Forms
