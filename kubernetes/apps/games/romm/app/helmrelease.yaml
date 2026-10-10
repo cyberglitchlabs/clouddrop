@@ -6,6 +6,9 @@ metadata:
   name: romm
 spec:
   interval: 1h
+  # RomM runs DB migrations on first start of a new version; the default 5m timeout
+  # rolled back mid-migration (2026-09-27) and left the DB ahead of the image.
+  timeout: 45m
   chartRef:
     kind: OCIRepository
     name: bjw-s-app-template
@@ -23,7 +26,7 @@ spec:
           romm:
             image:
               repository: rommapp/romm
-              tag: 5.3.1
+              tag: 5.4.0
             envFrom:
               - secretRef:
                   name: romm-secrets
@@ -49,6 +52,16 @@ spec:
               # Metadata provider API keys are loaded from romm-metadata-secrets
               HASHEOUS_API_ENABLED: "true"
             probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/heartbeat
+                    port: 8080
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 180  # 30m for first-start migrations
               liveness:
                 enabled: true
                 custom: true
