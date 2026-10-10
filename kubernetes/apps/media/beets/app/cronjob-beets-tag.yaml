@@ -28,7 +28,7 @@ spec:
               resources: { requests: { cpu: 10m }, limits: { memory: 64Mi } }
               volumeMounts: [{ name: state, mountPath: /state }]
             - name: install-beets          # pinned wheel install into an emptyDir; swap for a prebuilt image digest later
-              image: python:3.13.16-slim-trixie
+              image: python:3.14.8-slim-trixie
               command: ["sh","-c","pip install --no-cache-dir --target=/tools 'beets==2.14.1'"]
               env: [{ name: HOME, value: /tmp }]
               securityContext: { allowPrivilegeEscalation: false, capabilities: { drop: [ALL] } }
@@ -36,7 +36,7 @@ spec:
               volumeMounts: [{ name: tools, mountPath: /tools }, { name: tmp, mountPath: /tmp }]
           containers:
             - name: beets
-              image: python:3.13.16-slim-trixie
+              image: python:3.14.8-slim-trixie
               command: ["sh","/scripts/run.sh"]
               env:
                 - { name: MODE, value: nightly }
