@@ -44,7 +44,7 @@ kubernetes/apps/home/<app>/
       sectionName: https
   ```
 - For internal-only routes, also add this annotation on the `route`:
-  `external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"`
+  `external-dns.kubernetes.io/cloudflare-proxied: "false"`
 - Timezone env: `TZ: America/Chicago`
 - Standard pod security context: `runAsNonRoot: true`, `runAsUser: 1000`, `runAsGroup: 1000`, `fsGroup: 1000`, `fsGroupChangePolicy: OnRootMismatch`, `seccompProfile.type: RuntimeDefault`
 - Container security context: `allowPrivilegeEscalation: false`, `capabilities.drop: ["ALL"]`
@@ -220,7 +220,7 @@ persistence:
 route:
   app:
     annotations:
-      external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+      external-dns.kubernetes.io/cloudflare-proxied: "false"
     hostnames: ["homepage.${SECRET_DOMAIN}"]
     parentRefs:
       - name: internal
@@ -400,7 +400,7 @@ persistence:
 route:
   app:
     annotations:
-      external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+      external-dns.kubernetes.io/cloudflare-proxied: "false"
     hostnames: ["start.${SECRET_DOMAIN}"]
     parentRefs:
       - name: internal

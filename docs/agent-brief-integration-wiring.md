@@ -51,8 +51,8 @@ metadata:
   namespace: security
   annotations:
     lbipam.cilium.io/ips: "192.168.42.250"  # CHOOSE an IP from the user's existing LB pool
-    external-dns.alpha.kubernetes.io/hostname: wazuh-syslog.${SECRET_DOMAIN}
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+    external-dns.kubernetes.io/hostname: wazuh-syslog.${SECRET_DOMAIN}
+    external-dns.kubernetes.io/cloudflare-proxied: "false"
 spec:
   type: LoadBalancer
   selector:

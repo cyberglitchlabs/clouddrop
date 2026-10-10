@@ -234,7 +234,7 @@ The `karakeep-meilisearch` and `karakeep-browserless` services need to resolve t
 route:
   web:
     annotations:
-      external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+      external-dns.kubernetes.io/cloudflare-proxied: "false"
     hostnames: ["karakeep.${SECRET_DOMAIN}"]
     parentRefs:
       - name: internal

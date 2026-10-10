@@ -247,7 +247,7 @@ persistence:
 route:
   app:
     annotations:
-      external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+      external-dns.kubernetes.io/cloudflare-proxied: "false"
     hostnames: ["litellm.${SECRET_DOMAIN}"]
     parentRefs:
       - name: internal

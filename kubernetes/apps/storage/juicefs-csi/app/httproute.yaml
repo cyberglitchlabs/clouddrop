@@ -5,7 +5,7 @@ metadata:
   name: juicefs
   namespace: juicefs
   annotations:
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+    external-dns.kubernetes.io/cloudflare-proxied: "false"
     gatus.home-operations.com/endpoint: |-
       group: storage
       conditions:

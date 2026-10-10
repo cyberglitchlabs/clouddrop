@@ -5,7 +5,7 @@ metadata:
   name: prometheus
   namespace: observability
   annotations:
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+    external-dns.kubernetes.io/cloudflare-proxied: "false"
     gatus.home-operations.com/endpoint: |-
       group: observability
       path: /-/healthy
