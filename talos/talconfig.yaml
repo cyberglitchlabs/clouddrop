@@ -105,6 +105,15 @@ nodes:
       kind: UserVolumeConfig
       name: beets-data
       volumeType: directory
+    - |-
+      apiVersion: v1alpha1
+      kind: UserVolumeConfig
+      name: longhorn
+      volumeType: directory
+    - |-
+      machine:
+        nodeLabels:
+          node.longhorn.io/create-default-disk: config
 
 # Global patches
 patches:
