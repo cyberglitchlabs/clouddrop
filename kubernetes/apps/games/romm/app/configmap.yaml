@@ -37,8 +37,12 @@ data:
       # Associate one platform to its main version
       versions: {}
 
-    # The folder name where your roms are located
-    filesystem: {}
+    # Library layout. RomM >= 5.4.0 no longer auto-detects '{platform}/roms',
+    # it must be declared explicitly.
+    filesystem:
+      structure:
+        default: "{platform}/roms/{game}"
+        firmware: "{platform}/bios"
 
     # Metadata priority during scans
     # scan:
