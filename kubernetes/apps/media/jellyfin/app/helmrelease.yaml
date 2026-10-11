@@ -19,7 +19,7 @@ spec:
   values:
     controllers:
       jellyfin:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           jellyfin:
             image:
@@ -99,7 +99,7 @@ spec:
       config-data:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: jellyfin-config-data-local
+        existingClaim: jellyfin-data
         globalMounts:
           - path: /config/data
       media:
