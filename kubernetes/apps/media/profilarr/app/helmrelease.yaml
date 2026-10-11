@@ -16,7 +16,7 @@ spec:
   values:
     controllers:
       profilarr:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           profilarr:
             image:
@@ -133,7 +133,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: profilarr-juicefs
+        existingClaim: profilarr-config
         globalMounts:
           - path: /config
       media:
