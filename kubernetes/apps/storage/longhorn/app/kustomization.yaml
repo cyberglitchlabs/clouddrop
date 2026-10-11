@@ -9,4 +9,3 @@ resources:
   - ./helmrelease.yaml
   - ./httproute.yaml
   - ./podmonitor.yaml
-  - ./recurringjobs.yaml
