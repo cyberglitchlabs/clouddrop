@@ -22,3 +22,12 @@ spec:
         status.conditions.filter(c, c.type == "Ready").all(c, c.status == "True")
       # powercycle goes through full BIOS POST (~10-15m extra vs kexec's default)
       timeout: 25m
+    # Longhorn runs 2 replicas on 2 storage nodes (bolty, skully). Do not start
+    # the next node until every attached volume is healthy again, otherwise the
+    # second node can go down while its only other replica is still rebuilding.
+    # Detached volumes report robustness "unknown" and are ignored.
+    - apiVersion: longhorn.io/v1beta2
+      kind: Volume
+      expr: |
+        status.state != "attached" || status.robustness == "healthy"
+      timeout: 45m

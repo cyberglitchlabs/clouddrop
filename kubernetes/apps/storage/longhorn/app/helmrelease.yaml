@@ -18,11 +18,15 @@ spec:
       interval: 1h
   install:
     remediation:
-      retries: 3
+      retries: -1
+  # Longhorn does not support downgrades: a timed-out upgrade must not be
+  # rolled back automatically by helm-controller.
+  timeout: 15m
   upgrade:
-    cleanupOnFail: true
+    cleanupOnFail: false
     remediation:
-      retries: 3
+      retries: 0
+      remediateLastFailure: false
   values:
     persistence:
       # Opt-in only: apps must name storageClassName: longhorn explicitly.
@@ -35,8 +39,12 @@ spec:
       # Only nodes labeled node.longhorn.io/create-default-disk=config get a
       # disk, so buzzy (eMMC) never hosts replicas.
       createDefaultDiskLabeledNodes: true
-      defaultReplicaCount: '{"v1":"2"}'
-      # Data shares the EPHEMERAL partition with kubelet/containerd.
+      # Both engines must be listed or the whole setting is rejected as
+      # "mismatched data engines" and the live default stays at 3.
+      defaultReplicaCount: '{"v1":"2","v2":"2"}'
+      # Data shares the EPHEMERAL partition with kubelet/containerd/etcd.
+      # Only applies to auto-created disks; disks added by hand need
+      # spec.disks.<id>.storageReserved set explicitly (see runbook).
       storageReservedPercentageForDefaultDisk: 30
       # Eviction policies would hang with only two storage nodes.
       nodeDrainPolicy: block-if-contains-last-replica

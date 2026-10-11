@@ -23,8 +23,10 @@ export KUBECONFIG=/Users/jsievert/personal/clouddrop/kubeconfig
 4. **Run the copy Job** (template below). Require the `files` and `bytes` lines
    to match and the `ls -ln` UID/GID to match the old tree.
 5. **Repoint** `persistence.<name>.existingClaim` in the HelmRelease to the new
-   claim. In the same commit remove the old PVC manifest from
-   `kustomization.yaml` and delete the file, so Flux does not recreate it.
+   claim and add the new PVC manifest. **Keep the old PVC manifest** for now:
+   the `qnap-nfs*` classes use `Delete` reclaim, so pruning it erases the NFS
+   directory, which is the rollback source. Remove it in a follow-up PR after
+   step 7 (a Completed backup of the new volume).
 6. **Resume and verify:** `flux resume hr -n <ns> <app>`, check the pod is
    Ready and the app shows its data.
 7. **Confirm protection:** a Longhorn snapshot and a backup exist for the new
@@ -44,9 +46,12 @@ export KUBECONFIG=/Users/jsievert/personal/clouddrop/kubeconfig
    is `{}`, add the disk by hand:
    ```bash
    kubectl -n longhorn-system patch nodes.longhorn.io <node> --type merge -p \
-     '{"spec":{"disks":{"default-disk-<node>":{"path":"/var/mnt/longhorn","allowScheduling":true,"evictionRequested":false,"storageReserved":0,"tags":[],"diskType":"filesystem"}}}}'
+     '{"spec":{"disks":{"default-disk-<node>":{"path":"/var/mnt/longhorn","allowScheduling":true,"evictionRequested":false,"storageReserved":<30% of disk bytes>,"tags":[],"diskType":"filesystem"}}}}'
    ```
 3. Confirm `.status.diskStatus` shows the disk `Ready` and `Schedulable`.
+4. Check `storageReserved` is ~30% of `storageMaximum`: the chart's
+   `storageReservedPercentageForDefaultDisk` only applies to auto-created
+   disks, and this partition is shared with etcd, kubelet and containerd.
 
 ## Lessons from the first migrations
 
@@ -71,8 +76,11 @@ export KUBECONFIG=/Users/jsievert/personal/clouddrop/kubeconfig
 
 ## Rollback
 
-Until step 8: set `existingClaim` back to the old claim and resume the
-HelmRelease. The old PVCs are `Retain` and the copy never modifies the source.
+Until the old PVC manifest is removed: set `existingClaim` back to the old
+claim and resume the HelmRelease. The copy never modifies the source. The
+`qnap-nfs*` classes are `Delete`, so once their PVC is pruned that data is gone
+and the Longhorn backup is the only fallback; hostPath and Longhorn PVs are
+`Retain` and survive until the PV object is deleted.
 
 ## New PVC template
 
