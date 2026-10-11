@@ -10,8 +10,8 @@ spec:
     - name: longhorn.rules
       rules:
         - alert: LonghornVolumeDegraded
-          # robustness: 0 unknown, 1 healthy, 2 degraded, 3 faulted; state 2 = attached
-          expr: longhorn_volume_robustness == 2 and on (volume, node) longhorn_volume_state == 2
+          # robustness and state are one-hot gauges with a `state` label (value 1 = current)
+          expr: longhorn_volume_robustness{state="degraded"} == 1 and on (volume) longhorn_volume_state{state="attached"} == 1
           for: 30m
           labels:
             severity: warning
@@ -19,7 +19,7 @@ spec:
             summary: "Longhorn volume {{ $labels.volume }} has been degraded for 30m"
             description: "Fewer healthy replicas than configured. With two storage nodes this also blocks safe node upgrades."
         - alert: LonghornVolumeFaulted
-          expr: longhorn_volume_robustness == 3
+          expr: longhorn_volume_robustness{state="faulted"} == 1
           for: 5m
           labels:
             severity: critical
