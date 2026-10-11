@@ -45,7 +45,7 @@ spec:
                   "trustedProxies": [],
                   "auth": {
                     "mode": "token",
-                    "token": "${OPENCLAW_GATEWAY_TOKEN}"
+                    "token": "$${OPENCLAW_GATEWAY_TOKEN}"
                   },
                   "controlUi": {
                     "dangerouslyAllowHostHeaderOriginFallback": true
@@ -120,6 +120,6 @@ spec:
 
       persistence:
         data:
-          storageClass: qnap-nfs
-          accessMode: ReadWriteMany
+          storageClass: longhorn
+          accessMode: ReadWriteOnce
           size: 5Gi

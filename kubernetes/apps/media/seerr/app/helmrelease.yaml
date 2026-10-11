@@ -17,7 +17,7 @@ spec:
   values:
     controllers:
       seerr:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           seerr:
             image:
@@ -74,9 +74,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        storageClass: qnap-nfs
-        accessMode: ReadWriteOnce
-        size: 5Gi
+        existingClaim: seerr-config
         globalMounts:
           - path: /app/config
     route:
