@@ -8,4 +8,5 @@ resources:
   - ./pv-media.yaml
   - ./pvc-media.yaml
   - ./pvc-config-nfs.yaml
+  - ./pvc-config-longhorn.yaml
   - ./helmrelease.yaml
