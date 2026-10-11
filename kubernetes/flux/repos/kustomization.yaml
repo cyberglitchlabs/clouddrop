@@ -43,3 +43,4 @@ resources:
   - ./helmrepository-grafana.yaml
   - ./helmrepository-juicefs.yaml
   - ./helmrepository-democratic-csi.yaml
+  - ./helmrepository-longhorn.yaml
