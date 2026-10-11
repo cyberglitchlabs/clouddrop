@@ -5,7 +5,6 @@ kind: Kustomization
 components:
   - ../../../../components/helmrelease-defaults
 resources:
-  - ./pvc-config-juicefs.yaml
   - ./pv-data-local.yaml
   - ./pvc-data-local.yaml
   - ./pvc-data-longhorn.yaml
