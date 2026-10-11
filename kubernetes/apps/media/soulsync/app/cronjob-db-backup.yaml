@@ -15,6 +15,12 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          affinity:                                      # RWO Longhorn volume: run on the node where the app pod has it attached
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - topologyKey: kubernetes.io/hostname
+                  labelSelector:
+                    matchLabels: { app.kubernetes.io/name: soulsync }
           securityContext: { runAsNonRoot: true, runAsUser: 568, runAsGroup: 568, fsGroup: 568, seccompProfile: { type: RuntimeDefault } }
           containers:
             - name: backup
@@ -43,5 +49,5 @@ spec:
                 - { name: data, mountPath: /data }          # RW: WAL read needs the -shm file
                 - { name: backups, mountPath: /backups, subPath: db-backups }
           volumes:
-            - { name: data, persistentVolumeClaim: { claimName: soulsync-data-local } }
+            - { name: data, persistentVolumeClaim: { claimName: soulsync-data } }
             - { name: backups, persistentVolumeClaim: { claimName: soulsync-config-nfs-v2 } }

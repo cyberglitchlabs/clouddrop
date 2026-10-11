@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./pv-data-local.yaml
   - ./pvc-data-local.yaml
+  - ./pvc-data-longhorn.yaml
   - ./pv-music-smb.yaml
   - ./pvc-music-smb.yaml
   - ./pvc-logs-nfs.yaml
