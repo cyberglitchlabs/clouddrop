@@ -18,7 +18,7 @@ spec:
   values:
     controllers:
       posterpilot:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           app:
             image:
@@ -97,7 +97,7 @@ spec:
     persistence:
       data:
         type: persistentVolumeClaim
-        existingClaim: posterpilot-data-local
+        existingClaim: posterpilot-data
         globalMounts:
           - path: /data
       kometa:

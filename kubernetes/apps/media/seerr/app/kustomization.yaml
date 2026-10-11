@@ -5,4 +5,5 @@ kind: Kustomization
 components:
   - ../../../../components/helmrelease-defaults
 resources:
+  - ./pvc-config-longhorn.yaml
   - ./helmrelease.yaml

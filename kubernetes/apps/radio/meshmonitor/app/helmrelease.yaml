@@ -81,9 +81,7 @@ spec:
       data:
         enabled: true
         type: persistentVolumeClaim
-        storageClass: qnap-nfs-db-sync
-        accessMode: ReadWriteOnce
-        size: 1Gi
+        existingClaim: meshmonitor-data
         globalMounts:
           - path: /data
     route:

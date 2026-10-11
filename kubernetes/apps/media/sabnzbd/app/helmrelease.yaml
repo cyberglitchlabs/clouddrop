@@ -16,7 +16,7 @@ spec:
   values:
     controllers:
       sabnzbd:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           sabnzbd:
             image:
@@ -82,7 +82,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: sabnzbd-nfs
+        existingClaim: sabnzbd-config
         globalMounts:
           - path: /config
       media:
