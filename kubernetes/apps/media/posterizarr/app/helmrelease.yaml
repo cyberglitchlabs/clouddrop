@@ -59,6 +59,15 @@ spec:
               limits:
                 memory: 1Gi
     defaultPodOptions:
+      # Large SMB assets mount; skully wedges its CIFS mounts under load.
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: NotIn
+                    values: [skully]
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

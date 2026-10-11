@@ -5,7 +5,6 @@ kind: Kustomization
 components:
   - ../../../../components/helmrelease-defaults
 resources:
-  - ./pvc-config-nfs.yaml
   - ./pvc-config-longhorn.yaml
   - ./pv-assets-smb.yaml
   - ./pvc-assets-smb.yaml

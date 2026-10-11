@@ -9,5 +9,4 @@ components:
 resources:
   - ./csi-driver-nfs/ks.yaml
   - ./csi-driver-smb/ks.yaml
-  - ./democratic-csi/ks.yaml
   - ./longhorn/ks.yaml

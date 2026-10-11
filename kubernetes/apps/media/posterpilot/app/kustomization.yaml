@@ -5,8 +5,6 @@ kind: Kustomization
 components:
   - ../../../../components/helmrelease-defaults
 resources:
-  - ./pv-data-local.yaml
-  - ./pvc-data-local.yaml
   - ./pvc-data-longhorn.yaml
   - ./secret.sops.yaml
   - ./helmrelease.yaml
