@@ -41,6 +41,5 @@ resources:
   - ./helmrepository-openclaw.yaml
   - ./helmrepository-victoria-metrics.yaml
   - ./helmrepository-grafana.yaml
-  - ./helmrepository-juicefs.yaml
   - ./helmrepository-democratic-csi.yaml
   - ./helmrepository-longhorn.yaml
