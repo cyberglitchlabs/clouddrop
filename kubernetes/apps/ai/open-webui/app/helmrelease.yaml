@@ -18,7 +18,7 @@ spec:
   values:
     controllers:
       open-webui:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           app:
             image:
@@ -92,7 +92,7 @@ spec:
       data:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: open-webui-data-nfs
+        existingClaim: open-webui-config
         globalMounts:
           - path: /app/backend/data
     route:

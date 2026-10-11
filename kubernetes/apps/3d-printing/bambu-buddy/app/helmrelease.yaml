@@ -164,7 +164,7 @@ spec:
       data:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: bambu-buddy-data
+        existingClaim: bambu-buddy-config
         globalMounts:
           - path: /app/data
       logs:

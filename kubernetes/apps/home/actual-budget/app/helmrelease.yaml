@@ -75,7 +75,7 @@ spec:
             port: 5006
     persistence:
       data:
-        existingClaim: actual-budget-data
+        existingClaim: actual-budget-config
         globalMounts:
           - path: /data
     route:
