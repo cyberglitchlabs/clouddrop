@@ -61,6 +61,16 @@ spec:
               limits:
                 memory: 1Gi
     defaultPodOptions:
+      # Heavy SMB library access; skully wedges its CIFS mounts under load. The old
+      # hostPath volume pinned this to bolty, the Longhorn volume does not.
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: NotIn
+                    values: [skully]
       securityContext:
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
@@ -86,7 +96,7 @@ spec:
       data:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: soulsync-data-local
+        existingClaim: soulsync-data
         globalMounts:
           - path: /app/data
       media:

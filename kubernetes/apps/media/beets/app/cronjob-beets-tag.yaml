@@ -19,6 +19,12 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          affinity:                                      # SMB-heavy job: never skully (CIFS wedges), the old hostPath PV used to guarantee this
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - { key: kubernetes.io/hostname, operator: NotIn, values: [skully] }
           securityContext: { runAsNonRoot: true, runAsUser: 568, runAsGroup: 568, fsGroup: 568, seccompProfile: { type: RuntimeDefault } }
           initContainers:
             - name: fix-state-perms          # Talos creates /var/mnt/<volume> as root:755 (and can reset it on a config apply)
@@ -57,6 +63,6 @@ spec:
             - { name: tmp, emptyDir: {} }
             - { name: config, configMap: { name: beets-config } }
             - { name: scripts, configMap: { name: beets-scripts } }
-            - { name: state, persistentVolumeClaim: { claimName: beets-data-local } }   # PV affinity => bolty, never skully
+            - { name: state, persistentVolumeClaim: { claimName: beets-data } }   # Longhorn RWO; pod kept off skully by affinity below
             - { name: logs, persistentVolumeClaim: { claimName: beets-logs-nfs } }
             - { name: music, persistentVolumeClaim: { claimName: beets-music-smb } }

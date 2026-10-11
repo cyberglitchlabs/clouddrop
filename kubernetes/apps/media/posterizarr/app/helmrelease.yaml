@@ -17,7 +17,7 @@ spec:
   values:
     controllers:
       posterizarr:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           app:
             image:
@@ -75,7 +75,7 @@ spec:
     persistence:
       config:
         type: persistentVolumeClaim
-        existingClaim: posterizarr-nfs
+        existingClaim: posterizarr-config
         globalMounts:
           - path: /config
       assets:
