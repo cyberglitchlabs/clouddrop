@@ -16,7 +16,7 @@ spec:
   values:
     controllers:
       bindery:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           bindery:
             image:
@@ -84,7 +84,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: bindery-config-nfs
+        existingClaim: bindery-config
         globalMounts:
           - path: /config
       media:

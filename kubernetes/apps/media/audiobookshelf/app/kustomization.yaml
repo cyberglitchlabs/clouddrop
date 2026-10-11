@@ -6,6 +6,7 @@ components:
   - ../../../../components/helmrelease-defaults
 resources:
   - ./pvc-config-nfs.yaml
+  - ./pvc-config-longhorn.yaml
   - ./helmrelease.yaml
   - ./pv-audiobooks.yaml
   - ./pvc-audiobooks.yaml
