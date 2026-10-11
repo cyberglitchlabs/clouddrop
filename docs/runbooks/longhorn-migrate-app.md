@@ -32,6 +32,22 @@ export KUBECONFIG=/Users/jsievert/personal/clouddrop/kubeconfig
    trigger a manual backup from the UI if the schedule has not fired yet.
 8. **Delete the old PVC and PV** only after step 7.
 
+## Adding a storage node
+
+1. Add the `longhorn` `UserVolumeConfig` and the
+   `node.longhorn.io/create-default-disk: config` label patch to the node in
+   `talos/talconfig.yaml`, then apply it to the node.
+2. Longhorn does not reliably create the default disk for a node it already
+   knows about (observed on first install: the `Node` object existed before the
+   `create-default-disk-labeled-nodes` setting was applied). If
+   `kubectl -n longhorn-system get nodes.longhorn.io <node> -o jsonpath='{.spec.disks}'`
+   is `{}`, add the disk by hand:
+   ```bash
+   kubectl -n longhorn-system patch nodes.longhorn.io <node> --type merge -p \
+     '{"spec":{"disks":{"default-disk-<node>":{"path":"/var/mnt/longhorn","allowScheduling":true,"evictionRequested":false,"storageReserved":0,"tags":[],"diskType":"filesystem"}}}}'
+   ```
+3. Confirm `.status.diskStatus` shows the disk `Ready` and `Schedulable`.
+
 ## Rollback
 
 Until step 8: set `existingClaim` back to the old claim and resume the

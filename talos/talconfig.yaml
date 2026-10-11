@@ -39,6 +39,16 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.42.10"
+    patches:
+    - |-
+      apiVersion: v1alpha1
+      kind: UserVolumeConfig
+      name: longhorn
+      volumeType: directory
+    - |-
+      machine:
+        nodeLabels:
+          node.longhorn.io/create-default-disk: config
   - hostname: "buzzy"
     ipAddress: "192.168.42.252"
     installDisk: "/dev/mmcblk0"
