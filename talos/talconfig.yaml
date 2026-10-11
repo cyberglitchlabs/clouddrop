@@ -103,21 +103,6 @@ nodes:
     - |-
       apiVersion: v1alpha1
       kind: UserVolumeConfig
-      name: posterpilot-data
-      volumeType: directory
-    - |-
-      apiVersion: v1alpha1
-      kind: UserVolumeConfig
-      name: soulsync-data
-      volumeType: directory
-    - |-
-      apiVersion: v1alpha1
-      kind: UserVolumeConfig
-      name: beets-data
-      volumeType: directory
-    - |-
-      apiVersion: v1alpha1
-      kind: UserVolumeConfig
       name: longhorn
       volumeType: directory
     - |-
