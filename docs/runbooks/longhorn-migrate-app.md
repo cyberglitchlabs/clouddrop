@@ -48,6 +48,27 @@ export KUBECONFIG=/Users/jsievert/personal/clouddrop/kubeconfig
    ```
 3. Confirm `.status.diskStatus` shows the disk `Ready` and `Schedulable`.
 
+## Lessons from the first migrations
+
+- **RWO needs `Recreate`.** A `RollingUpdate` Deployment deadlocks when the new
+  pod lands on another node. If the live Deployment still carries a
+  `rollingUpdate:` block, switching `strategy` to `Recreate` makes Helm's
+  server-side apply fail (`spec.strategy.rollingUpdate: Forbidden`), and Helm
+  rolls back to the old claim, so the app comes back up on the **old** volume.
+  Fix: with the HelmRelease suspended and the app scaled to 0, delete the
+  Deployment, then resume. If the old pod already wrote data, wipe the new
+  volume (keep `lost+found`) and copy again before resuming.
+- **Verify before trusting a resume.** After `flux resume`, check
+  `kubectl get deploy <app> -o jsonpath='{.spec.template.spec.volumes}'` shows
+  the new claim.
+- **Keep Delete-reclaim PVC manifests until backups are verified.** NFS
+  StorageClasses here use `Delete`, so removing the manifest prunes the PVC and
+  erases the NFS directory (the rollback source). Remove them in a follow-up PR
+  after each new volume has a completed backup.
+- **Expect `+1 file / +16384 bytes`.** The new ext4 volume has a `lost+found`.
+- **Pre-create the PVC with kubectl** before merging so one PR does the cutover;
+  Flux adopts the live PVC.
+
 ## Rollback
 
 Until step 8: set `existingClaim` back to the old claim and resume the

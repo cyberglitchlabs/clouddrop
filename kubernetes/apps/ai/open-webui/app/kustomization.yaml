@@ -6,6 +6,5 @@ components:
   - ../../../../components/helmrelease-defaults
 resources:
   - helmrelease.yaml
-  - pvc.yaml
   - pvc-config-longhorn.yaml
   - secret.sops.yaml
