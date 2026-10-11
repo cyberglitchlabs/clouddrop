@@ -63,6 +63,6 @@ spec:
             - { name: tmp, emptyDir: {} }
             - { name: config, configMap: { name: beets-config } }
             - { name: scripts, configMap: { name: beets-scripts } }
-            - { name: state, persistentVolumeClaim: { claimName: beets-data } }   # Longhorn RWO; pod kept off skully by affinity below
+            - { name: state, persistentVolumeClaim: { claimName: beets-data } }   # Longhorn RWO; pod kept off skully by the affinity above
             - { name: logs, persistentVolumeClaim: { claimName: beets-logs-nfs } }
             - { name: music, persistentVolumeClaim: { claimName: beets-music-smb } }

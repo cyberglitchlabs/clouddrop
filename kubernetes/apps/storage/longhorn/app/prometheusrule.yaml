@@ -1,0 +1,53 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: longhorn
+  namespace: longhorn-system
+spec:
+  groups:
+    - name: longhorn.rules
+      rules:
+        - alert: LonghornVolumeDegraded
+          # robustness: 0 unknown, 1 healthy, 2 degraded, 3 faulted; state 2 = attached
+          expr: longhorn_volume_robustness == 2 and on (volume, node) longhorn_volume_state == 2
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Longhorn volume {{ $labels.volume }} has been degraded for 30m"
+            description: "Fewer healthy replicas than configured. With two storage nodes this also blocks safe node upgrades."
+        - alert: LonghornVolumeFaulted
+          expr: longhorn_volume_robustness == 3
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Longhorn volume {{ $labels.volume }} is faulted"
+            description: "No healthy replica. Restore from the latest backup (docs/runbooks/longhorn-restore.md)."
+        - alert: LonghornDiskUsageHigh
+          expr: (longhorn_disk_usage_bytes / longhorn_disk_capacity_bytes) > 0.70
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Longhorn disk on {{ $labels.node }} is above 70% used"
+            description: "Longhorn shares the EPHEMERAL partition with etcd, kubelet and containerd; high usage risks DiskPressure."
+        - alert: LonghornBackupFailed
+          # backup_state: 0 new, 1 pending, 2 in progress, 3 completed, 4 error, 5 unknown
+          expr: longhorn_backup_state == 4
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Longhorn backup {{ $labels.backup }} of {{ $labels.volume }} failed"
+            description: "Check the backup target (nfs://192.168.100.180:/longhorn-backups) and QNAP free space."
+        - alert: LonghornNodeNotReady
+          expr: longhorn_node_status{condition="ready"} == 0
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Longhorn node {{ $labels.node }} is not ready"
+            description: "Replicas on this node are unavailable."

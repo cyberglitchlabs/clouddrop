@@ -16,11 +16,24 @@ If the backup target shows unavailable, check the export first:
 `kubectl -n longhorn-system get backuptargets.longhorn.io default -o jsonpath='{.status.available}'`
 (expected `true`), then the `longhorn-backups` NFS share on the QNAP.
 
-## Node upgrades (tuppr) are gated manually
+## Restored volumes take the default replica count
 
-`TalosUpgrade` health checks run a CEL expression per object and a detached
-Longhorn volume reports a non-healthy robustness, so a blanket volume check
-could block every upgrade. Until that is proven safe, gate by hand:
+A volume restored from the UI, or created outside the StorageClass, uses the
+`default-replica-count` setting, not the StorageClass parameter. It must be
+`{"v1":"2","v2":"2"}`: a v1-only value is rejected as "mismatched data
+engines" and the live default stays at 3. With two storage nodes a 3-replica
+volume stays `degraded` forever. Also note that chart `defaultSettings` apply
+only on first install; change the live value with
+`kubectl -n longhorn-system patch settings.longhorn.io default-replica-count --type merge -p '{"value":"{\"v1\":\"2\",\"v2\":\"2\"}"}'`.
+
+## Node upgrades (tuppr)
+
+The `TalosUpgrade` carries a CEL health check on `longhorn.io/v1beta2 Volume`
+(`status.state != "attached" || status.robustness == "healthy"`, 45m), so the
+next node is not started until attached volumes are healthy again. Detached
+volumes report robustness `unknown` and are skipped. If the check times out,
+tuppr goes `Failed`, which is terminal and needs the manual reset annotation.
+Still worth checking by hand before approving a Talos bump:
 
 - Before an upgrade run:
   `kubectl -n longhorn-system get volumes.longhorn.io -o custom-columns=NAME:.metadata.name,STATE:.status.state,ROBUSTNESS:.status.robustness`
