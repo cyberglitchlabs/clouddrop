@@ -11,3 +11,4 @@ resources:
   - ./csi-driver-smb/ks.yaml
   - ./juicefs-csi/ks.yaml
   - ./democratic-csi/ks.yaml
+  - ./longhorn/ks.yaml

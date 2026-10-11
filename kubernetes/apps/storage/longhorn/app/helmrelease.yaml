@@ -1,0 +1,45 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: longhorn
+  namespace: longhorn-system
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: longhorn
+      version: 1.12.1
+      sourceRef:
+        kind: HelmRepository
+        name: longhorn
+        namespace: flux-system
+      interval: 1h
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    persistence:
+      # Opt-in only: apps must name storageClassName: longhorn explicitly.
+      defaultClass: false
+      defaultClassReplicaCount: 2
+      reclaimPolicy: Retain
+    defaultSettings:
+      # Talos UserVolumeConfig "longhorn" (volumeType: directory) mounts here.
+      defaultDataPath: /var/mnt/longhorn
+      # Only nodes labeled node.longhorn.io/create-default-disk=config get a
+      # disk, so buzzy (eMMC) never hosts replicas.
+      createDefaultDiskLabeledNodes: true
+      defaultReplicaCount: '{"v1":"2"}'
+      # Data shares the EPHEMERAL partition with kubelet/containerd.
+      storageReservedPercentageForDefaultDisk: 30
+      # Eviction policies would hang with only two storage nodes.
+      nodeDrainPolicy: block-if-contains-last-replica
+    defaultBackupStore:
+      backupTarget: nfs://192.168.100.180:/longhorn-backups
+      pollInterval: "300"
