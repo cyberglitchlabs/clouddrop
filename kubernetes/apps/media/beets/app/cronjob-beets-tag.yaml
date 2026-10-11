@@ -4,7 +4,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata: { name: beets-tag, namespace: media }
 spec:
-  suspend: true                        # stays suspended until the trial is verified in Music Assistant
+  suspend: false                       # nightly guarded tagging (guard.py); held albums -> /logs/beets-held.tsv
   schedule: "30 4 * * *"
   timeZone: America/Chicago
   concurrencyPolicy: Forbid
