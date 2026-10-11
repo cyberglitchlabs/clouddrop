@@ -15,5 +15,6 @@ configMapGenerator:
   - name: beets-scripts
     files:
       - run.sh
+      - guard.py
 generatorOptions:
   disableNameSuffixHash: true

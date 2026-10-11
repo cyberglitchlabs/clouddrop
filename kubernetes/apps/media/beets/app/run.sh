@@ -3,7 +3,9 @@
 # MODE=preview : `beet write -p` shows exact tag diffs, writes nothing           [trial step 2]
 # MODE=apply   : `beet write` for TARGET_PATH only                               [trial step 3]
 # MODE=diag    : verbose match report, no incremental, NO writes                 [why was an album skipped?]
-# MODE=nightly : import with write:yes for every eligible album dir under TARGET_PATH
+# MODE=seed    : mark every album already in the library as handled (state file only, no tag writes)
+# MODE=nightly : record new albums (-W), guard each, write tags in place only for clean ones (guard.py); held -> /logs/beets-held.tsv
+# MODE=nightly-dry : same but writes nothing (no tags, no seen-state, no held log)
 # Never calls move/update/mbsync/modify/remove. No file or folder is renamed or deleted.
 set -e
 set -f   # no glob expansion of the -iname patterns
@@ -16,6 +18,7 @@ exec 9>/state/beets.lock
 flock -n 9 || { echo "another beets run holds the lock; exiting"; exit 0; }
 echo "$(date -Is) mode=$MODE target=$TARGET_PATH beets=$(beet version | head -1)"
 case "$MODE" in
+  seed)    python /scripts/guard.py seed; exit 0 ;;
   preview) beet write -p "path:$TARGET_PATH"; exit 0 ;;
   apply)   beet write "path:$TARGET_PATH"; exit 0 ;;
 esac
@@ -29,7 +32,7 @@ echo "album dirs: $(wc -l </tmp/all.txt) total, $(wc -l </tmp/recent.txt) skippe
 case "$MODE" in
   diag)    FLAGS="-q -C -M -W -I" ; CMD="python -m beets -vv -c /etc/beets/config.yaml import" ;;
   import)  FLAGS="-q -C -M -W" ;     CMD="python -m beets -c /etc/beets/config.yaml import" ;;
-  nightly) FLAGS="-q -C -M" ;        CMD="python -m beets -c /etc/beets/config.yaml import" ;;
+  nightly|nightly-dry) python /scripts/guard.py "$MODE"; echo "$(date -Is) done"; exit 0 ;;
   *) echo "unknown MODE $MODE"; exit 2 ;;
 esac
 tr '\n' '\0' </tmp/eligible.txt | xargs -0 -r -n 20 $CMD $FLAGS
