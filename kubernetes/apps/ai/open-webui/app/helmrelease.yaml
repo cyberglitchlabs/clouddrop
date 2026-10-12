@@ -74,6 +74,16 @@ spec:
               limits:
                 memory: 4Gi
     defaultPodOptions:
+      # ~2 GB image and a Longhorn volume on bolty/skully: buzzy's eMMC saturates
+      # (IO pressure >80%, kubelet loses the API) while unpacking images this size.
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: NotIn
+                    values: [buzzy]
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
