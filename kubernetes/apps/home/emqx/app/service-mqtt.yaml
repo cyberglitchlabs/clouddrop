@@ -1,0 +1,29 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/service_v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: emqx-mqtt
+  annotations:
+    # Static LAN IP from the CiliumLoadBalancerIPPool so MQTT clients outside
+    # the cluster (Home Assistant, wall display) have a stable broker address.
+    # In use: .11-.17; .18 is free. Check router DHCP reservations before merging.
+    lbipam.cilium.io/ips: "192.168.42.18"
+    # Split-horizon DNS via k8s_gateway (watches Services). external-dns here
+    # only sources CRDs and HTTPRoutes, so it will not publish this name.
+    coredns.io/hostname: "mqtt.${SECRET_DOMAIN}" # yayamlls-disable-line
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster
+  selector:
+    app.kubernetes.io/instance: emqx
+    app.kubernetes.io/name: emqx
+  ports:
+    - name: mqtt
+      port: 1883
+      targetPort: 1883
+      protocol: TCP
+    - name: mqtts
+      port: 8883
+      targetPort: 8883
+      protocol: TCP

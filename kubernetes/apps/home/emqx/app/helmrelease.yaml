@@ -24,6 +24,16 @@ spec:
     replicaCount: 3
     emqxConfig:
       EMQX_DASHBOARD__DEFAULT_USERNAME: admin
+      # EMQX re-reads these files every ~120s, so cert-manager renewals need no restart
+      EMQX_LISTENERS__SSL__DEFAULT__SSL_OPTIONS__CERTFILE: /tmp/ssl/tls.crt
+      EMQX_LISTENERS__SSL__DEFAULT__SSL_OPTIONS__KEYFILE: /tmp/ssl/tls.key
+    ssl:
+      enabled: true
+      commonName: "mqtt.${SECRET_DOMAIN}" # yayamlls-disable-line
+      dnsnames: ["mqtt.${SECRET_DOMAIN}"] # yayamlls-disable-line
+      issuer:
+        name: letsencrypt-production
+        kind: ClusterIssuer
     resources:
       requests:
         cpu: 100m
