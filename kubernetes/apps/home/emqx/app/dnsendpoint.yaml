@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: emqx-mqtt
+spec:
+  endpoints:
+    - dnsName: "mqtt.${SECRET_DOMAIN}"
+      recordType: A
+      targets: ["192.168.42.18"]
+      providerSpecific:
+        # MQTT is raw TCP; Cloudflare's proxy only carries HTTP(S)
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
