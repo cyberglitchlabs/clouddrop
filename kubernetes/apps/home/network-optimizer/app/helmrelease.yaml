@@ -1,0 +1,109 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: network-optimizer
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bjw-s-app-template
+    namespace: flux-system
+  values:
+    controllers:
+      network-optimizer:
+        # SQLite in /app/data: single replica, never two pods on the volume
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: ghcr.io/ozark-connect/network-optimizer
+              tag: v2.9.3
+            env:
+              TZ: America/Chicago
+              BIND_LOCALHOST_ONLY: "false"
+              REVERSE_PROXIED_HOST_NAME: optimizer.${SECRET_DOMAIN}
+              # Cilium gateway (envoy) sits in front; trust it for X-Forwarded-*
+              TRUSTED_PROXIES: 10.42.0.0/16,192.168.42.0/24
+            envFrom:
+              - secretRef:
+                  name: network-optimizer-secret
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: 8042
+                  initialDelaySeconds: 60
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: 8042
+                  initialDelaySeconds: 20
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: 8042
+                  periodSeconds: 10
+                  failureThreshold: 18
+            # The image entrypoint starts as root (sets /etc/localtime from TZ and
+            # chowns the volumes), then drops to UID 1654 via gosu. Keep root but
+            # only the capabilities that sequence needs.
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop: ["ALL"]
+                add: ["CHOWN", "DAC_OVERRIDE", "FOWNER", "SETUID", "SETGID"]
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+    service:
+      app:
+        controller: network-optimizer
+        ports:
+          http:
+            port: 8042
+            protocol: TCP
+    persistence:
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        storageClass: longhorn
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        globalMounts:
+          - path: /app/data
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /app/logs
+    route:
+      app:
+        hostnames: ["optimizer.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
