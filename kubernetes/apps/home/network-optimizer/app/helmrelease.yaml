@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: ghcr.io/ozark-connect/network-optimizer
-              tag: v2.9.3
+              tag: 2.9.3
             env:
               TZ: America/Chicago
               BIND_LOCALHOST_ONLY: "false"
