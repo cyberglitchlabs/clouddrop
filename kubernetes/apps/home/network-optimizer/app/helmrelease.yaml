@@ -102,6 +102,8 @@ spec:
           - path: /app/logs
     route:
       app:
+        annotations:
+          external-dns.kubernetes.io/cloudflare-proxied: "false"
         hostnames: ["optimizer.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal
