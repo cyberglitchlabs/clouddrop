@@ -68,7 +68,7 @@ spec:
           parser:
             image:
               repository: ghcr.io/dictionarry-hub/profilarr-parser
-              tag: "2.2.0"
+              tag: "2.3.1"
             env:
               ASPNETCORE_URLS: http://+:5000
             probes:
