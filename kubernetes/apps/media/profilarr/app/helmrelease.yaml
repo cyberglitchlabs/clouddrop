@@ -21,7 +21,7 @@ spec:
           profilarr:
             image:
               repository: ghcr.io/dictionarry-hub/profilarr
-              tag: "2.2.0"
+              tag: "2.3.1"
             env:
               TZ: America/Chicago
               PUID: "568"
