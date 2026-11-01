@@ -15,6 +15,7 @@ resources:
   - ./immich/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellystat/ks.yaml
+  - ./patina/ks.yaml
   - ./profilarr/ks.yaml
   - ./posterizarr/ks.yaml
   - ./posterpilot/ks.yaml
