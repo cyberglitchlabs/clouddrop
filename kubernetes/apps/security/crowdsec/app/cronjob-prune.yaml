@@ -64,4 +64,4 @@ spec:
                 - -c
                 - |
                   POD=$(kubectl get pod -n security -l type=lapi -o jsonpath='{.items[0].metadata.name}')
-                  kubectl exec -n security "$POD" -- cscli machines prune --force
+                  kubectl exec -n security "$POD" -- cscli machines prune --duration 24h --force
