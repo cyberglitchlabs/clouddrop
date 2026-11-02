@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: ghcr.io/cyberglitchlabs/patina
-              tag: sha-95259cb
+              tag: sha-ad83b76
             env:
               PATINA_CONFIG: /etc/patina/patina.toml
               TZ: America/Chicago
