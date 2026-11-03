@@ -1,0 +1,54 @@
+---
+# yaml-language-server: $schema=https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: homeassistant-postgres
+spec:
+  instances: 1
+  # Single-instance (same as the other clusters): a lone instance would
+  # permanently block node drains via the default PDB.
+  enablePDB: false
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4
+
+  bootstrap:
+    initdb:
+      database: homeassistant
+      owner: homeassistant
+      encoding: UTF8
+      localeCType: C
+      localeCollate: C
+
+  postgresql:
+    parameters:
+      max_connections: "50"
+      shared_buffers: 256MB
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      memory: 2Gi
+
+  storage:
+    size: 30Gi
+    storageClass: qnap-nfs
+
+  # Extra LoadBalancer for Home Assistant (outside the cluster), pointing at
+  # the read-write primary. TLS stays on (CNPG default); HA uses sslmode=require.
+  managed:
+    services:
+      additional:
+        - selectorType: rw
+          serviceTemplate:
+            metadata:
+              name: homeassistant-postgres-lb
+              annotations:
+                lbipam.cilium.io/ips: "192.168.42.19"
+            spec:
+              type: LoadBalancer
+              externalTrafficPolicy: Cluster
+
+  monitoring:
+    enablePodMonitor: true
