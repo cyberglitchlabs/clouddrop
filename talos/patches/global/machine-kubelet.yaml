@@ -2,9 +2,13 @@ machine:
   kubelet:
     extraConfig:
       serializeImagePulls: false
-      # Image garbage collection thresholds (percent of disk usage)
-      imageGCHighThresholdPercent: 85
-      imageGCLowThresholdPercent: 80
+      # Image garbage collection. Longhorn marks a disk unschedulable below 25%
+      # free (storage-minimal-available-percentage), so GC must kick in well
+      # before that. Max age also removes stale Renovate-bumped tags regardless
+      # of disk usage.
+      imageGCHighThresholdPercent: 70
+      imageGCLowThresholdPercent: 60
+      imageMaximumGCAge: 168h
       # Eviction settings to free space when node or image filesystem is low
       evictionHard:
         "nodefs.available": "5%"
