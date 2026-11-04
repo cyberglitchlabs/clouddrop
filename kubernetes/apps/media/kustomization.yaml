@@ -20,7 +20,6 @@ resources:
   - ./posterizarr/ks.yaml
   - ./posterpilot/ks.yaml
   - ./prowlarr/ks.yaml
-  - ./rangarr/ks.yaml
   - ./radarr/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./seerr/ks.yaml
