@@ -25,7 +25,7 @@ spec:
           fetch-voice:
             image:
               repository: docker.io/rhasspy/wyoming-piper
-              tag: 2.5.2
+              tag: 2.5.3
             command: ["/usr/src/.venv/bin/python3", "-c"]
             args:
               - |
@@ -76,7 +76,7 @@ spec:
           app:
             image:
               repository: docker.io/rhasspy/wyoming-piper
-              tag: 2.5.2
+              tag: 2.5.3
             # The image entrypoint already sets --uri tcp://0.0.0.0:10200 and
             # --data-dir /data; only the default voice and offline mode are added.
             # --local-files-only stops startup from fetching voices.json.
