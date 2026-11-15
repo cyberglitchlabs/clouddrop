@@ -49,6 +49,13 @@
       ignoreTests: true,
     },
     {
+      description: "beets 2.14.x requires Python <3.15; keep the beets CronJob image on 3.14 (3.15 broke pip install in #885)",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["python"],
+      matchFileNames: ["kubernetes/apps/media/beets/app/cronjob-beets-tag.yaml"],
+      allowedVersions: "<3.15",
+    },
+    {
       matchUpdateTypes: ["major"],
       addLabels: ["type/major"],
     },
