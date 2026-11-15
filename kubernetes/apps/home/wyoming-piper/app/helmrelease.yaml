@@ -143,7 +143,7 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-            # CPU only. Deliberately no nvidia.com/gpu request: those slots belong to ollama.
+            # CPU only. Deliberately no nvidia.com/gpu request.
             resources:
               requests:
                 cpu: 100m
