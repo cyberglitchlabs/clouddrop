@@ -36,9 +36,7 @@ resources:
   - ./helmrepository-descheduler.yaml
   - ./helmrepository-emqx.yaml
   - ./helmrepository-headlamp.yaml
-  - ./helmrepository-k8sgpt.yaml
   - ./helmrepository-crowdsec.yaml
-  - ./helmrepository-openclaw.yaml
   - ./helmrepository-victoria-metrics.yaml
   - ./helmrepository-grafana.yaml
   - ./helmrepository-longhorn.yaml
