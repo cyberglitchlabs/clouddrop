@@ -96,6 +96,8 @@ spec:
             protocol: TCP
     route:
       app:
+        annotations:
+          external-dns.kubernetes.io/cloudflare-proxied: "false"
         hostnames: ["esphome-builder.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal
