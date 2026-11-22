@@ -143,6 +143,13 @@
         # customapi widget once an EMQX API key/secret (not the dashboard login) exists.
         siteMonitor: https://emqx.${SECRET_DOMAIN}
 
+- AI:
+    - Meilisearch:
+        icon: meilisearch.png
+        href: https://meilisearch.${SECRET_DOMAIN}
+        description: Search engine
+        siteMonitor: https://meilisearch.${SECRET_DOMAIN}
+
 - Security:
     - Authentik:
         icon: authentik.png
