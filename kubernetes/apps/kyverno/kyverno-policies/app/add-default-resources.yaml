@@ -1,41 +1,68 @@
 ---
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/policies.kyverno.io/mutatingpolicy_v1.json
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
 metadata:
   name: add-default-resources
   annotations:
     policies.kyverno.io/title: Add Default Resource Requests
     policies.kyverno.io/category: Sample
     policies.kyverno.io/subject: Pod
-    policies.kyverno.io/minversion: 1.7.0
     policies.kyverno.io/description: >-
       Adds default cpu and memory resource requests to any container (including
-      init and ephemeral containers) that doesn't already specify them. Uses the
-      +(field) anchor so existing values are never overwritten.
+      init containers) that doesn't already specify them. Existing values are
+      never overwritten.
 spec:
-  background: false
-  rules:
-    - name: add-default-requests
-      match:
-        any:
-          - resources:
-              kinds:
-                - Pod
-      preconditions:
-        any:
-          - key: "{{request.operation || 'BACKGROUND'}}"
-            operator: AnyIn
-            value:
-              - CREATE
-              - UPDATE
-      mutate:
-        foreach:
-          - list: "request.object.spec.[ephemeralContainers, initContainers, containers][]"
-            patchStrategicMerge:
-              spec:
-                containers:
-                  - (name): "{{element.name}}"
-                    resources:
-                      requests:
-                        +(memory): "128Mi"
-                        +(cpu): "10m"
+  evaluation:
+    admission:
+      enabled: true
+    mutateExisting:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: |-
+          Object{
+            spec: Object.spec{
+              containers: object.spec.containers.map(c,
+                Object.spec.containers{
+                  name: c.name,
+                  resources: Object.spec.containers.resources{
+                    requests: Object.spec.containers.resources.requests{
+                      cpu: has(c.resources) && has(c.resources.requests) && has(c.resources.requests.cpu)
+                        ? c.resources.requests.cpu : "10m",
+                      memory: has(c.resources) && has(c.resources.requests) && has(c.resources.requests.memory)
+                        ? c.resources.requests.memory : "128Mi"
+                    }
+                  }
+                }
+              )
+            }
+          }
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: |-
+          !has(object.spec.initContainers) ? Object{} :
+          Object{
+            spec: Object.spec{
+              initContainers: object.spec.initContainers.map(c,
+                Object.spec.initContainers{
+                  name: c.name,
+                  resources: Object.spec.initContainers.resources{
+                    requests: Object.spec.initContainers.resources.requests{
+                      cpu: has(c.resources) && has(c.resources.requests) && has(c.resources.requests.cpu)
+                        ? c.resources.requests.cpu : "10m",
+                      memory: has(c.resources) && has(c.resources.requests) && has(c.resources.requests.memory)
+                        ? c.resources.requests.memory : "128Mi"
+                    }
+                  }
+                }
+              )
+            }
+          }
