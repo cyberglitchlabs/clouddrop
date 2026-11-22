@@ -56,6 +56,13 @@
       allowedVersions: "<3.15",
     },
     {
+      description: "MariaDB 13.0 is a rolling release (EOL 2026-12-31, no bug-fix releases); stay on the 12.3 LTS line (supported to 2029-06) until 13.3 LTS ships (~May 2027)",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["mariadb"],
+      matchFileNames: ["kubernetes/apps/media/booklore/app/mariadb-deployment.yaml"],
+      allowedVersions: "<13",
+    },
+    {
       matchUpdateTypes: ["major"],
       addLabels: ["type/major"],
     },
