@@ -143,18 +143,6 @@
         # customapi widget once an EMQX API key/secret (not the dashboard login) exists.
         siteMonitor: https://emqx.${SECRET_DOMAIN}
 
-- AI:
-    - LiteLLM:
-        icon: litlellm.png
-        href: https://litellm.${SECRET_DOMAIN}
-        description: LLM gateway
-        siteMonitor: https://litellm.${SECRET_DOMAIN}
-    - Meilisearch:
-        icon: meilisearch.png
-        href: https://meilisearch.${SECRET_DOMAIN}
-        description: Search engine
-        siteMonitor: https://meilisearch.${SECRET_DOMAIN}
-
 - Security:
     - Authentik:
         icon: authentik.png
