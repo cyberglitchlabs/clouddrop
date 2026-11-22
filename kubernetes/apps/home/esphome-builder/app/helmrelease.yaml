@@ -20,10 +20,11 @@ spec:
               repository: ghcr.io/esphome/esphome
               tag: "2026.10.0"
             # The image's own entrypoint only routes the `dashboard` subcommand to
-            # esphome-device-builder; every other arg falls through to the classic
-            # esphome CLI, which doesn't understand --remote-build-only. Bypass the
-            # entrypoint and call the binary directly, replicating the cache-dir
-            # env vars the stock entrypoint would otherwise set.
+            # esphome-device-builder, so bypass it and call the binary directly,
+            # replicating the cache-dir env vars the stock entrypoint would set.
+            # Runs the full dashboard (not headless --remote-build-only) so several
+            # dashboards can be paired from Settings -> Pairing requests; the peer-link
+            # listener on 6055 binds because remote-build defaults to enabled.
             command: ["/bin/sh", "-c"]
             args:
               - |
@@ -32,7 +33,7 @@ spec:
                 export PLATFORMIO_CACHE_DIR=/cache/platformio/cache
                 export ESPHOME_ESP_IDF_PREFIX=/cache/idf
                 export ESPHOME_SDK_NRF_PREFIX=/cache/sdk-nrf
-                exec esphome-device-builder --remote-build-only /var/lib/esphome-builder
+                exec esphome-device-builder --remote-build-port 6055 /var/lib/esphome-builder
             env:
               TZ: America/Chicago
             probes:
@@ -41,7 +42,7 @@ spec:
                 custom: true
                 spec:
                   tcpSocket:
-                    port: 6055
+                    port: 6052
                   initialDelaySeconds: 30
                   periodSeconds: 30
                   timeoutSeconds: 5
@@ -51,7 +52,7 @@ spec:
                 custom: true
                 spec:
                   tcpSocket:
-                    port: 6055
+                    port: 6052
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -86,6 +87,24 @@ spec:
             port: 6055
             targetPort: 6055
             protocol: TCP
+      http:
+        controller: esphome-builder
+        type: ClusterIP
+        ports:
+          http:
+            port: 6052
+            protocol: TCP
+    route:
+      app:
+        hostnames: ["esphome-builder.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: http
+                port: 6052
     persistence:
       identity:
         enabled: true
