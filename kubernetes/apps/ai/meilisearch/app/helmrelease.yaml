@@ -1,0 +1,122 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: meilisearch
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bjw-s-app-template
+    namespace: flux-system
+  values:
+    controllers:
+      meilisearch:
+        initContainers:
+          wipe-on-version-mismatch:
+            image:
+              repository: getmeili/meilisearch
+              tag: v1.56.2
+            command:
+              - sh
+              - -c
+              - |
+                if [ -f /meili_data/data.ms/VERSION ]; then
+                  DB_VER=$(cat /meili_data/data.ms/VERSION)
+                  BIN_VER=$(meilisearch --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+                  if [ "$DB_VER" != "$BIN_VER" ]; then
+                    echo "Version mismatch (db=$DB_VER bin=$BIN_VER), wiping data"
+                    rm -rf /meili_data/*
+                  fi
+                fi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+        containers:
+          app:
+            image:
+              repository: getmeili/meilisearch
+              tag: v1.56.2
+            env:
+              TZ: America/Chicago
+              MEILI_ENV: production
+              MEILI_NO_ANALYTICS: "true"
+              MEILI_HTTP_ADDR: "0.0.0.0:7700"
+            envFrom:
+              - secretRef:
+                  name: meilisearch-secrets
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 7700
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 7700
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+    service:
+      app:
+        controller: meilisearch
+        ports:
+          http:
+            port: 7700
+            targetPort: 7700
+            protocol: TCP
+    persistence:
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: meilisearch-data-nfs
+        globalMounts:
+          - path: /meili_data
+      tmp:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+    route:
+      app:
+        annotations:
+          external-dns.kubernetes.io/cloudflare-proxied: "false"
+        hostnames: ["meilisearch.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 7700
