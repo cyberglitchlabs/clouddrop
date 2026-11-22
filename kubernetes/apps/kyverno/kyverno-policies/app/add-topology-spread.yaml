@@ -30,7 +30,5 @@ spec:
                   - maxSkew: 1
                     topologyKey: kubernetes.io/hostname
                     whenUnsatisfiable: ScheduleAnyway
-                    labelSelector:
-                      matchLabels: "{{ request.object.spec.selector.matchLabels }}"
                     matchLabelKeys:
                       - pod-template-hash
