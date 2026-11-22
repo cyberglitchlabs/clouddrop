@@ -1,6 +1,7 @@
 ---
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/policies.kyverno.io/validatingpolicy_v1.json
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
 metadata:
   name: disallow-latest-tag
   annotations:
@@ -8,32 +9,28 @@ metadata:
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
-    policies.kyverno.io/minversion: 1.6.0
     policies.kyverno.io/description: >-
       Mutable image tags (latest, develop, nightly, canary) can cause
       unexpected changes when images are updated. This policy audits Pods
       using such tags. Audit mode only — no pods are blocked.
 spec:
-  validationFailureAction: Audit
-  background: true
-  rules:
-    - name: validate-image-tag
-      match:
-        any:
-          - resources:
-              kinds:
-                - Pod
-      validate:
-        message: "Mutable image tag detected. Use an immutable tag (e.g. a specific version or digest)."
-        foreach:
-          - list: "request.object.spec.[initContainers, containers][]"
-            deny:
-              conditions:
-                any:
-                  - key: "{{element.image | split(@, ':') | [-1:] | [0]}}"
-                    operator: AnyIn
-                    value:
-                      - latest
-                      - develop
-                      - nightly
-                      - canary
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  variables:
+    - name: allContainers
+      expression: >-
+        object.spec.containers + object.spec.?initContainers.orValue([])
+  validations:
+    - expression: >-
+        variables.allContainers.all(c,
+        !["latest", "develop", "nightly", "canary"].exists(t, c.image.endsWith(":" + t)))
+      message: "Mutable image tag detected. Use an immutable tag (e.g. a specific version or digest)."

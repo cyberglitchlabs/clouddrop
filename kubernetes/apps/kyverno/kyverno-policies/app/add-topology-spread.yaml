@@ -1,6 +1,7 @@
 ---
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/policies.kyverno.io/mutatingpolicy_v1.json
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
 metadata:
   name: add-topology-spread
   annotations:
@@ -10,27 +11,37 @@ metadata:
     policies.kyverno.io/description: >-
       Injects a soft hostname topology spread constraint into all Deployments
       that don't already have one, encouraging balanced pod distribution across
-      cluster nodes. Uses matchLabelKeys with pod-template-hash so sibling pods
-      are grouped correctly without a hard-coded labelSelector.
+      cluster nodes. Uses the Deployment's own selector as the labelSelector and
+      matchLabelKeys with pod-template-hash so sibling pods are grouped correctly.
 spec:
-  background: false
-  rules:
-    - name: add-topology-spread
-      match:
-        any:
-          - resources:
-              kinds:
-                - Deployment
-      mutate:
-        patchStrategicMerge:
-          spec:
-            template:
-              spec:
-                +(topologySpreadConstraints):
-                  - maxSkew: 1
-                    topologyKey: kubernetes.io/hostname
-                    whenUnsatisfiable: ScheduleAnyway
-                    labelSelector:
-                      matchLabels: "{{ request.object.spec.selector.matchLabels }}"
-                    matchLabelKeys:
-                      - pod-template-hash
+  evaluation:
+    admission:
+      enabled: true
+    mutateExisting:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["deployments"]
+  mutations:
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: |-
+          !has(object.spec.template.spec.topologySpreadConstraints) && has(object.spec.selector.matchLabels) ?
+          [
+            JSONPatch{
+              op: "add",
+              path: "/spec/template/spec/topologySpreadConstraints",
+              value: dyn([
+                dyn({
+                  "maxSkew": dyn(1),
+                  "topologyKey": dyn("kubernetes.io/hostname"),
+                  "whenUnsatisfiable": dyn("ScheduleAnyway"),
+                  "labelSelector": dyn({"matchLabels": dyn(object.spec.selector.matchLabels)}),
+                  "matchLabelKeys": dyn(["pod-template-hash"])
+                })
+              ])
+            }
+          ] : []
