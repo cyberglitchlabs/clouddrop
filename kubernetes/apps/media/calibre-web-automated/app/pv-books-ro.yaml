@@ -21,6 +21,10 @@ spec:
     - noperm
     - noatime
     - noserverino
+    # Own TCP session: sharing one with other SMB jobs on the node made each
+    # directory lookup take seconds. The mount is read-only, so cache longer.
+    - nosharesock
+    - actimeo=60
   csi:
     driver: smb.csi.k8s.io
     readOnly: true
