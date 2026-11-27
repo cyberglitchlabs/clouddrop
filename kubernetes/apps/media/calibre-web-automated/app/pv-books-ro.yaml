@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30
+# The source collection. Read-only on purpose: the cleanup never changes it.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ebook-cleanup-books-ro
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  mountOptions:
+    - ro
+    - dir_mode=0555
+    - file_mode=0444
+    - uid=568
+    - gid=568
+    - noperm
+    - noatime
+    - noserverino
+  csi:
+    driver: smb.csi.k8s.io
+    readOnly: true
+    volumeHandle: ebook-cleanup-books-ro
+    volumeAttributes:
+      source: //192.168.100.180/Media/Books
+    nodeStageSecretRef:
+      name: smb-creds
+      namespace: kube-system
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebook-cleanup-books-ro
+  namespace: media
+spec:
+  accessModes:
+    - ReadOnlyMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 1Ti
+  volumeName: ebook-cleanup-books-ro

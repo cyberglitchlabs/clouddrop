@@ -1,0 +1,96 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: calibre-web-automated
+  namespace: media
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bjw-s-app-template
+    namespace: flux-system
+  values:
+    controllers:
+      calibre-web-automated:
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: crocodilestick/calibre-web-automated
+              tag: v4.0.8@sha256:5e00373854247750cc3e4479b492ae09293ff5e06ed10177f226634d97888679
+            env:
+              TZ: America/Chicago
+              PUID: "568"
+              PGID: "568"
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8083
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 5
+              readiness: *probe
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  # First start installs Calibre, which can take minutes.
+                  failureThreshold: 60
+            # No securityContext restrictions: the image's s6 init has to start
+            # as root and then drops to PUID/PGID, so default capabilities stay.
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      nodeSelector:
+        kubernetes.io/hostname: bolty
+    service:
+      app:
+        controller: calibre-web-automated
+        ports:
+          http:
+            port: *port
+    persistence:
+      data:
+        existingClaim: calibre-web-automated-data
+        globalMounts:
+          - path: /config
+            subPath: config
+          - path: /calibre-library
+            subPath: library
+          # CWA deletes what it processes here; never point this at the share.
+          - path: /cwa-book-ingest
+            subPath: ingest
+      source:
+        existingClaim: ebook-cleanup-books-ro
+        globalMounts:
+          - path: /source
+            readOnly: true
+    route:
+      app:
+        annotations:
+          # LAN only: internal gateway. The DNS record holds a private address.
+          external-dns.kubernetes.io/cloudflare-proxied: "false"
+        hostnames: ["cwa.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port

@@ -1,0 +1,17 @@
+---
+# Single replica on the node that runs the pod: skully is too small for a copy
+# of the library. While a volume of this class exists, draining that node is
+# blocked (nodeDrainPolicy), so Talos upgrades stay suspended.
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: longhorn-single
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+parameters:
+  numberOfReplicas: "1"
+  dataLocality: strict-local
+  staleReplicaTimeout: "30"
+  fsType: ext4
