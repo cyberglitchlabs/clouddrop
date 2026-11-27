@@ -83,9 +83,8 @@ spec:
     route:
       app:
         annotations:
-          # LAN only: external-dns must not publish this name. k8s-gateway
-          # still answers for it on the local network.
-          external-dns.kubernetes.io/controller: none
+          # LAN only: internal gateway. The DNS record holds a private address.
+          external-dns.kubernetes.io/cloudflare-proxied: "false"
         hostnames: ["cwa.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal
