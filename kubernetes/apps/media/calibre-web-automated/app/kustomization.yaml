@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Temporary app for the ebook cleanup, see
+# docs/superpowers/specs/2026-11-27-ebook-cleanup-cwa-design.md
+components:
+  - ../../../../components/helmrelease-defaults
+resources:
+  - ./storageclass.yaml
+  - ./pvc-data.yaml
+  - ./pv-books-ro.yaml
+  - ./helmrelease.yaml
