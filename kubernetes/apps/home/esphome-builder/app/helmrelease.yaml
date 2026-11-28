@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/esphome/esphome
-              tag: "2026.11.0"
+              tag: "2026.11.1"
             # The image's own entrypoint only routes the `dashboard` subcommand to
             # esphome-device-builder, so bypass it and call the binary directly,
             # replicating the cache-dir env vars the stock entrypoint would set.
